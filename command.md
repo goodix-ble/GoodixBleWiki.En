@@ -4,3 +4,22 @@
 1) 普通编译 : make.bat html
 2) 本地编译且构建http server :  sphinx-autobuild source build/html
 
+
+
+## 3. 支持Markdown
+
+- markdown 语法:
+
+  - pip install -i https://pypi.tuna.tsinghua.edu.cn/simple recommonmark
+
+- markdown 表格:
+
+  - pip install -i https://pypi.tuna.tsinghua.edu.cn/simple sphinx_markdown_tables
+
+    ```
+    #extensions = [
+    #]
+    extensions = ['recommonmark','sphinx_markdown_tables']
+    ```
+
+    
