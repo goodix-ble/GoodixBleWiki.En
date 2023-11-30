@@ -47,6 +47,8 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
               <p class="caption" role="heading"><span class="caption-text">Menu List</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../%E4%BD%BF%E7%94%A8%E5%90%91%E5%AF%BC/index.html">使用向导</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88/index.html">技术方案</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">常见问题</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../%E7%B3%BB%E7%BB%9F%E9%97%AE%E9%A2%98/index.html">系统问题</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../%E5%A4%96%E8%AE%BE%E9%97%AE%E9%A2%98/index.html">外设问题</a></li>
@@ -88,6 +90,46 @@
              
   <section id="heap">
 <h1>堆(Heap)的使用建议<a class="headerlink" href="#heap" title="Link to this heading"></a></h1>
+<p>在Goodix BLE 各SDK中, 存在如下堆管理器, 应用层可以根据业务需要采用.</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>堆类型</th>
+<th>说明</th>
+<th>一般建议</th>
+<th>使用范围</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>标准库malloc</td>
+<td>源自编译器提供的标准库, 可以通过工程配置文件的 SYSTEM_HEAP_SIZE 配置和启用</td>
+<td>如果OS环境下建议不开启, 使用OS Heap</td>
+<td>全系SoC</td>
+</tr>
+<tr>
+<td>FreeRTOS Heap</td>
+<td>OS 提供的堆管理器</td>
+<td>OS环境下应用优先使用</td>
+<td>全系SoC</td>
+</tr>
+<tr>
+<td>app_memory.c/.h</td>
+<td>SDK 提供的简易堆管理器</td>
+<td>不建议在应用中使用</td>
+<td>不建议使用</td>
+</tr>
+<tr>
+<td>app_graphics_mem</td>
+<td>专为GR5526 提供使用, 将应用未使用完的SRAM和PSRAM合成Heap进行管理</td>
+<td>建议用在Graphics和大块数据缓存场景, 休眠时会掉电处理</td>
+<td>GR5526</td>
+</tr>
+</tbody>
+</table><ul class="simple">
+<li><p>一般情况下不优先使用标准库 堆管理器, 如果是应用算法要求独占内存堆块或特殊的执行要求, 可以视情况启用</p></li>
+<li><p>除此外, 用户还可以自行引进其他合适的堆管理器.</p></li>
+</ul>
 </section>
 
 
