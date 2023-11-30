@@ -18,9 +18,13 @@
 
 # 2. 获取芯片产品信息
 
-目前 Goodix 提供如下系列BLE SoC
+目前 Goodix 提供如下系列BLE SoC。
+
+- [Goodix BLE SoC 选型表](https://www.goodix.com/zh/down/resource/Goodix_Bluetooth_Chipset_Selection_Guide?objectId=5&objectType=design_resource&version=54)
 
 
+
+![](../_image/goodi_ble_chipset_select_guide.png)
 
 # 3. 获取芯片 SDK开发包
 
