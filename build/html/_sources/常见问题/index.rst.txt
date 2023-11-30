@@ -4,9 +4,10 @@
 ===========================================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 6
 
-
-   常见问题
-
-
+   系统问题/index
+   外设问题/index
+   蓝牙问题/index
+   应用问题/index
+   工具问题/index

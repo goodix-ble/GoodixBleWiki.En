@@ -7,16 +7,11 @@ Welcome to Start Guide Documents for Goodix BLE!
 ===========================================
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+   :maxdepth: 6
+   :caption: Menu List
 
-   通用/index
-   芯片关联/index
+   使用向导/index
+   技术方案/index
    常见问题/index
 
-Indices and tables
-==================
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
