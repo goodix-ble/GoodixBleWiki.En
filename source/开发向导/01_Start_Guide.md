@@ -24,7 +24,7 @@
 
 
 
-![](../_image/goodi_ble_chipset_select_guide.png)
+![](../_images/goodi_ble_chipset_select_guide.png)
 
 ## 3. 获取芯片 SDK开发包
 

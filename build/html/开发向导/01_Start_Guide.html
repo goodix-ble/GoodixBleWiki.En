@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>汇顶BLE产品开发向导 &mdash; BLE Start Guide v1.0 文档</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5a3fd9cb"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/translations.js?v=beaddf03"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="技术方案" href="../%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88/index.html" />
+    <link rel="prev" title="开发向导" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            BLE Start Guide
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <p class="caption" role="heading"><span class="caption-text">Menu List</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">开发向导</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">汇顶BLE产品开发向导</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">1. 信息列表</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">2. 获取芯片产品信息</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sdk">3. 获取芯片 SDK开发包</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">4. 芯片及开发板获取渠道</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id4">4.1 公司用户</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">4.2 个人及社区用户</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">5. 获取芯片开发工具</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id7">5.1 标准开发软件</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#goodix">5.2 Goodix 开发工具合集</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">6. 获取芯片开发文档资料</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#gr551x">6.1 GR551x 文档</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gr5525">6.2 GR5525文档</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gr5526">6.3 GR5526文档</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">7. 获取技术方案支持</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id10">7.1 产品技术方案</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id11">7.2 生态技术集成</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id12">8. 技术服务</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88/index.html">技术方案</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/index.html">常见问题</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">BLE Start Guide</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">开发向导</a></li>
+      <li class="breadcrumb-item active">汇顶BLE产品开发向导</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/开发向导/01_Start_Guide.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ble">
+<h1>汇顶BLE产品开发向导<a class="headerlink" href="#ble" title="Link to this heading"></a></h1>
+<section id="id1">
+<h2>1. 信息列表<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p>当用户准备了解或基于Goodix BLE SoC 进行产品设计开发时, 需要先获取和找到如下信息 (包括且不限于):</p>
+<ul class="simple">
+<li><p>芯片产品信息 ： 用于芯片的了解和选型</p></li>
+<li><p>芯片SDK 包 ： 获取芯片的软件开发包, 进行源码和参考工程的学习及熟悉</p></li>
+<li><p>芯片及SK 开发板获取 ：获取采购芯片的渠道, 开发板可以方便产品硬件设计前的功能验证和软件先行设计</p></li>
+<li><p>芯片开发工具 ：下载和获取所有需要用到的开发软件、工具</p></li>
+<li><p>芯片开发文档资料 ：包括硬件设计指南、各种软件或工程的设计使用参考说明、Datasheet等</p></li>
+<li><p>芯片的产品方案资料 ：对于已提供的方案参考, 获取方案相关的软件和文档资料</p></li>
+<li><p>技术支持服务  ：提前获取Goodix和代理能提供的技术支持服务和技术支持渠道</p></li>
+</ul>
+</section>
+<section id="id2">
+<h2>2. 获取芯片产品信息<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<p>目前 Goodix 提供如下系列BLE SoC。</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.goodix.com/zh/down/resource/Goodix_Bluetooth_Chipset_Selection_Guide?objectId=5&amp;objectType=design_resource&amp;version=54">Goodix BLE SoC 选型表</a></p></li>
+</ul>
+<p><img alt="../_images/goodi_ble_chipset_select_guide.png" src="../_images/goodi_ble_chipset_select_guide.png" /></p>
+</section>
+<section id="sdk">
+<h2>3. 获取芯片 SDK开发包<a class="headerlink" href="#sdk" title="Link to this heading"></a></h2>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>BLE SoC</th>
+<th>SDK 下载连接</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GR551x</td>
+<td>https://www.goodix.com/zh/software_tool/gr551x_sdk</td>
+<td>请下载最新版本</td>
+</tr>
+<tr>
+<td>GR5525</td>
+<td>https://www.goodix.com/zh/software_tool/gr5525_sdk</td>
+<td>请下载最新版本</td>
+</tr>
+<tr>
+<td>GR5526</td>
+<td>https://www.goodix.com/zh/software_tool/gr5526_sdk</td>
+<td>请下载最新版本</td>
+</tr>
+<tr>
+<td>GR533x</td>
+<td>暂未提供, 请从代理处获取</td>
+<td></td>
+</tr>
+</tbody>
+</table></section>
+<section id="id3">
+<h2>4. 芯片及开发板获取渠道<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<section id="id4">
+<h3>4.1 公司用户<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<p>请联系以下代理渠道采购各系列芯片和相应的开发板</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>代理公司</th>
+<th>联系人</th>
+<th>Email</th>
+<th>电话</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>上海蜜连科技有限公司</td>
+<td>袁友学</td>
+<td>kayne.yuan@ibeelink.com</td>
+<td>13242030934</td>
+</tr>
+<tr>
+<td>杭州利尔达展芯科技有限公司</td>
+<td>雷江波</td>
+<td>leijiangb@lierda.com</td>
+<td>18067988292</td>
+</tr>
+<tr>
+<td>深圳市瑜威电子科技有限公司</td>
+<td>曾梦诗</td>
+<td>zengms@szyuweitech.com</td>
+<td>13510292600</td>
+</tr>
+</tbody>
+</table><ul class="simple">
+<li><p>开发板一般涵盖：</p>
+<ul>
+<li><p>SK板或小系统板, 用于软件功能的验证和预开发</p></li>
+<li><p>PPK板 ：用于功耗测试评估的电路板</p></li>
+<li><p>PLT 板：用于产线固件下载的电路板</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="id5">
+<h3>4.2 个人及社区用户<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<p>目前个人用户采购渠道正在积极建设中, 可以加入社区群实时关注.</p>
+</section>
+</section>
+<section id="id6">
+<h2>5. 获取芯片开发工具<a class="headerlink" href="#id6" title="Link to this heading"></a></h2>
+<p>Goodix 为蓝牙产品提供开发下载、DFU、产测等多流程所需的软件, 下面进行了汇总.</p>
+<section id="id7">
+<h3>5.1 标准开发软件<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<p>Goodix 蓝牙全系列芯片都默认支持 Keil/ARMCC 编译工具链, 也提供了GCC 等其他构建方式, 这类软件为标准开发软件, 可以通过对应的软件供应商官网进行下载.</p>
+<p>列举一些常用的标准软件如下:</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>软件</th>
+<th>描述</th>
+<th>网站</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Keil</td>
+<td>ARMCC IDE工具</td>
+<td>www.keil.com</td>
+</tr>
+<tr>
+<td>JLINK</td>
+<td>SWD 调试软件</td>
+<td>https://www.segger.com/downloads/jlink/</td>
+</tr>
+<tr>
+<td>Ozone</td>
+<td>一款Segger出品的调试器</td>
+<td>https://www.segger.com/products/development-tools/ozone-j-link-debugger/</td>
+</tr>
+<tr>
+<td>gcc</td>
+<td>ARM none eabi gcc编译器</td>
+<td>https://developer.arm.com/downloads</td>
+</tr>
+</tbody>
+</table></section>
+<section id="goodix">
+<h3>5.2 Goodix 开发工具合集<a class="headerlink" href="#goodix" title="Link to this heading"></a></h3>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>软件</th>
+<th>作用</th>
+<th>说明</th>
+<th>下载地址</th>
+<th>适用SoC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GProgrammer</td>
+<td>程序资源烧写及配置工具</td>
+<td>一款支持BLE全系列芯片的固件烧录工具,用于开发调试,支持固件下载、Flash读写、eFuse烧写、固件加密加签等功能。在量产阶段, BLE系列芯片产品的批量烧录测试,可采用PLT Lite和GRPLT Lite配置工具进行批量烧录测试</td>
+<td>https://www.goodix.com/zh/software_tool/gprogrammer_ble</td>
+<td>BLE全系SoC</td>
+</tr>
+<tr>
+<td>GRToolBox</td>
+<td>移动端开发验证</td>
+<td>一款专为汇顶科技低功耗蓝牙产品设计的移动端工具，提供Android &amp; iOS版本, 可扫描、配置连接参数、演示标准Profile，以及调试汇顶科技低功耗蓝牙平台的Profile/Service</td>
+<td>https://www.goodix.com/zh/software_tool/grtoolbox</td>
+<td>BLE全系SoC</td>
+</tr>
+<tr>
+<td>DTM Tool</td>
+<td>DTM测试</td>
+<td>用于Goodix BLE DTM(Direct Test Mode) 测试</td>
+<td>https://www.goodix.com/zh/download?objectId=107&amp;objectType=software</td>
+<td>BLE全系SoC</td>
+</tr>
+<tr>
+<td>GRPLT Lite</td>
+<td>产测工具</td>
+<td>为PLT Lite的配套工具，客户可使用该软件将开发完毕的应用固件、资源文件、量产配置等打包，通过串口下载至PLT Lite</td>
+<td>https://www.goodix.com/zh/software_tool/grplt_lite</td>
+<td>BLE全系SoC</td>
+</tr>
+<tr>
+<td>GRUart</td>
+<td>串口工具</td>
+<td>PC串口调试助手, 适用于串口日志及协议栈日志打印</td>
+<td>https://www.goodix.com/zh/download?objectId=64&amp;objectType=software</td>
+<td>BLE全系SoC</td>
+</tr>
+<tr>
+<td>NemaPixpresso</td>
+<td>资源生成工具</td>
+<td>用于图片和各种图像格式的转换, 也可以用于FrameBuffer的分析</td>
+<td>随 LouisUI打包</td>
+<td>GR5526</td>
+</tr>
+<tr>
+<td>gdx_font_conv</td>
+<td>资源生成工具</td>
+<td>用于生成支持GPU渲染的Lvgl字体文件</td>
+<td>https://developers.goodix.com/zh/bbs/blog_detail/6b29cdf5923247029f4357a65de1b065</td>
+<td>GR5526</td>
+</tr>
+<tr>
+<td>LouisUI</td>
+<td>资源生成工具</td>
+<td>用于将图片资源批量生成符合Lvgl规范同时支持GPU渲染的bin格式, 并生成资源描述符文件</td>
+<td>https://developers.goodix.com/zh/bbs/blog_detail/2996e8f9f352491eb0ccca468f28f2ce</td>
+<td>GR5526</td>
+</tr>
+<tr>
+<td>GRPPK</td>
+<td>功耗测试工具</td>
+<td>配合 PPK 板进行产品的功耗评估</td>
+<td>采购PPK后请向代理索要</td>
+<td>BLE全系SoC</td>
+</tr>
+<tr>
+<td>OTA SDK</td>
+<td>移动固件</td>
+<td>提供Android &amp; iOS DFU/OTA SDK, 方便客户App开发</td>
+<td>https://developers.goodix.com/zh/bbs/detail/32869e79a7c84917b32ecb4ab10acac8</td>
+<td>BLE全系SoC</td>
+</tr>
+</tbody>
+</table></section>
+</section>
+<section id="id8">
+<h2>6. 获取芯片开发文档资料<a class="headerlink" href="#id8" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>芯片 接口参考手册位于 各芯片SDK的文档目录下</p></li>
+<li><p>芯片的各种软件设计、硬件设计、示例工程参考文档均开源从官网下载</p></li>
+</ul>
+<section id="gr551x">
+<h3>6.1 GR551x 文档<a class="headerlink" href="#gr551x" title="Link to this heading"></a></h3>
+<p>https://www.goodix.com/zh/product/connectivity/ble/gr551x</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th><a href="https://docs.goodix.com/zh/online/bluetooth_le_getting_started/V2.3">低功耗蓝牙产品开发快速入门</a></th>
+<th>公开</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/gr551x_datasheet/Rev.2.6">GR551x   Datasheet</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/gr551x_errata/V1.2">GR551x勘误手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/grplt_lite_configuration_tool_user_guide/V1.6">GRPLT   Lite配置工具用户手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/app_driver_bl/V1.2">GR5xx APP驱动用户手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/gprogrammer_user_guide/V3.0">GProgrammer用户手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/fcc_rse_certificate_bl_a/V1.1">GR551x   FCC RSE认证说明</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/gr55xx_iar_user_guide/V1.4">GR551x   IAR用户手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/gr55xx_gcc_user_guide/V2.2">GR551x   GCC用户手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/gr551x_develop_guide/V2.7">GR551x开发者指南</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/gr5515_starter_kit_user_guide/V1.9">GR5515   Starter Kit用户指南</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/gr5515_flash_selection_guide/V1.4">GR5515I0NDA外部Flash选型指导手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://www.goodix.com/zh/docview/GR551x Reference Design_V1.5?objectId=316&amp;objectType=document&amp;version=494">GR551x   Reference Design</a></td>
+<td>仅注册用户</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/gr551x_hardware_design_guide/V2.5">GR551x硬件设计指南</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://www.goodix.com/zh/docview/GR5515-SK-BASIC-RevE_Rev.1.6?objectId=259&amp;objectType=document&amp;version=500">GR5515-SK-BASIC-RevE</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://www.goodix.com/zh/docview/GR5515-SK-BASIC-RevC_Rev.1.5?objectId=100&amp;objectType=document&amp;version=133">GR5515-SK-BASIC-RevC</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/api/gr551x_api_reference/Rev.2.0.1">GR551x   API Reference</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/hid_mouse_bl/V3.1">GR5xx鼠标示例手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/custom_sample_service_bl/V3.0">GR5xx应用及自定义Sample   Service</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/serial_port_bl/V3.0">GR5xx Serial Port   Profile示例手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/hrs_rscs_relay_bl/V3.0">GR5xx   HRS RSCS Relay示例手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/freertos_bl/V3.0">GR5xx   FreeRTOS示例手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/throughput_bl/V3.0">GR5xx   Throughput示例手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/at_command_bl/V3.0">GR5xx AT   Command示例手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/ancs_profile_bl/V3.0">GR5xx ANCS   Profile示例手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/ams_profile_bl/V3.0">GR5xx AMS   Profile示例手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/power_consumption_bl/V3.0">GR5xx   Power Consumption Profile示例手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/grplt_lite_configuration_tool_firmware_introduction/V1.5">GRPLT   Lite配置工具自定义固件加密及应用介绍</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/app_log_bl/V3.1">GR5xx APP Log应用说明</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/firmware_upgrade_bl/V1.2">GR5xx固件升级开发指南</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/fault_trace_bl/V3.1">GR5xx Fault Trace   Module应用说明</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/firmware_encryption_bl/V3.0">GR5xx固件加密及应用介绍</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/dtm_test_bl/V3.0">GR5xx DTM测试指南</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/gr551x_sleep_mode_power_measure_note/V2.1">GR551x功耗模式及功耗测量说明</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/reliablity_report_bl_a/V1.1">GR551x可靠性测试报告</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://www.goodix.com/zh/docview/GR551x MCD_V1.0?objectId=314&amp;objectType=document&amp;version=490">GR551x   MCD</a></td>
+<td>公开</td>
+</tr>
+</tbody>
+</table></section>
+<section id="gr5525">
+<h3>6.2 GR5525文档<a class="headerlink" href="#gr5525" title="Link to this heading"></a></h3>
+<p>https://www.goodix.com/zh/product/connectivity/ble/gr5525</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th><a href="https://www.goodix.com/zh/docview/GR5525 Product Brief_V1.0?objectId=348&amp;objectType=document&amp;version=538">GR5525   Product Brief</a></th>
+<th>公开</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/datasheet_bl_c/V1.0">GR5525 Datasheet</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/grplt_lite_configuration_tool_user_guide/V1.6">GRPLT   Lite配置工具用户手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/app_driver_bl/V1.2">GR5xx APP驱动用户手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/gprogrammer_user_guide/V3.0">GProgrammer用户手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/display_guide_bl_c/V1.0">GR5525刷屏指南</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/developer_guide_bl_c/V1.0">GR5525开发者指南</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/starter_kit_manual_bl_c/V1.0">GR5525   Starter Kit用户指南</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://www.goodix.com/zh/docview/GR5525 Reference Design_V1.1?objectId=357&amp;objectType=document&amp;version=555">GR5525   Reference Design</a></td>
+<td>仅注册用户</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/hardware_design_guide_c/V1.0">GR5525   Hardware Design Guidelines</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://www.goodix.com/zh/docview/GR5525-SK-BASIC-RevB_V1.0?objectId=351&amp;objectType=document&amp;version=541">GR5525-SK-BASIC-RevB</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/api/api_reference_bl_c/V1.0.0">GR5525   API Reference</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/hid_mouse_bl/V3.1">GR5xx鼠标示例手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/custom_sample_service_bl/V3.0">GR5xx应用及自定义Sample   Service</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/serial_port_bl/V3.0">GR5xx Serial Port   Profile示例手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/hrs_rscs_relay_bl/V3.0">GR5xx   HRS RSCS Relay示例手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/freertos_bl/V3.0">GR5xx   FreeRTOS示例手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/throughput_bl/V3.0">GR5xx   Throughput示例手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/at_command_bl/V3.0">GR5xx AT   Command示例手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/ancs_profile_bl/V3.0">GR5xx ANCS   Profile示例手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/ams_profile_bl/V3.0">GR5xx AMS   Profile示例手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/power_consumption_bl/V3.0">GR5xx   Power Consumption Profile示例手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/grplt_lite_configuration_tool_firmware_introduction/V1.5">GRPLT   Lite配置工具自定义固件加密及应用介绍</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/app_log_bl/V3.1">GR5xx APP Log应用说明</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/firmware_upgrade_bl/V1.2">GR5xx固件升级开发指南</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/fault_trace_bl/V3.1">GR5xx Fault Trace   Module应用说明</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/power_measure_bl_c/V1.0">GR5525功耗模式及功耗测量说明</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/firmware_encryption_bl/V3.0">GR5xx固件加密及应用介绍</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/dtm_test_bl/V3.0">GR5xx DTM测试指南</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://www.goodix.com/zh/docview/GR5525 MCD_V1.0?objectId=349&amp;objectType=document&amp;version=539">GR5525   MCD</a></td>
+<td>公开</td>
+</tr>
+</tbody>
+</table></section>
+<section id="gr5526">
+<h3>6.3 GR5526文档<a class="headerlink" href="#gr5526" title="Link to this heading"></a></h3>
+<p>https://www.goodix.com/zh/product/connectivity/ble/gr5526</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th><a href="https://docs.goodix.com/zh/online/bluetooth_le_getting_started/V2.3">低功耗蓝牙产品开发快速入门</a></th>
+<th>公开</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/gr551x_datasheet/Rev.2.6">GR551x   Datasheet</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/gr551x_errata/V1.2">GR551x勘误手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/grplt_lite_configuration_tool_user_guide/V1.6">GRPLT   Lite配置工具用户手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/app_driver_bl/V1.2">GR5xx APP驱动用户手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/gprogrammer_user_guide/V3.0">GProgrammer用户手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/fcc_rse_certificate_bl_a/V1.1">GR551x   FCC RSE认证说明</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/gr55xx_iar_user_guide/V1.4">GR551x   IAR用户手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/gr55xx_gcc_user_guide/V2.2">GR551x   GCC用户手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/gr551x_develop_guide/V2.7">GR551x开发者指南</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/gr5515_starter_kit_user_guide/V1.9">GR5515   Starter Kit用户指南</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/gr5515_flash_selection_guide/V1.4">GR5515I0NDA外部Flash选型指导手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://www.goodix.com/zh/docview/GR551x Reference Design_V1.5?objectId=316&amp;objectType=document&amp;version=494">GR551x   Reference Design</a></td>
+<td>仅注册用户</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/gr551x_hardware_design_guide/V2.5">GR551x硬件设计指南</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://www.goodix.com/zh/docview/GR5515-SK-BASIC-RevE_Rev.1.6?objectId=259&amp;objectType=document&amp;version=500">GR5515-SK-BASIC-RevE</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://www.goodix.com/zh/docview/GR5515-SK-BASIC-RevC_Rev.1.5?objectId=100&amp;objectType=document&amp;version=133">GR5515-SK-BASIC-RevC</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/api/gr551x_api_reference/Rev.2.0.1">GR551x   API Reference</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/hid_mouse_bl/V3.1">GR5xx鼠标示例手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/custom_sample_service_bl/V3.0">GR5xx应用及自定义Sample   Service</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/serial_port_bl/V3.0">GR5xx Serial Port   Profile示例手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/hrs_rscs_relay_bl/V3.0">GR5xx   HRS RSCS Relay示例手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/freertos_bl/V3.0">GR5xx   FreeRTOS示例手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/throughput_bl/V3.0">GR5xx   Throughput示例手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/at_command_bl/V3.0">GR5xx AT   Command示例手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/ancs_profile_bl/V3.0">GR5xx ANCS   Profile示例手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/ams_profile_bl/V3.0">GR5xx AMS   Profile示例手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/power_consumption_bl/V3.0">GR5xx   Power Consumption Profile示例手册</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/grplt_lite_configuration_tool_firmware_introduction/V1.5">GRPLT   Lite配置工具自定义固件加密及应用介绍</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/app_log_bl/V3.1">GR5xx APP Log应用说明</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/firmware_upgrade_bl/V1.2">GR5xx固件升级开发指南</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/fault_trace_bl/V3.1">GR5xx Fault Trace   Module应用说明</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/firmware_encryption_bl/V3.0">GR5xx固件加密及应用介绍</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/dtm_test_bl/V3.0">GR5xx DTM测试指南</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/gr551x_sleep_mode_power_measure_note/V2.1">GR551x功耗模式及功耗测量说明</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://docs.goodix.com/zh/online/reliablity_report_bl_a/V1.1">GR551x可靠性测试报告</a></td>
+<td>公开</td>
+</tr>
+<tr>
+<td><a href="https://www.goodix.com/zh/docview/GR551x MCD_V1.0?objectId=314&amp;objectType=document&amp;version=490">GR551x   MCD</a></td>
+<td>公开</td>
+</tr>
+</tbody>
+</table></section>
+</section>
+<section id="id9">
+<h2>7. 获取技术方案支持<a class="headerlink" href="#id9" title="Link to this heading"></a></h2>
+<section id="id10">
+<h3>7.1 产品技术方案<a class="headerlink" href="#id10" title="Link to this heading"></a></h3>
+<p>目前Goodix 提供了下属技术方案或参考设计</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>技术方案</th>
+<th>方案描述</th>
+<th>获取方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GR5526 穿戴手表参考设计</td>
+<td>提供手表的示例参考,涵盖常用的软件模块和GUI框架</td>
+<td>GR5526 SDK</td>
+</tr>
+<tr>
+<td>FMNA (Apple Find My)</td>
+<td>完整的FMNA方案, 提供SDK 及对应的各种工具和认证流程支持</td>
+<td>请联系代理支持</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table></section>
+<section id="id11">
+<h3>7.2 生态技术集成<a class="headerlink" href="#id11" title="Link to this heading"></a></h3>
+<p>Goodix BLE 目前集成或部分支持了以下Iot 技术生态服务, 可以根据产品需要选择.</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>IoT 技术生态</th>
+<th>服务说明</th>
+<th>芯片</th>
+<th>获取方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Amazon FreeRTOS</td>
+<td>Amazon FreeRTOS IoT认证</td>
+<td>GR551x</td>
+<td>https://github.com/goodix/amazon-freertos</td>
+</tr>
+<tr>
+<td>RT-Thread</td>
+<td>移植集成 RT-Thread OS和驱动框架</td>
+<td>GR551x、GR533x、GR5526</td>
+<td>代理</td>
+</tr>
+<tr>
+<td>Zephyr</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>OpenHarmony</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>HomeKit</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table></section>
+</section>
+<section id="id12">
+<h2>8. 技术服务<a class="headerlink" href="#id12" title="Link to this heading"></a></h2>
+<p>Goodix BLE 产品提供代理技术服务和原厂社区技术服务支持. 可以及时有效的帮助客户在前期需求研究、产品开发设计、技术问题支持解决、产测的各个阶段提供技术、便捷和专业的技术服务. 帮助客户节省开发时间、缩短开发周期、节省开发成本, 快速的落地产品抢占市场.</p>
+<ul class="simple">
+<li><p>技术服务列表</p></li>
+</ul>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>技术服务</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>官网渠道 - 技术博客</td>
+<td>https://developers.goodix.com/zh/bbs/blog_list</td>
+</tr>
+<tr>
+<td>官网渠道 - 技术论坛</td>
+<td>https://developers.goodix.com/zh/bbs/list</td>
+</tr>
+<tr>
+<td>官网渠道 - QQ技术社群</td>
+<td>QQ社群号: 168552615</td>
+</tr>
+<tr>
+<td>官网渠道 - 疑难问题的快速工程师相应</td>
+<td></td>
+</tr>
+<tr>
+<td>代理渠道</td>
+<td>可选的现场/远程技术支持</td>
+</tr>
+</tbody>
+</table></section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="开发向导" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88/index.html" class="btn btn-neutral float-right" title="技术方案" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2023, Goodix。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

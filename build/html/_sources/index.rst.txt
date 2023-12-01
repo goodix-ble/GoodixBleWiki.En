@@ -10,7 +10,7 @@ Welcome to Start Guide Documents for Goodix BLE!
    :maxdepth: 6
    :caption: Menu List
 
-   使用向导/index
+   开发向导/index
    技术方案/index
    常见问题/index
 

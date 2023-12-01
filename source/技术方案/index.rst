@@ -6,6 +6,6 @@
 .. toctree::
    :maxdepth: 6
 
-   01_智能手表方案(GR5526)/index
+   01_智能手表方案/index
    02_FMNA方案/index
 
