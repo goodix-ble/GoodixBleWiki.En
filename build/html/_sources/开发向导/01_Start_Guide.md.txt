@@ -190,43 +190,31 @@ https://www.goodix.com/zh/product/connectivity/ble/gr5525
 ### 6.3 GR5526文档
 https://www.goodix.com/zh/product/connectivity/ble/gr5526
 
-| [低功耗蓝牙产品开发快速入门](https://docs.goodix.com/zh/online/bluetooth_le_getting_started/V2.3) | 公开       |
-| ------------------------------------------------------------ | ---------- |
-| [GR551x   Datasheet](https://docs.goodix.com/zh/online/gr551x_datasheet/Rev.2.6) | 公开       |
-| [GR551x勘误手册](https://docs.goodix.com/zh/online/gr551x_errata/V1.2) | 公开       |
-| [GRPLT   Lite配置工具用户手册](https://docs.goodix.com/zh/online/grplt_lite_configuration_tool_user_guide/V1.6) | 公开       |
-| [GR5xx APP驱动用户手册](https://docs.goodix.com/zh/online/app_driver_bl/V1.2) | 公开       |
-| [GProgrammer用户手册](https://docs.goodix.com/zh/online/gprogrammer_user_guide/V3.0) | 公开       |
-| [GR551x   FCC RSE认证说明](https://docs.goodix.com/zh/online/fcc_rse_certificate_bl_a/V1.1) | 公开       |
-| [GR551x   IAR用户手册](https://docs.goodix.com/zh/online/gr55xx_iar_user_guide/V1.4) | 公开       |
-| [GR551x   GCC用户手册](https://docs.goodix.com/zh/online/gr55xx_gcc_user_guide/V2.2) | 公开       |
-| [GR551x开发者指南](https://docs.goodix.com/zh/online/gr551x_develop_guide/V2.7) | 公开       |
-| [GR5515   Starter Kit用户指南](https://docs.goodix.com/zh/online/gr5515_starter_kit_user_guide/V1.9) | 公开       |
-| [GR5515I0NDA外部Flash选型指导手册](https://docs.goodix.com/zh/online/gr5515_flash_selection_guide/V1.4) | 公开       |
-| [GR551x   Reference Design](https://www.goodix.com/zh/docview/GR551x Reference Design_V1.5?objectId=316&objectType=document&version=494) | 仅注册用户 |
-| [GR551x硬件设计指南](https://docs.goodix.com/zh/online/gr551x_hardware_design_guide/V2.5) | 公开       |
-| [GR5515-SK-BASIC-RevE](https://www.goodix.com/zh/docview/GR5515-SK-BASIC-RevE_Rev.1.6?objectId=259&objectType=document&version=500) | 公开       |
-| [GR5515-SK-BASIC-RevC](https://www.goodix.com/zh/docview/GR5515-SK-BASIC-RevC_Rev.1.5?objectId=100&objectType=document&version=133) | 公开       |
-| [GR551x   API Reference](https://docs.goodix.com/zh/online/api/gr551x_api_reference/Rev.2.0.1) | 公开       |
-| [GR5xx鼠标示例手册](https://docs.goodix.com/zh/online/hid_mouse_bl/V3.1) | 公开       |
-| [GR5xx应用及自定义Sample   Service](https://docs.goodix.com/zh/online/custom_sample_service_bl/V3.0) | 公开       |
-| [GR5xx Serial Port   Profile示例手册](https://docs.goodix.com/zh/online/serial_port_bl/V3.0) | 公开       |
-| [GR5xx   HRS RSCS Relay示例手册](https://docs.goodix.com/zh/online/hrs_rscs_relay_bl/V3.0) | 公开       |
-| [GR5xx   FreeRTOS示例手册](https://docs.goodix.com/zh/online/freertos_bl/V3.0) | 公开       |
-| [GR5xx   Throughput示例手册](https://docs.goodix.com/zh/online/throughput_bl/V3.0) | 公开       |
-| [GR5xx AT   Command示例手册](https://docs.goodix.com/zh/online/at_command_bl/V3.0) | 公开       |
-| [GR5xx ANCS   Profile示例手册](https://docs.goodix.com/zh/online/ancs_profile_bl/V3.0) | 公开       |
-| [GR5xx AMS   Profile示例手册](https://docs.goodix.com/zh/online/ams_profile_bl/V3.0) | 公开       |
-| [GR5xx   Power Consumption Profile示例手册](https://docs.goodix.com/zh/online/power_consumption_bl/V3.0) | 公开       |
-| [GRPLT   Lite配置工具自定义固件加密及应用介绍](https://docs.goodix.com/zh/online/grplt_lite_configuration_tool_firmware_introduction/V1.5) | 公开       |
-| [GR5xx APP Log应用说明](https://docs.goodix.com/zh/online/app_log_bl/V3.1) | 公开       |
-| [GR5xx固件升级开发指南](https://docs.goodix.com/zh/online/firmware_upgrade_bl/V1.2) | 公开       |
-| [GR5xx Fault Trace   Module应用说明](https://docs.goodix.com/zh/online/fault_trace_bl/V3.1) | 公开       |
-| [GR5xx固件加密及应用介绍](https://docs.goodix.com/zh/online/firmware_encryption_bl/V3.0) | 公开       |
-| [GR5xx DTM测试指南](https://docs.goodix.com/zh/online/dtm_test_bl/V3.0) | 公开       |
-| [GR551x功耗模式及功耗测量说明](https://docs.goodix.com/zh/online/gr551x_sleep_mode_power_measure_note/V2.1) | 公开       |
-| [GR551x可靠性测试报告](https://docs.goodix.com/zh/online/reliablity_report_bl_a/V1.1) | 公开       |
-| [GR551x   MCD](https://www.goodix.com/zh/docview/GR551x MCD_V1.0?objectId=314&objectType=document&version=490) | 公开       |
+| [GR5xx APP驱动用户手册](https://docs.goodix.com/zh/online/app_driver_bl/V1.2) | 公开 |
+| ------------------------------------------------------------ | ---- |
+| [GProgrammer用户手册](https://docs.goodix.com/zh/online/gprogrammer_user_guide/V3.0) | 公开 |
+| [GR5526 GCC用户手册](https://docs.goodix.com/zh/online/gcc_manual_bl_b/V1.0) | 公开 |
+| [GR5526刷屏指南](https://docs.goodix.com/zh/online/display_refresh_guide_bl_b/V1.0) | 公开 |
+| [GR5526 GPU开发者指南](https://docs.goodix.com/zh/online/gpu_guide_bl_b/V1.0) | 公开 |
+| [GR5526开发者指南](https://docs.goodix.com/zh/online/developer_guide_bl_b/V1.0) | 公开 |
+| [GR5526   API Reference](https://docs.goodix.com/zh/online/api/api_reference_bl_b/Rev.1.0) | 公开 |
+| [GR5xx鼠标示例手册](https://docs.goodix.com/zh/online/hid_mouse_bl/V3.1) | 公开 |
+| [GR5xx应用及自定义Sample   Service](https://docs.goodix.com/zh/online/custom_sample_service_bl/V3.0) | 公开 |
+| [GR5xx Serial Port   Profile示例手册](https://docs.goodix.com/zh/online/serial_port_bl/V3.0) | 公开 |
+| [GR5xx   HRS RSCS Relay示例手册](https://docs.goodix.com/zh/online/hrs_rscs_relay_bl/V3.0) | 公开 |
+| [GR5xx   FreeRTOS示例手册](https://docs.goodix.com/zh/online/freertos_bl/V3.0) | 公开 |
+| [GR5xx   Throughput示例手册](https://docs.goodix.com/zh/online/throughput_bl/V3.0) | 公开 |
+| [GR5xx AT   Command示例手册](https://docs.goodix.com/zh/online/at_command_bl/V3.0) | 公开 |
+| [GR5xx ANCS   Profile示例手册](https://docs.goodix.com/zh/online/ancs_profile_bl/V3.0) | 公开 |
+| [GR5xx AMS   Profile示例手册](https://docs.goodix.com/zh/online/ams_profile_bl/V3.0) | 公开 |
+| [GR5xx   Power Consumption Profile示例手册](https://docs.goodix.com/zh/online/power_consumption_bl/V3.0) | 公开 |
+| [GR5xx APP Log应用说明](https://docs.goodix.com/zh/online/app_log_bl/V3.1) | 公开 |
+| [GR5xx固件升级开发指南](https://docs.goodix.com/zh/online/firmware_upgrade_bl/V1.2) | 公开 |
+| [GR5xx Fault Trace   Module应用说明](https://docs.goodix.com/zh/online/fault_trace_bl/V3.1) | 公开 |
+| [GR5xx固件加密及应用介绍](https://docs.goodix.com/zh/online/firmware_encryption_bl/V3.0) | 公开 |
+| [GR5xx DTM测试指南](https://docs.goodix.com/zh/online/dtm_test_bl/V3.0) | 公开 |
+| [GR5526功耗模式及功耗测量说明](https://docs.goodix.com/zh/online/power_application_bl_b/V1.0) | 公开 |
+
 
 
 

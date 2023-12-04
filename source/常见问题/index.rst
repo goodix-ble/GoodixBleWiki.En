@@ -11,3 +11,4 @@
    蓝牙问题/index
    应用问题/index
    工具问题/index
+   硬件问题/index
