@@ -48,9 +48,7 @@
     -   TX current: 4.0 mA @0dBm, 1 Mbps; 
 
     -   RX current: 3.5 mA @1Mbps
-    
-        
-    
+
 
 #### 1.2.2 料号
 
@@ -158,22 +156,22 @@ GR5525 相对GR551x在带宽层面的主要升级说明:
 
 ## 2. 方案参考资料
 
-| 技术索引             | 参考资料 | 获取连接 |
-| -------------------- | -------- | -------- |
-|                      |          |          |
-| OS 使用              |          |          |
-|                      |          |          |
-| Lvgl框架及技术学习   |          |          |
-|                      |          |          |
-| GPU 原理理解(非必须) |          |          |
-|                      |          |          |
-| 刷屏性能及帧率优化   |          |          |
-|                      |          |          |
-| BLE 技术理解         |          |          |
-|                      |          |          |
-| DFU & OTA 功能       |          |          |
-|                      |          |          |
-| 低功耗原理           |          |          |
-|                      |          |          |
+| 技术索引             | 参考资料                     | 获取连接                                                     |
+| -------------------- | ---------------------------- | ------------------------------------------------------------ |
+|                      |                              |                                                              |
+| OS 使用              | GR5xx FreeRTOS示例手册       | [GR5xx FreeRTOS示例手册](https://docs.goodix.com/zh/online/freertos_bl/V3.0) |
+|                      |                              |                                                              |
+| Lvgl框架及技术学习   | Lvgl 官网文档                | https://docs.lvgl.io/                                        |
+|                      |                              |                                                              |
+| GPU 原理理解(非必须) | GR5526 GPU开发者指南         | [GR5526 GPU开发者指南](https://docs.goodix.com/zh/online/gpu_guide_bl_b/V1.0) |
+|                      |                              |                                                              |
+| 刷屏性能及帧率优化   | GR5526刷屏指南               | [GR5526刷屏指南](https://docs.goodix.com/zh/online/display_refresh_guide_bl_b/V1.0) |
+|                      |                              |                                                              |
+| BLE 技术理解         |                              |                                                              |
+|                      |                              |                                                              |
+| DFU & OTA 功能       | GR5xx固件升级开发指南        | [GR5xx固件升级开发指南](https://docs.goodix.com/zh/online/firmware_upgrade_bl/V1.2) |
+|                      |                              |                                                              |
+| 低功耗               | GR5526功耗模式及功耗测量说明 | [GR5526功耗模式及功耗测量说明](https://docs.goodix.com/zh/online/power_application_bl_b/V1.0) |
+|                      |                              |                                                              |
 
 
