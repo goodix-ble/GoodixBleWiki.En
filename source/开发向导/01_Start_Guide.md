@@ -33,7 +33,7 @@
 | GR551x  | https://www.goodix.com/zh/software_tool/gr551x_sdk | 请下载最新版本 |
 | GR5525  | https://www.goodix.com/zh/software_tool/gr5525_sdk | 请下载最新版本 |
 | GR5526  | https://www.goodix.com/zh/software_tool/gr5526_sdk | 请下载最新版本 |
-| GR533x  | 暂未提供, 请从代理处获取                           |                |
+| GR533x  | https://www.goodix.com/zh/software_tool/gr533x_sdk | 请下载最新版本 |
 
 
 
