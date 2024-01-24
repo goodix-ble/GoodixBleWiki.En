@@ -12,6 +12,7 @@ Welcome to Start Guide Documents for Goodix BLE!
 
    开发向导/index
    技术方案/index
+   应用笔记/index
    常见问题/index
 
 

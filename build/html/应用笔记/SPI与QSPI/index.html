@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SPI与QSPI &mdash; Goodix BLE Start Guide v1.0 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5a3fd9cb"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="01.SPI-QSPI协议专题(1) - 基础协议特征介绍" href="01_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%281%29%20-%20%E5%9F%BA%E7%A1%80%E5%8D%8F%E8%AE%AE%E7%89%B9%E5%BE%81%E4%BB%8B%E7%BB%8D.html" />
+    <link rel="prev" title="应用笔记" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Goodix BLE Start Guide
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <p class="caption" role="heading"><span class="caption-text">Menu List</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../%E5%BC%80%E5%8F%91%E5%90%91%E5%AF%BC/index.html">开发向导</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88/index.html">技术方案</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">应用笔记</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">SPI与QSPI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="01_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%281%29%20-%20%E5%9F%BA%E7%A1%80%E5%8D%8F%E8%AE%AE%E7%89%B9%E5%BE%81%E4%BB%8B%E7%BB%8D.html">01.SPI-QSPI协议专题(1) - 基础协议特征介绍</a></li>
+<li class="toctree-l3"><a class="reference internal" href="02_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%282%29%20-%20%E6%9E%84%E5%BB%BAGR55xx%20%28Q%29SPI%E9%AB%98%E9%80%9F%E4%BC%A0%E8%BE%93%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%9F%BA%E7%A1%80.html">02.SPI-QSPI协议专题(2) - 构建GR55xx (Q)SPI高速传输接口的基础</a></li>
+<li class="toctree-l3"><a class="reference internal" href="03_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%283%29%20-%20GR552x%E8%8A%AF%E7%89%87DMA%E5%8F%8AQSPI%E6%A8%A1%E5%9D%97%E5%8A%9F%E8%83%BD%E7%89%B9%E5%BE%81.html">03.SPI-QSPI协议专题(3) - GR552x芯片DMA及QSPI模块功能特征</a></li>
+<li class="toctree-l3"><a class="reference internal" href="04_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%284%29%20-%20%E8%89%B2%E5%BD%A9%E6%A0%BC%E5%BC%8F%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%BC%82%E5%B8%B8.html">04.SPI-QSPI协议专题(4) - 色彩格式及常见异常</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/index.html">常见问题</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Goodix BLE Start Guide</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">应用笔记</a></li>
+      <li class="breadcrumb-item active">SPI与QSPI</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/应用笔记/SPI与QSPI/index.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="spiqspi">
+<h1>SPI与QSPI<a class="headerlink" href="#spiqspi" title="Link to this heading"></a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="01_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%281%29%20-%20%E5%9F%BA%E7%A1%80%E5%8D%8F%E8%AE%AE%E7%89%B9%E5%BE%81%E4%BB%8B%E7%BB%8D.html">01.SPI-QSPI协议专题(1) - 基础协议特征介绍</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="01_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%281%29%20-%20%E5%9F%BA%E7%A1%80%E5%8D%8F%E8%AE%AE%E7%89%B9%E5%BE%81%E4%BB%8B%E7%BB%8D.html#spi">1. SPI协议</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="01_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%281%29%20-%20%E5%9F%BA%E7%A1%80%E5%8D%8F%E8%AE%AE%E7%89%B9%E5%BE%81%E4%BB%8B%E7%BB%8D.html#id1">1.1 引脚信号</a></li>
+<li class="toctree-l3"><a class="reference internal" href="01_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%281%29%20-%20%E5%9F%BA%E7%A1%80%E5%8D%8F%E8%AE%AE%E7%89%B9%E5%BE%81%E4%BB%8B%E7%BB%8D.html#id2">1.2 角色</a></li>
+<li class="toctree-l3"><a class="reference internal" href="01_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%281%29%20-%20%E5%9F%BA%E7%A1%80%E5%8D%8F%E8%AE%AE%E7%89%B9%E5%BE%81%E4%BB%8B%E7%BB%8D.html#id3">1.3 时钟频率</a></li>
+<li class="toctree-l3"><a class="reference internal" href="01_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%281%29%20-%20%E5%9F%BA%E7%A1%80%E5%8D%8F%E8%AE%AE%E7%89%B9%E5%BE%81%E4%BB%8B%E7%BB%8D.html#id4">1.4 时钟模式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="01_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%281%29%20-%20%E5%9F%BA%E7%A1%80%E5%8D%8F%E8%AE%AE%E7%89%B9%E5%BE%81%E4%BB%8B%E7%BB%8D.html#id5">1.5 时序相位</a></li>
+<li class="toctree-l3"><a class="reference internal" href="01_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%281%29%20-%20%E5%9F%BA%E7%A1%80%E5%8D%8F%E8%AE%AE%E7%89%B9%E5%BE%81%E4%BB%8B%E7%BB%8D.html#id6">1.6 SPI 协议衍生时序</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="01_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%281%29%20-%20%E5%9F%BA%E7%A1%80%E5%8D%8F%E8%AE%AE%E7%89%B9%E5%BE%81%E4%BB%8B%E7%BB%8D.html#qspi">2.QSPI 协议</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="01_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%281%29%20-%20%E5%9F%BA%E7%A1%80%E5%8D%8F%E8%AE%AE%E7%89%B9%E5%BE%81%E4%BB%8B%E7%BB%8D.html#id7">2.1 概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="01_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%281%29%20-%20%E5%9F%BA%E7%A1%80%E5%8D%8F%E8%AE%AE%E7%89%B9%E5%BE%81%E4%BB%8B%E7%BB%8D.html#id8">2.2 引脚信号</a></li>
+<li class="toctree-l3"><a class="reference internal" href="01_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%281%29%20-%20%E5%9F%BA%E7%A1%80%E5%8D%8F%E8%AE%AE%E7%89%B9%E5%BE%81%E4%BB%8B%E7%BB%8D.html#id9">2.3 时序相位</a></li>
+<li class="toctree-l3"><a class="reference internal" href="01_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%281%29%20-%20%E5%9F%BA%E7%A1%80%E5%8D%8F%E8%AE%AE%E7%89%B9%E5%BE%81%E4%BB%8B%E7%BB%8D.html#id10">2.4 指令地址模式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="01_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%281%29%20-%20%E5%9F%BA%E7%A1%80%E5%8D%8F%E8%AE%AE%E7%89%B9%E5%BE%81%E4%BB%8B%E7%BB%8D.html#qpi">2.5 QPI 模式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="01_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%281%29%20-%20%E5%9F%BA%E7%A1%80%E5%8D%8F%E8%AE%AE%E7%89%B9%E5%BE%81%E4%BB%8B%E7%BB%8D.html#sioo">2.6 SIOO 模式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="01_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%281%29%20-%20%E5%9F%BA%E7%A1%80%E5%8D%8F%E8%AE%AE%E7%89%B9%E5%BE%81%E4%BB%8B%E7%BB%8D.html#id11">2.7 效率计算</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="01_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%281%29%20-%20%E5%9F%BA%E7%A1%80%E5%8D%8F%E8%AE%AE%E7%89%B9%E5%BE%81%E4%BB%8B%E7%BB%8D.html#id12">附录</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="02_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%282%29%20-%20%E6%9E%84%E5%BB%BAGR55xx%20%28Q%29SPI%E9%AB%98%E9%80%9F%E4%BC%A0%E8%BE%93%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%9F%BA%E7%A1%80.html">02.SPI-QSPI协议专题(2) - 构建GR55xx (Q)SPI高速传输接口的基础</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="02_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%282%29%20-%20%E6%9E%84%E5%BB%BAGR55xx%20%28Q%29SPI%E9%AB%98%E9%80%9F%E4%BC%A0%E8%BE%93%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%9F%BA%E7%A1%80.html#id1">1. 基础的应用背景补充</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="02_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%282%29%20-%20%E6%9E%84%E5%BB%BAGR55xx%20%28Q%29SPI%E9%AB%98%E9%80%9F%E4%BC%A0%E8%BE%93%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%9F%BA%E7%A1%80.html#master-slave">1.1 系统的Master 和 Slave:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="02_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%282%29%20-%20%E6%9E%84%E5%BB%BAGR55xx%20%28Q%29SPI%E9%AB%98%E9%80%9F%E4%BC%A0%E8%BE%93%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%9F%BA%E7%A1%80.html#id2">1.2 同步访问和异步访问</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="02_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%282%29%20-%20%E6%9E%84%E5%BB%BAGR55xx%20%28Q%29SPI%E9%AB%98%E9%80%9F%E4%BC%A0%E8%BE%93%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%9F%BA%E7%A1%80.html#id3">2. 数据传输的行为</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="02_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%282%29%20-%20%E6%9E%84%E5%BB%BAGR55xx%20%28Q%29SPI%E9%AB%98%E9%80%9F%E4%BC%A0%E8%BE%93%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%9F%BA%E7%A1%80.html#cpu-qspi">2.1 CPU 将数据通过QSPI直接写入屏幕</a></li>
+<li class="toctree-l3"><a class="reference internal" href="02_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%282%29%20-%20%E6%9E%84%E5%BB%BAGR55xx%20%28Q%29SPI%E9%AB%98%E9%80%9F%E4%BC%A0%E8%BE%93%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%9F%BA%E7%A1%80.html#dma-qspi">2.2 DMA 将数据通过QSPI直接写入屏幕</a></li>
+<li class="toctree-l3"><a class="reference internal" href="02_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%282%29%20-%20%E6%9E%84%E5%BB%BAGR55xx%20%28Q%29SPI%E9%AB%98%E9%80%9F%E4%BC%A0%E8%BE%93%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%9F%BA%E7%A1%80.html#id4">2.3 传输中的蓄水池问题 (生产者&amp;消费者问题)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="02_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%282%29%20-%20%E6%9E%84%E5%BB%BAGR55xx%20%28Q%29SPI%E9%AB%98%E9%80%9F%E4%BC%A0%E8%BE%93%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%9F%BA%E7%A1%80.html#id5">附录</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="03_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%283%29%20-%20GR552x%E8%8A%AF%E7%89%87DMA%E5%8F%8AQSPI%E6%A8%A1%E5%9D%97%E5%8A%9F%E8%83%BD%E7%89%B9%E5%BE%81.html">03.SPI-QSPI协议专题(3) - GR552x芯片DMA及QSPI模块功能特征</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="03_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%283%29%20-%20GR552x%E8%8A%AF%E7%89%87DMA%E5%8F%8AQSPI%E6%A8%A1%E5%9D%97%E5%8A%9F%E8%83%BD%E7%89%B9%E5%BE%81.html#dma">1. DMA典型特性</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="03_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%283%29%20-%20GR552x%E8%8A%AF%E7%89%87DMA%E5%8F%8AQSPI%E6%A8%A1%E5%9D%97%E5%8A%9F%E8%83%BD%E7%89%B9%E5%BE%81.html#id1">1.1 DMA 典型应用</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="03_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%283%29%20-%20GR552x%E8%8A%AF%E7%89%87DMA%E5%8F%8AQSPI%E6%A8%A1%E5%9D%97%E5%8A%9F%E8%83%BD%E7%89%B9%E5%BE%81.html#id2">1.1.1 DMA基础数据传输</a></li>
+<li class="toctree-l4"><a class="reference internal" href="03_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%283%29%20-%20GR552x%E8%8A%AF%E7%89%87DMA%E5%8F%8AQSPI%E6%A8%A1%E5%9D%97%E5%8A%9F%E8%83%BD%E7%89%B9%E5%BE%81.html#id3">1.1.2 DMA链式数据传输</a></li>
+<li class="toctree-l4"><a class="reference internal" href="03_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%283%29%20-%20GR552x%E8%8A%AF%E7%89%87DMA%E5%8F%8AQSPI%E6%A8%A1%E5%9D%97%E5%8A%9F%E8%83%BD%E7%89%B9%E5%BE%81.html#id4">1.1.3 DMA分散传输</a></li>
+<li class="toctree-l4"><a class="reference internal" href="03_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%283%29%20-%20GR552x%E8%8A%AF%E7%89%87DMA%E5%8F%8AQSPI%E6%A8%A1%E5%9D%97%E5%8A%9F%E8%83%BD%E7%89%B9%E5%BE%81.html#id5">1.1.4 DMA聚合传输</a></li>
+<li class="toctree-l4"><a class="reference internal" href="03_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%283%29%20-%20GR552x%E8%8A%AF%E7%89%87DMA%E5%8F%8AQSPI%E6%A8%A1%E5%9D%97%E5%8A%9F%E8%83%BD%E7%89%B9%E5%BE%81.html#id6">1.1.5 DMA同时进行分散/聚合传输</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="03_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%283%29%20-%20GR552x%E8%8A%AF%E7%89%87DMA%E5%8F%8AQSPI%E6%A8%A1%E5%9D%97%E5%8A%9F%E8%83%BD%E7%89%B9%E5%BE%81.html#id7">1.2 DMA 传输通道特点</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="03_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%283%29%20-%20GR552x%E8%8A%AF%E7%89%87DMA%E5%8F%8AQSPI%E6%A8%A1%E5%9D%97%E5%8A%9F%E8%83%BD%E7%89%B9%E5%BE%81.html#qspi">2. QSPI典型特性</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="03_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%283%29%20-%20GR552x%E8%8A%AF%E7%89%87DMA%E5%8F%8AQSPI%E6%A8%A1%E5%9D%97%E5%8A%9F%E8%83%BD%E7%89%B9%E5%BE%81.html#id8">2.1 QSPI工作模式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="03_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%283%29%20-%20GR552x%E8%8A%AF%E7%89%87DMA%E5%8F%8AQSPI%E6%A8%A1%E5%9D%97%E5%8A%9F%E8%83%BD%E7%89%B9%E5%BE%81.html#id9">2.2 QSPI数据端序</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="03_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%283%29%20-%20GR552x%E8%8A%AF%E7%89%87DMA%E5%8F%8AQSPI%E6%A8%A1%E5%9D%97%E5%8A%9F%E8%83%BD%E7%89%B9%E5%BE%81.html#id10">2.2.1 写操作下的数据端序</a></li>
+<li class="toctree-l4"><a class="reference internal" href="03_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%283%29%20-%20GR552x%E8%8A%AF%E7%89%87DMA%E5%8F%8AQSPI%E6%A8%A1%E5%9D%97%E5%8A%9F%E8%83%BD%E7%89%B9%E5%BE%81.html#id11">2.2.2 读操作下的数据端序</a></li>
+<li class="toctree-l4"><a class="reference internal" href="03_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%283%29%20-%20GR552x%E8%8A%AF%E7%89%87DMA%E5%8F%8AQSPI%E6%A8%A1%E5%9D%97%E5%8A%9F%E8%83%BD%E7%89%B9%E5%BE%81.html#id12">2.2.3 内存映射模式下静态数据端序读取规则</a></li>
+<li class="toctree-l4"><a class="reference internal" href="03_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%283%29%20-%20GR552x%E8%8A%AF%E7%89%87DMA%E5%8F%8AQSPI%E6%A8%A1%E5%9D%97%E5%8A%9F%E8%83%BD%E7%89%B9%E5%BE%81.html#id13">2.2.4 内存映射模式下动态数据端序读取规则</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="04_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%284%29%20-%20%E8%89%B2%E5%BD%A9%E6%A0%BC%E5%BC%8F%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%BC%82%E5%B8%B8.html">04.SPI-QSPI协议专题(4) - 色彩格式及常见异常</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="04_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%284%29%20-%20%E8%89%B2%E5%BD%A9%E6%A0%BC%E5%BC%8F%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%BC%82%E5%B8%B8.html#id1">1. 屏幕颜色格式</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="04_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%284%29%20-%20%E8%89%B2%E5%BD%A9%E6%A0%BC%E5%BC%8F%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%BC%82%E5%B8%B8.html#id2">1.1 常用的色码格式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="04_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%284%29%20-%20%E8%89%B2%E5%BD%A9%E6%A0%BC%E5%BC%8F%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%BC%82%E5%B8%B8.html#id3">1.2 色码格式的存储及使用</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="04_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%284%29%20-%20%E8%89%B2%E5%BD%A9%E6%A0%BC%E5%BC%8F%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%BC%82%E5%B8%B8.html#id4">2. 可能的乱序原因分析</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="04_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%284%29%20-%20%E8%89%B2%E5%BD%A9%E6%A0%BC%E5%BC%8F%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%BC%82%E5%B8%B8.html#flash">2.1 外部Flash读写宽度不一致导致的逆序</a></li>
+<li class="toctree-l3"><a class="reference internal" href="04_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%284%29%20-%20%E8%89%B2%E5%BD%A9%E6%A0%BC%E5%BC%8F%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%BC%82%E5%B8%B8.html#id5">2.2 外部Flash 内存映射读端序配置异常导致的逆序</a></li>
+<li class="toctree-l3"><a class="reference internal" href="04_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%284%29%20-%20%E8%89%B2%E5%BD%A9%E6%A0%BC%E5%BC%8F%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%BC%82%E5%B8%B8.html#dma">2.3 DMA 访问由于地址不对齐导致的乱序</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="04_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%284%29%20-%20%E8%89%B2%E5%BD%A9%E6%A0%BC%E5%BC%8F%E5%8F%8A%E5%B8%B8%E8%A7%81%E5%BC%82%E5%B8%B8.html#id6">3. 常见的显示异常举例</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="../index.html" class="btn btn-neutral float-left" title="应用笔记" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="01_SPI-QSPI%E5%8D%8F%E8%AE%AE%E4%B8%93%E9%A2%98%281%29%20-%20%E5%9F%BA%E7%A1%80%E5%8D%8F%E8%AE%AE%E7%89%B9%E5%BE%81%E4%BB%8B%E7%BB%8D.html" class="btn btn-neutral float-right" title="01.SPI-QSPI协议专题(1) - 基础协议特征介绍" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2023, Goodix。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

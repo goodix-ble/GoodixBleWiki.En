@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>J-Link RTT使用问题 &mdash; Goodix BLE Start Guide v1.0 文档</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5a3fd9cb"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/translations.js?v=beaddf03"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Goodix BLE Start Guide
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <p class="caption" role="heading"><span class="caption-text">Menu List</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../%E5%BC%80%E5%8F%91%E5%90%91%E5%AF%BC/index.html">开发向导</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88/index.html">技术方案</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../%E5%BA%94%E7%94%A8%E7%AC%94%E8%AE%B0/index.html">应用笔记</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/index.html">常见问题</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Goodix BLE Start Guide</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">J-Link RTT使用问题</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/素材_未分类/J-Link RTT使用问题.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="j-link-rtt">
+<h1>J-Link RTT使用问题<a class="headerlink" href="#j-link-rtt" title="Link to this heading"></a></h1>
+<p>[TOC]</p>
+<section id="rtt">
+<h2>1. 如何在示例工程中开启 RTT功能<a class="headerlink" href="#rtt" title="Link to this heading"></a></h2>
+<ul>
+<li><p>确保 文件 ${SDK}\external\segger_rtt\SEGGER_RTT.c 加入工程编译</p></li>
+<li><p>将工程配置文件 custom_config.h 的宏APP_LOG_PORT 值修改为 1</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// &lt;o&gt; APP log port type</span>
+<span class="c1">// &lt;0=&gt; UART</span>
+<span class="c1">// &lt;1=&gt; RTT</span>
+<span class="c1">// &lt;2=&gt; ITM</span>
+<span class="cp">#ifndef APP_LOG_PORT</span>
+<span class="cp">#define APP_LOG_PORT            1</span>
+<span class="cp">#endif</span>
+</pre></div>
+</div>
+</li>
+<li><p>确保 位于文件  ${SDK}\platform\boards\board_SK.c的函数 bsp_log_init 在main 外设初始化时候被调用 （或确保 示例工程的 board_init 函数被调用, 此函数会调用bsp_log_init ）；因为 SDK中 RTT 功能的初始化放在函数bsp_log_init 中进行</p></li>
+</ul>
+</section>
+<section id="segger-rtt">
+<h2>2. 获取 _SEGGER_RTT 编译地址的技巧<a class="headerlink" href="#segger-rtt" title="Link to this heading"></a></h2>
+<ul>
+<li><p>在使用 J-Link RTT 时, 会填写 _SEGGER_RTT 的地址, 一种是填写范围工具进行自动搜索; 一种是填写固定的地址. 这里介绍第二种方法:</p>
+<ul>
+<li><p>先参考 &lt;如何在示例工程中开启 RTT功能&gt; 开启RTT功能, 然后编译工程</p></li>
+<li><p>编译完成后, 打开.map 文件搜索 _SEGGER_RTT 的变量地址, 参考如下:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">_SEGGER_RTT</span><span class="w">      </span><span class="mh">0x2000c220</span><span class="w">   </span><span class="n">Data</span><span class="w">     </span><span class="mi">120</span><span class="w">  </span><span class="n">segger_rtt</span><span class="p">.</span><span class="n">o</span><span class="p">(.</span><span class="n">bss</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>修改 SEGGER_RTT.c  中变量的定义, 将 map 文件的变量地址使用 attribute at 属性, 强制固定下来, 这样后续  _SEGGER_RTT 变量地址就不会随 工程功能和变量的增加而发生变化了.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">SEGGER_RTT_CB</span><span class="w"> </span><span class="n">_SEGGER_RTT</span><span class="w"> </span><span class="n">__attribute__</span><span class="w"> </span><span class="p">((</span><span class="n">at</span><span class="p">(</span><span class="mh">0x2000c220</span><span class="p">)));</span><span class="w"> </span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="id1">
+<h2>3. J-Link RTT打印日志时候, 工作一会后日志不再打印<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<ul>
+<li><p>检查是否工作在 Sleep 模式下, RTT 属于非 AON 模块, 对Sleep 模式支持不友好, 请在芯片的Active 模式使用 RTT</p></li>
+<li><p>如果是 Active 模式下存在 RTT 日志停止打印, 尝试将 RTT工作模式修改为 SEGGER_RTT_MODE_BLOCK_IF_FIFO_FULL 阻塞模式测试下, 如果工作正常. 则尝试调整 RTT 缓存区大小</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define SEGGER_RTT_MODE_DEFAULT                   SEGGER_RTT_MODE_BLOCK_IF_FIFO_FULL </span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2023, Goodix。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
