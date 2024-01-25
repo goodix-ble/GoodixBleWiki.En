@@ -7,4 +7,6 @@
    :maxdepth: 6
 
    SPI与QSPI/index
+   DMA/index
+   BLE/index
 

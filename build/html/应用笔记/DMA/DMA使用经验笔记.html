@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DMA &mdash; Goodix BLE Start Guide v1.0 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5a3fd9cb"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="BLE" href="../BLE/index.html" />
+    <link rel="prev" title="DMA" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Goodix BLE Start Guide
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <p class="caption" role="heading"><span class="caption-text">Menu List</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../%E5%BC%80%E5%8F%91%E5%90%91%E5%AF%BC/index.html">开发向导</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88/index.html">技术方案</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">应用笔记</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../SPI%E4%B8%8EQSPI/index.html">SPI与QSPI</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">DMA</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">DMA</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">1. 基本功能介绍</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">2. 应用笔记</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#faq">3. FAQ</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../BLE/index.html">BLE</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/index.html">常见问题</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Goodix BLE Start Guide</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">应用笔记</a></li>
+          <li class="breadcrumb-item"><a href="index.html">DMA</a></li>
+      <li class="breadcrumb-item active">DMA</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/应用笔记/DMA/DMA使用经验笔记.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="dma">
+<h1>DMA<a class="headerlink" href="#dma" title="Link to this heading"></a></h1>
+<p>[TOC]</p>
+<section id="id1">
+<h2>1. 基本功能介绍<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>不同的SoC, 其DMA功能配置不尽相同. 具备不同的DMA 实例数量且每个DMA实例可用的传输通道不一样</p></li>
+<li><p>下表描述各芯片的DMA 通道配置及能力</p></li>
+</ul>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>SoC</th>
+<th>DMA实例</th>
+<th>通道数及FIFO深度</th>
+<th>基础功能</th>
+<th>使用限制</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GR551x</td>
+<td>DMA0</td>
+<td>支持8个通道,  每个通道 FIFO 8x4字节</td>
+<td>基础的数据传输</td>
+<td>单次传输不超过4095拍</td>
+</tr>
+<tr>
+<td>GR5525</td>
+<td>DMA0</td>
+<td>支持6个通道, 通道0 FIFO 32x4字节,其他通道FIFO 4x4 字节</td>
+<td>基础的数据传输、S&amp;G、LLP</td>
+<td>1. 单次传输不超过4095拍; <br/>2.使用LLP功能扩展单次传输数据量</td>
+</tr>
+<tr>
+<td></td>
+<td>DMA1</td>
+<td>支持6个通道, 通道0 FIFO 32x4字节,其他通道FIFO 4x4 字节</td>
+<td>基础的数据传输、S&amp;G、LLP</td>
+<td>1. 单次传输不超过4095拍; <br/>2.使用LLP功能扩展单次传输数据量</td>
+</tr>
+<tr>
+<td>GR5526</td>
+<td>DMA0</td>
+<td>支持6个通道, 通道0 FIFO 32x4字节,其他通道FIFO 4x4 字节</td>
+<td>基础的数据传输、S&amp;G、LLP</td>
+<td>1. 单次传输不超过4095拍; <br/>2.使用LLP功能扩展单次传输数据量</td>
+</tr>
+<tr>
+<td></td>
+<td>DMA1</td>
+<td>支持6个通道, 通道0 FIFO 32x4字节,其他通道FIFO 4x4 字节</td>
+<td>基础的数据传输、S&amp;G、LLP</td>
+<td>1. 单次传输不超过4095拍; <br/>2.使用LLP功能扩展单次传输数据量</td>
+</tr>
+<tr>
+<td>GR533x</td>
+<td>DMA0</td>
+<td>支持5个通道, 通道0 FIFO 8x4字节,其他通道FIFO 4x4 字节</td>
+<td>基础的数据传输</td>
+<td>单次传输不超过4095拍</td>
+</tr>
+</tbody>
+</table><ul class="simple">
+<li><p>DMA 支持的传输方式有:</p>
+<ul>
+<li><p>Memory to Memory - 从内存到内容</p></li>
+<li><p>Memory to Peripheral - 从内存到外设</p></li>
+<li><p>Peripheral to Memory - 从外设到内存</p></li>
+<li><p>Peripheral to Peripheral - 从外设到外设</p></li>
+</ul>
+</li>
+<li><p>注意: 当传输种某一端是外设时, DMA传输信号需要依赖硬件握手信号, 对于存在多个 DMA实例的GR5525和GR5526。DMA和外设不能任意搭配, 需要从Datasheet 参考DMA 硬件握手信号分配表. 详情请参考各SoC 的Datasheet 关于DMA 及握手信号章节.</p></li>
+<li><p>当DMA进行基础的数据传输时， 一次性最大传输4095拍数据。“拍”指DMA传输数据的位宽度。</p>
+<ul>
+<li><p>如果使用的数据位宽是字节，DMA单次最多传输数据4095字节</p></li>
+<li><p>如果使用的数据位宽是半字，DMA单次最多传输数据4095x2字节</p></li>
+<li><p>如果使用的数据位宽是字，DMA单次最多传输数据4095x4字节</p></li>
+<li><p>如果DMA一次基础传输时，数据量超过了4095拍，则会给出错误的DMA传输中断提示</p></li>
+<li><p>扩展单次传输数据超过 4095拍的方式是适用 LLP链式传输, 只有GR5525 &amp; GR5526支持这种传输方式, GR551x和GR553x则不支持.</p></li>
+</ul>
+</li>
+<li><p>提高DMA的数据传输宽度, 可用提高DMA 的传输性能. 使用 32位传输宽度其传输性能大于 16位 大于8位.</p></li>
+<li><p>GR5525 和 GR5526 拓展了 DMA的 LLP和 S&amp;G能力, 配合QSPI 等外设使用, 可以极大的提高QSPI等外设的吞吐率. 关于 LLP 和S&amp;G的介绍, 请参考文档 : <a class="reference external" href="https://docs.goodix.com/zh/online/detail/display_refresh_guide_bl_b/V1.0/aee091969c2eaa366cb279984812bb42">GR552x刷屏指南</a></p></li>
+</ul>
+</section>
+<section id="id2">
+<h2>2. 应用笔记<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>GR5525 &amp; GR5526提供DMA0和DMA1两个可供用户使用的DMA实例，共计6个DMA通道，其中通道0 FIFO深度
+为32，通道1 ～ 5 的FIFO深度为4。</p>
+<ul>
+<li><p>由于通道0具备很深的FIFO深度，在DMA传输时候能提供极深的数据缓存，从而提高DMA传输吞吐，因此
+在穿戴类应用中，请优先将DMA0/DMA1的通道0分配给高吞吐外设使用，如用于Flash访问、PSRAM访问、大
+块Memory搬运、Display显示等</p></li>
+</ul>
+</li>
+<li><p>GR5525 &amp; GR5526 的DMA相对GR551x和GR553x的DMA, 拓展了如下功能:</p>
+<ul>
+<li><p>DMA链式数据传输 : 将需要传输的所有数据区块，通过指针链表方式进行管理。上一个区块发送完成
+后，根据Next链表指针自动对下一个区块进行加载，直到最后Next链表指针为空. 其优点为:</p>
+<ul>
+<li><p>突破单次传输4095拍的限制</p></li>
+<li><p>支持单次传输周期中传输不连续地址空间的数据</p></li>
+<li><p>支持单次传输周期使用不同的传输配置进行数据传输</p></li>
+</ul>
+</li>
+<li><p>DMA分散传输: DMA分散（Scatter）传输指将连续地址空间的数据通过一定的规则，分散到不连续的地址空间的传输</p></li>
+<li><p>DMA聚合传输2: DMA聚合（Gather）传输指将不连续地址空间的数据，聚合到连续的地址空间的传输。可视作Scatter的逆向传输过程</p></li>
+</ul>
+</li>
+<li><p>GR551x和GR553x均只有一个DMA实例, 外设模块均可使用DMA 进行传输. GR5525和GR5526有2个DMA实例, 每个实例对外设的支持存在区别。</p></li>
+</ul>
+<blockquote>
+<div><p>GR5525 DMA 搭配不同外设传输的支持状态如下:</p>
+</div></blockquote>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>外设</th>
+<th>DMA0</th>
+<th>DMA1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>QSPI0</td>
+<td>YES</td>
+<td>NO</td>
+</tr>
+<tr>
+<td>QSPI1</td>
+<td>YES</td>
+<td>YES</td>
+</tr>
+<tr>
+<td>QSPI2</td>
+<td>NO</td>
+<td>YES</td>
+</tr>
+<tr>
+<td>SPI Master</td>
+<td>YES</td>
+<td>YES</td>
+</tr>
+<tr>
+<td>SPI Slave</td>
+<td>YES</td>
+<td>NO</td>
+</tr>
+<tr>
+<td>UART0</td>
+<td>YES</td>
+<td>YES</td>
+</tr>
+<tr>
+<td>UART1</td>
+<td>YES</td>
+<td>NO</td>
+</tr>
+<tr>
+<td>UART2</td>
+<td>YES</td>
+<td>NO</td>
+</tr>
+<tr>
+<td>UART3</td>
+<td>YES</td>
+<td>YES</td>
+</tr>
+<tr>
+<td>I2C0</td>
+<td>NO</td>
+<td>YES</td>
+</tr>
+<tr>
+<td>I2C1</td>
+<td>NO</td>
+<td>YES</td>
+</tr>
+<tr>
+<td>I2C2</td>
+<td>YES</td>
+<td>NO</td>
+</tr>
+<tr>
+<td>I2C3</td>
+<td>YES</td>
+<td>NO</td>
+</tr>
+<tr>
+<td>I2S Master</td>
+<td>NO</td>
+<td>YES</td>
+</tr>
+<tr>
+<td>I2S Slave</td>
+<td>NO</td>
+<td>YES</td>
+</tr>
+<tr>
+<td>DSPI</td>
+<td>NO</td>
+<td>YES</td>
+</tr>
+<tr>
+<td>PDM</td>
+<td>NO</td>
+<td>YES</td>
+</tr>
+<tr>
+<td>ADC</td>
+<td>YES</td>
+<td>NO</td>
+</tr>
+</tbody>
+</table><blockquote>
+<div><p>GR5526 DMA 搭配不同外设传输的支持状态如下:</p>
+</div></blockquote>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>外设</th>
+<th>DMA0</th>
+<th>DMA1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>QSPI0</td>
+<td>YES</td>
+<td>NO</td>
+</tr>
+<tr>
+<td>QSPI1</td>
+<td>YES</td>
+<td>YES</td>
+</tr>
+<tr>
+<td>QSPI2</td>
+<td>NO</td>
+<td>YES</td>
+</tr>
+<tr>
+<td>SPI Master</td>
+<td>YES</td>
+<td>YES</td>
+</tr>
+<tr>
+<td>SPI Slave</td>
+<td>YES</td>
+<td>NO</td>
+</tr>
+<tr>
+<td>UART0</td>
+<td>YES</td>
+<td>YES</td>
+</tr>
+<tr>
+<td>UART1</td>
+<td>YES</td>
+<td>NO</td>
+</tr>
+<tr>
+<td>UART2</td>
+<td>YES</td>
+<td>NO</td>
+</tr>
+<tr>
+<td>UART3</td>
+<td>YES</td>
+<td>YES</td>
+</tr>
+<tr>
+<td>UART4</td>
+<td>YES</td>
+<td>YES</td>
+</tr>
+<tr>
+<td>UART5</td>
+<td>NO</td>
+<td>YES</td>
+</tr>
+<tr>
+<td>I2C0</td>
+<td>NO</td>
+<td>YES</td>
+</tr>
+<tr>
+<td>I2C1</td>
+<td>NO</td>
+<td>YES</td>
+</tr>
+<tr>
+<td>I2C2</td>
+<td>YES</td>
+<td>NO</td>
+</tr>
+<tr>
+<td>I2C3</td>
+<td>YES</td>
+<td>NO</td>
+</tr>
+<tr>
+<td>I2C4</td>
+<td>YES</td>
+<td>NO</td>
+</tr>
+<tr>
+<td>I2C5</td>
+<td>YES</td>
+<td>NO</td>
+</tr>
+<tr>
+<td>I2S Master</td>
+<td>NO</td>
+<td>YES</td>
+</tr>
+<tr>
+<td>I2S Slave</td>
+<td>NO</td>
+<td>YES</td>
+</tr>
+<tr>
+<td>DSPI</td>
+<td>NO</td>
+<td>YES</td>
+</tr>
+<tr>
+<td>PDM</td>
+<td>NO</td>
+<td>YES</td>
+</tr>
+<tr>
+<td>ADC</td>
+<td>YES</td>
+<td>NO</td>
+</tr>
+</tbody>
+</table></section>
+<section id="faq">
+<h2>3. FAQ<a class="headerlink" href="#faq" title="Link to this heading"></a></h2>
+<section id="dma-beat">
+<h3>3.1 DMA传输会用到拍的概念, 什么是拍 (Beat)?<a class="headerlink" href="#dma-beat" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>拍(Beat) 是IC层面常用到的一个术语, 表示单次数据访问使用的位宽，在嵌入式领域一般是 8bit、16bit、32bit, 对应C程序的基础数据类型 char、short和int (32bit).</p>
+<ul>
+<li><p>如果访问数据位宽使用的8bit (char), 1 拍对应的数据长度是 1字节;</p></li>
+<li><p>如果访问数据位宽使用的16bit (short), 1 拍对应的数据长度是 2字节;</p></li>
+<li><p>如果访问数据位宽使用的32bit (int), 1 拍对应的数据长度是 4字节;</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="dmadma">
+<h3>3.2 是否可以将同一个DMA实例的同一个DMA通道同时配置给不同的外设适用?<a class="headerlink" href="#dmadma" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>只有配置为Memory to Memory 的DMA实例及通道, 可以在各种 Memory (如SRAM、PSRAM及完成Memory Mapped配置的Nor Flash地址空间)之间使用</p></li>
+<li><p>在其他DMA传输模式下, 目前的驱动框架不支持将同一个DMA实例的同一个通道同时分配给不同外设使用; 但可以分时使用, 每次使用前后要进行外设及dma 的 初始化和反初始化 (除非DMA通道不够用, 否则不建议这样使用, 不熟悉的情况下容易造成bug).</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="DMA" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../BLE/index.html" class="btn btn-neutral float-right" title="BLE" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2023, Goodix。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
