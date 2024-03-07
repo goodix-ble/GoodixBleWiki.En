@@ -6,8 +6,8 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'Goodix BLE Start Guide'
-copyright = '2023, Goodix'
+project = '汇顶BLE知识库'
+copyright = '2024, Goodix'
 author = 'nix.long'
 release = 'v1.0'
 

@@ -4,9 +4,10 @@
 ===========================================
 
 .. toctree::
-   :maxdepth: 6
+   :maxdepth: 12
 
-   SPI与QSPI/index
-   DMA/index
-   BLE/index
-
+   系统/index
+   蓝牙/index
+   外设/index
+   工具/index
+   硬件/index   
