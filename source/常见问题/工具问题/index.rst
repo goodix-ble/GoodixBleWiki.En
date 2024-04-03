@@ -4,8 +4,8 @@
 ===========================================
 
 .. toctree::
-   :maxdepth: 6
+   :maxdepth: 12
 
-   01_生成符合GPU适配版Lvgl规范的图片资源
-   02_生成符合GPU适配版Lvgl规范的字体资源
-   03_基于VSCode构建Goodix BLE开发环境
+   构建类工具/index
+   图形类工具/index
+   量产烧录工具/index

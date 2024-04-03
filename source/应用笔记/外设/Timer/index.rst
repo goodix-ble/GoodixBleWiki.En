@@ -6,4 +6,6 @@ Timer
 .. toctree::
    :maxdepth: 6
 
-   Timer应用笔记
+   GPTimer应用笔记
+   RTC应用笔记
+   WDT应用笔记

@@ -4,17 +4,16 @@
 ===========================================
 
 .. toctree::
-   :maxdepth: 6
+   :maxdepth: 12
 
-    ADC/index
-    DMA/index
-    I2C/index
-    I2S/index
-    QSPI/index
-    SPI/index
-    Timer/index
-    UART/index
-    USB/index
-    X-QSPI/index
-	
-	
+   IO/index
+   ADC/index
+   DMA/index
+   I2C/index
+   I2S/index
+   QSPI/index
+   SPI/index
+   Timer/index
+   UART/index
+   USB/index
+   X-QSPI/index

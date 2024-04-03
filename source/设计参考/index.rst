@@ -4,8 +4,8 @@
 ===========================================
 
 .. toctree::
-   :maxdepth: 6
+   :maxdepth: 12
 
-   01_智能手表方案/index
-   02_FMNA方案/index
+   智能手表方案/index
+   FMNA方案/index
 

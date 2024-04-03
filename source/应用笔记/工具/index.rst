@@ -4,6 +4,8 @@
 ===========================================
 
 .. toctree::
-   :maxdepth: 6
+   :maxdepth: 12
 
-   taken
+   GRPLT
+   GRPLT_LITE
+   IAR应用笔记
