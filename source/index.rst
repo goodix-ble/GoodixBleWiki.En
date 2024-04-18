@@ -8,7 +8,6 @@
 
 .. toctree::
    :maxdepth: 12
-   :caption: Menu List
 
    开发向导/index
    应用笔记/index
