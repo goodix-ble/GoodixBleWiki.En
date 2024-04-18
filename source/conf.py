@@ -88,3 +88,11 @@ html_theme_options = {
 #             'enable_inline_math': True,
 #             }, True)
 #     app.add_transform(AutoStructify)
+
+html_context = {
+    "display_github": True, # Integrate GitHub
+    "github_user": "MyUserName", # Username
+    "github_repo": "MyDoc", # Repo name
+    "github_version": "master", # Version
+    "conf_py_path": "/source/", # Path in the checkout to the docs root
+}
