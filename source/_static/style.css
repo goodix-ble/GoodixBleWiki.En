@@ -1,13 +1,3 @@
 .wy-nav-content {
     max-width: 75%;
 }
-
-/* Hide "在 Read the Docs 上" section from versions left-bottom menu */
-div.rst-versions > div.rst-other-versions > dl:nth-child(3) {
-    display: none;
-}
-
-/* Hide "On GitHub to 'view' or 'edit'" section from versions left-bottom menu */
-div.rst-versions > div.rst-other-versions > div.injected > dl:nth-child(4) {
-    display: none;
-}

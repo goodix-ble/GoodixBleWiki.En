@@ -1,9 +1,9 @@
 
 
-DFU
+DFU应用
 ===========================================
 
 .. toctree::
-   :maxdepth: 6
+   :maxdepth: 12
 
-   taken
+   DFU应用笔记

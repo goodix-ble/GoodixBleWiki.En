@@ -6,5 +6,5 @@
 .. toctree::
    :maxdepth: 6
 
-   taken
+   蓝牙产品认证指南
 

@@ -4,23 +4,23 @@
 
 ### 1. 如何判断我的程序是不是HardFault了？
 
-A: 在没有使用看门狗的情况下，当系统产生HardFault之后，会在中断处理函数中执行死循环，此时包括BLE在内的所有模块都无法正常工作，表现出“死了”的效果。此时可以使用J-Link连上芯片来判断是否产生了HardFault。确保硬件连接后，打开J-Link Commander软件，输入`connect`并回车，然后在提示 **Please specify device / core** 时输入`cortex-m4`并回车，在提示 **Please specify target interface** 时输入`s`并回车，在提示 **Specify target interface speed [kHz]** 输入`4000`并回车。此时J-Link Commander会尝试连接芯片，成功后会提示 **Cortex-M4 identified**，如图所示：
+A：在没有使用看门狗的情况下，当系统产生HardFault之后，会在中断处理函数中执行死循环，此时包括Bluetooth LE在内的所有模块都无法正常工作，表现出“死了”的效果。此时可以使用J-Link连上芯片来判断是否产生了HardFault。确保硬件连接后，打开J-Link Commander软件，输入`connect`并回车，然后在提示**Please specify device / core**时输入`cortex-m4`并回车，在提示**Please specify target interface**时输入`s`并回车，在提示**Specify target interface speed [kHz]**输入`4000`并回车。此时J-Link Commander会尝试连接芯片，成功后会提示**Cortex-M4 identified**，如下图所示：
 
 ![Img](../../_images/system/sys_backtrace_1.png) 
 
-此时输入`h`并回车，从 **IPSR** 的值可以看到目前所在的中断：
+此时输入`h`并回车，从**IPSR**的值可以看到目前所在的中断：
 
 ![Img](../../_images/system/sys_backtrace_3.png) 
 
-中断号`003`代表目前处于 **HardFaultMemManage**中，属于**HardFault**的范畴。
+中断号`003`代表目前处于**HardFaultMemManage**中，属于**HardFault**的范畴。
 
-如果使用了看门狗，则很有可能因为看门狗复位导致第一现场丢失，此时就需要借助Fault Trace模块的异常记录功能来判断。在出现Hard Fault后，Fault Trace模块会自动将异常信息存入NVDS中。模块的导入方法以及如何读取存储的错误信息请参考[GR5xx Fault Trace Module应用说明 - 使用Fault Trace Module](https://docs.goodix.com/zh/online/detail/fault_trace_bl/V3.2/9dfd0230c1940b35d5c7a62e88332e85)。
+如果使用了看门狗，则很有可能因为看门狗复位导致第一现场丢失，此时就需要借助Fault Trace模块的异常记录功能来判断。在出现Hard Fault后，Fault Trace模块会自动将异常信息存入NVDS中。模块的导入方法以及如何读取存储的错误信息请参考《[GR5xx Fault Trace Module应用说明](https://docs.goodix.com/zh/online/fault_trace_bl/V3.2)》“使用Fault Trace Module”章节。
 
 
 
 ### 2. 为什么我的程序会HardFault？
 
-A: HardFault产生的原因非常多样化，没有一个通用答案。不过可以借助Cortex-M4核心的异常机制结合一些关键线索进行分析。在使用了Fault Trace模块的cortex-backtrace组件的情况下，HardFault时会自动反推调用栈信息。下面是使用了cortex-backtrace组件后HardFault时的信息输出：
+A：HardFault产生的原因非常多样化，没有一个通用答案。不过可以借助Cortex-M4核心的异常机制并结合一些关键线索进行分析。在使用了Fault Trace模块的cortex-backtrace组件的情况下，HardFault时会自动反推调用栈信息。下面是使用了cortex-backtrace组件后HardFault时的信息输出：
 
 ```
 Fault on interrupt or bare metal(no OS) environment
@@ -155,42 +155,43 @@ Bus fault: imprecise data access violation
 Call stack info : 00203ca8<--00077de9<--00207375<--000002fd<--00207479<--00000003<--002073b1<--00000dfd<--002098fd<--0020988d<--00000dfd<--00040edf<--0004020f<--0020b8c1<--0020b8c1<--
 ```
 
-cortex-backtrace主要打印了4个信息：**栈数据**，**关键寄存器**，**异常类型**和**调用栈**。
+cortex-backtrace主要打印了4个信息：**栈数据**、**关键寄存器**、**异常类型**和**调用栈**。
 
-其中，**栈数据**可以结合汇编进行场景重现，对于某些由数据错误引起的HardFault调试有帮助（例如除0，空指针等等）。
+其中，**栈数据**可以结合汇编进行场景重现，对于某些由数据错误引起的HardFault调试有帮助（例如除0、空指针等等）。
 
 **关键寄存器**包括：
- - 用于传参，存储返回值和临时数据的 **R0-R3** 寄存器
- - 用于过程间临时传参的 **R12 (IP)** 寄存器
- - 用于存储返回地址的 **LR** 寄存器
- - 用于存储当前运行地址的 **PC** 寄存器
- - 用于存储运算标志位，中断号及运行状态的 **PSR** 寄存器
 
-通过 **PC** 寄存器可以知道异常具体发生在哪一个位置。可以通过汇编文件（`.s`文件或是`.asm`文件）去查对应地址的汇编指令，也可以使用GCC工具链提供的`addr2line`工具来获取地址对应到哪个源文件中的哪一行。有时候可以看到 **PC** 的值是一个奇数，这是Cortex-M4核心的Thumb模式导致的，此时把地址值-1即是正确的地址。
+ - 用于传参、存储返回值和临时数据的**R0-R3**寄存器
+ - 用于过程间临时传参的**R12 (IP)**寄存器
+ - 用于存储返回地址的**LR**寄存器
+ - 用于存储当前运行地址的**PC**寄存器
+ - 用于存储运算标志位、中断号及运行状态的**PSR**寄存器
 
-**异常类型**是对Cortex-M4核心的 **CFSR (Congifurable Fault Status Register)** 寄存器的解析。该寄存器是Cortex-M4核心用于指示HardFault产生原因的寄存器。HardFault又被细分为3种类型：**Usage Fault**, **Bus Fault**, **Memory Management Fault**。具体不同类型以及指示内容的具体含义请参考 *[Cortex-M4 Devices Generic User Guide](https://developer.arm.com/documentation/dui0553/a/)* - 4.3.10 Configurable Fault Status Register。
+通过**PC**寄存器可以知道异常具体发生在哪个位置。可以通过汇编文件（`.s`文件或是`.asm`文件）去查对应地址的汇编指令，也可以使用GCC工具链提供的`addr2line`工具来获取地址对应到哪个源文件中的哪一行。有时候可以看到**PC**的值是一个奇数，这是Cortex-M4核心的Thumb模式导致的，此时把地址值-1即是正确的地址。
 
-**调用栈**是Cortex Backtrace模块通过对寄存器，运行程序以及栈数据的分析和反推得到的调用关系链。和 **PC** 寄存器的值一样，结合汇编文件或者`addr2line`工具可以对整个调用链条进行定位。
+**异常类型**是对Cortex-M4核心的**CFSR（Congifurable Fault Status Register）**寄存器的解析。该寄存器是Cortex-M4核心用于指示HardFault产生原因的寄存器。HardFault又被细分为3种类型：**Usage Fault**、**Bus Fault**、**Memory Management Fault**。具体类型以及指示内容的具体含义请参考《[Cortex-M4 Devices Generic User Guide](https://developer.arm.com/documentation/dui0553/a/)》“Configurable Fault Status Register”章节。
+
+**调用栈**是Cortex Backtrace模块通过对寄存器、运行程序以及栈数据的分析和反推得到的调用关系链。和**PC**寄存器的值一样，结合汇编文件或者`addr2line`工具可以对整个调用链条进行定位。
 
 
 
 ### 3. 如果不使用Cortex Backtrace组件，能分析上面的内容吗？
 
-A: 可以。Cortex Backtrace的主要功能是反推调用栈，如果不使用Cortex Backtrace组件，只使用Fault Trace的异常记录功能，则可以在Hard Fault发生后，使用GRToolBox或GProgrammer读取芯片内存储的异常信息，例如：
+A：可以。Cortex Backtrace的主要功能是反推调用栈，如果不使用Cortex Backtrace组件，只使用Fault Trace的异常记录功能，则可以在Hard Fault发生后，使用GRToolbox或GProgrammer读取芯片内存储的异常信息，例如：
 
 ```
 HARDFAULT CALLSTACK INFO: R0-00123456 R1-DEADBEEF R2-00000000 R3-00000000 R12-00000000 LR-00077DED PC-00203C00 XPSR-61000011
 ```
 
-由于不使用Cortex Backtrace组件，Fault Trace就只会记录关键寄存器的信息。此时同样可以通过异常前 **PC** 和 **LR** 的值结合汇编文件或`addr2line`来分析。
+由于不使用Cortex Backtrace组件，Fault Trace就只会记录关键寄存器的信息。此时同样可以通过异常前**PC**和**LR**的值结合汇编文件或`addr2line`来分析。
 
 
 
 ### 4. 如果连Fault Trace模块也不使用，能分析HardFault吗？
 
-A: 可以。但如果不使用Fault Trace模块，则需要保留Hard Fault现场以获取必要信息。在保留现场的情况下，可以使用J-Link连接芯片进行分析，具体流程为：
+A：可以。但如果不使用Fault Trace模块，则需要保留Hard Fault现场以获取必要信息。在保留现场的情况下，可以使用J-Link连接芯片进行分析，具体流程为：
 
-1. 首先通过 **LR** 寄存器的值判断异常发生现场使用的栈指针：
+1. 首先通过**LR**寄存器的值判断异常发生现场使用的栈指针：
 
  | 中断前使用FPU | 中断前未使用FPU
 --- | --- | ---
@@ -202,9 +203,9 @@ A: 可以。但如果不使用Fault Trace模块，则需要保留Hard Fault现�
 
 ![Img](../../_images/system/sys_backtrace_4.png) 
 
-从图中可得，异常发生之前使用的栈指针为 **MSP = 0x2007FE08**。
+从图中可得，异常发生之前使用的栈指针为**MSP = 0x2007FE08**。
 
-2. 在确实栈指针后，从栈指针处读8个word（32Byte）。Cortex-M4在中断发生时的压栈顺序为：**xPSR**, **PC**, **LR**, **R12**, **R3**, **R2**, **R1**, **R0**，则读取到的8个word的含义是反过来的。其中第6个word为异常前的 **PC**，第7个word为异常前的 **LR**。通过这两个值就可以反推出异常发生前的位置。此处使用J-Link Commander的`mem32`指令进行读取：
+2. 在确定栈指针后，从栈指针处读8个word（32Byte）。Cortex-M4在中断发生时的压栈顺序为：**xPSR**, **PC**, **LR**, **R12**, **R3**, **R2**, **R1**, **R0**，则读取到的8个word的含义是反过来的。其中第6个word为异常前的**PC**，第7个word为异常前的**LR**。通过这两个值就可以反推出异常发生前的位置。此处使用J-Link Commander的`mem32`指令进行读取：
 
 ![Img](../../_images/system/sys_backtrace_2.png) 
 
@@ -216,12 +217,12 @@ A: 可以。但如果不使用Fault Trace模块，则需要保留Hard Fault现�
 
 ### 5. 得到的PC指向了一个莫名其妙的地方是怎么回事？
 
-A: 有几种可能。第一，可能是调用了非法地址，此时比起 **PC** 更需要关心 **LR** 的值，即在跳转之前的位置，例如函数指针为空或为非法值时的跳转。第二，可能MSP和PSP搞反了，这样得到反推得到的PC和LR就是错误的值。第三，对于GR5xx SoC有些代码被固化到ROM中，有些情况下（例如非法参数）可能会导致ROM中的代码产生Hard Fault，此时PC值在 **0x00000000** 到 **0x000FFFFF** 之间（不同型号的SoC的ROM地址范围不同，具体的范围请参考对应型号的Datasheet）。
+A：有几种可能。第一，可能是调用了非法地址，此时比起**PC**更需要关心**LR**的值，即在跳转之前的位置，例如函数指针为空或为非法值时的跳转。第二，可能MSP和PSP搞反了，这样反推得到的PC和LR就是错误的值。第三，对于GR5xx SoC有些代码被固化到ROM中，有些情况下（例如非法参数）可能会导致ROM中的代码产生Hard Fault，此时PC值在**0x00000000**到**0x000FFFFF**之间（不同型号SoC的ROM地址范围不同，具体范围请参考对应型号的Datasheet）。
 
 
 
 ### 6. 读取不了栈上的数据怎么办？
 
--   第一步，请确保芯片已经被Halt住，即在J-Link连上后需要先输入`h`让芯片停止运行
--   第二步，检查所读取的栈指针和所要读取的长度是否在正确的RAM范围内
--   第三步，如果上述步骤都不能解决问题，则有可能是芯片存在硬件异常，请检查供电及各个关键电源信号是否符合要求，或联系FAE进行技术支持
+1. 请确保芯片已经被Halt住，即在J-Link连上后需要先输入`h`让芯片停止运行。
+2. 检查所读取的栈指针和所要读取的长度是否在正确的RAM范围内。
+3. 如果上述步骤都不能解决问题，则有可能是芯片存在硬件异常，请检查供电及各个关键电源信号是否符合要求，或联系FAE获取技术支持。
