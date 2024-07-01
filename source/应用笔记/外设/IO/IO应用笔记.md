@@ -59,7 +59,19 @@
   
 - 使用MSIO时的注意事项
   - MSIO默认是模拟口，模拟口在没有信号输入时是高组态。
+  
   - MSIO用于向ADC或比较器传递模拟信号，所以其内部通过门电路开关与ADC和比较器进行连接。此时要注意，MSIO上的电压不能超过VBATL！过高的电压容易把门电路冲击破坏，可能会损坏ADC或比较器模块。
+  
   - MSIO没有中断功能。
+  
   - MSIO作为数字高速I/O时（比如mux为SPI），建议提升MSIO的驱动电流，调用app_io_set_strength()进行驱动电流的设置。
-
+  
+- 如何配置IO的驱动能力（驱动电流大小）
+  
+  - 只有GR5525和GR533x可以配置IO的驱动电流大小。
+  
+  - 调用接口 uint16_t app_io_set_strength(app_io_type_t type, uint32_t pin, app_io_strength_t strength) 来配置IO的驱动电流大小。
+  
+  - 可配置驱动电流的档位分别有：
+  
+    `APP_IO_STRENGTH_LOW, /*< Select low output driver strength. ~ 2mA */ 	     APP_IO_STRENGTH_MEDIUM, /*< Select medium output driver strength. ~ 4mA */ APP_IO_STRENGTH_HIGH, /*< Select high output driver strength. ~ 8mA*/ APP_IO_STRENGTH_ULTRA, /*< Select high output driver strength. ~ 12mA*/`
