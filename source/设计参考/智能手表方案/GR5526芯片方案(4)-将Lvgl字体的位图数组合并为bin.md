@@ -194,3 +194,10 @@
       ```
 
   - 各个字体文件 glyph_bitmap 变量更新雷同
+
+
+
+#### 2.4 脚本工具下载
+
+- [Lvgl字体的位图数组合并为bin文件脚本](https://developers.goodix.com/zh/bbs/download/comment/e63cfb88e1da4d21b000660338cc479a/upload_0e07b822542ba56853a40ef42d154d6e)
+
