@@ -1,3 +1,10 @@
+.wy-nav-side {
+    max-width: 400px;
+}
+.wy-side-scroll {
+    max-width: 400px;
+}
 .wy-nav-content {
     max-width: 75%;
 }
+

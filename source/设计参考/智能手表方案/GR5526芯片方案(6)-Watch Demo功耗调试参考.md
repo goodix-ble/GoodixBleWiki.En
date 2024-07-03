@@ -1,8 +1,8 @@
-## GR5526 Watch Demo功耗调试参考
+## GR5526(6)-Watch Demo功耗调试参考
+[TOC]
 
 
-
->   注:  本文档适用于参考工程 ${GR5526_SDK}\projects\peripheral\graphics\graphics_lvgl_831_gpu_demo
+- 注:  本文档适用于参考工程 ${GR5526_SDK}\projects\peripheral\graphics\graphics_lvgl_831_gpu_demo
 
 
 
