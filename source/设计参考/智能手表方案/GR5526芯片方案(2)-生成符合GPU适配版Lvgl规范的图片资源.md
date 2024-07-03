@@ -7,10 +7,10 @@
 ### 1. 工具介绍
 
 Lvgl 官方提供了一个图片转换工具
-![在这里插入图片描述](https://img-blog.csdnimg.cn/08a4ccda4dfe4ba39854dc6f3dc6db7b.png) 
+![在这里插入图片描述](../../_images/gpu/lvgl_converter.png) 
 
 但由于不方便批量转换、不能同时支持多种格式转换、不能同时生成bin 和描述符文件等原因, 相对只适合用于Demo性环境, 不适合于生产性环境。 因此额外提供了一个小工具 GrLvglImageTool。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/441df0b97e1d4c5dbeae3ebd29455cd2.png) 
+![在这里插入图片描述](../../_images/gpu/lvgl_image_converter.png) 
 
 
 具备以下特点:
@@ -33,9 +33,10 @@ GR5526 优化版Lvgl, 为了渲染性能的优化处理，对图片有如下要�
 
 原始的图片资源, 请UI工程师, 根据项目的需要, 准备为 PNG或 JPG格式. 如果图片有 alpha 图层及透明混合的需要, 准备为PNG 格式
 图片的输出格式, 典型有以下几种:
-![在这里插入图片描述](https://img-blog.csdnimg.cn/728558dd6f494dd4be453f6fea0222e9.png)
 
-
+| RGBA8888 | RGB565 | TSC4       | TSC6a |
+| -------------- | ------------ | -------------- | -------------- |
+| W * H * 4 | W * H * 2 | W * H / 2 | W * H * 3 / 4 |
 
 输入图片的宽度和高度, 需要满足以下需求
 为了突破资源方便管理, 请提前为图片素材准备好一套命名规范. 后面生成图片的源码描述文件时候, 会依赖图片名
@@ -44,7 +45,7 @@ GR5526 优化版Lvgl, 为了渲染性能的优化处理，对图片有如下要�
 
 图片资源准备好后, 再按照如下要求, 放置到不同的目录下
 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/711defae3e084bfb9bd92052e12247ff.png)
+![在这里插入图片描述](../../_images/gpu/711defae3e084bfb9bd92052e12247ff.png)
 
 
 创建一个命名格式为 0x{ADDR}_{DirName} 的目录. 0x{ADDR} 表示bin 文件初始地址下载到 外部Flash 的偏移地址； {DirName} 表示目录名, 可以较随意的取名, 符合目录规范即可。 比如 0x4000_WatchDemo, 就表示资源是准备下载到 外部Flash 偏移 0x4000 开始的地址空间
@@ -62,11 +63,12 @@ GR5526 优化版Lvgl, 为了渲染性能的优化处理，对图片有如下要�
 目录路径不要过深, 最好不包含中文字符, 以免不同环境的兼容性问题
 选中路径要在 0x{ADDR}_{DirName} 目录的父层, 且同目录不要存在其他干扰目录.
 导入路径后, 软件会在左侧列出子目录和图片资源
-![在这里插入图片描述](https://img-blog.csdnimg.cn/8db50c7e75f54ce18fd93d8c23672251.png)
 
+![在这里插入图片描述](../../_images/gpu/8db50c7e75f54ce18fd93d8c23672251.png)
 
 点击Parse, 等待若干时间, 就会成功 生成 bin文件和资源描述源码文件(.c 和.h). 如图
-![在这里插入图片描述](https://img-blog.csdnimg.cn/13472a5fcbe9432393eac299bda51eb3.png)
+
+![在这里插入图片描述](../../_images/gpu/13472a5fcbe9432393eac299bda51eb3.png)
 
 ### 3. 生成资源文件的使用
 

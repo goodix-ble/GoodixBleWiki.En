@@ -9,7 +9,7 @@
 
 Lvgl 官网提供了一个字体资源转换工具（https://lvgl.io/tools/fontconverter）, 用于生成符合原生Lvgl 渲染规范的位图字体.
 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/abbdff6ffc6348999ad838affd47f604.png)
+![在这里插入图片描述](../../_images/gpu/abbdff6ffc6348999ad838affd47f604.png)
 
 原生Lvgl 字体是使用CPU进行位图的渲染, 字形描述位图生成时, 为了节省存储空间, 会进行压缩处理. 在GR5526 上, 为了用加速字体的渲染处理, 字体的渲染接口基于 GR5526 GPU 进行了重新适配优化. GPU 渲染时要求位图地址对齐且字体宽度为偶数. 因此需要对Lvgl 原生的字体转换工具进行优化， 使其生成的字体位图满足 GR5525 适配Lvgl 的渲染需求.
 
@@ -58,8 +58,6 @@ Additional debug options:
 
 #### 2.1 准备工具和字体资源
 下载好 gdx_font_conv.exe 和字体资源, 这里以 msyh.ttf 微软雅黑为例。将二者放置在同一个目录下.
-![在这里插入图片描述](https://img-blog.csdnimg.cn/a34609eabb7240668d7616b24725db7d.png)
-
 
 
 #### 2.2 根据应用需要生成位图源码文件
