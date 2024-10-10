@@ -3,13 +3,14 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-汇顶BLE知识库
+Goodix BLE Wiki
 ===========================================
 
 .. toctree::
    :maxdepth: 12
 
-   开发向导/index
-   应用笔记/index
-   设计参考/index
-   常见问题/index
+   DevGuide/index
+   AppNote/index
+   DesignRef/index
+   FAQ/index
+   Language
