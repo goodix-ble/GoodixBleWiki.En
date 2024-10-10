@@ -1,6 +1,6 @@
 
 
-智能穿戴(手表)技术方案
+Smart Wearable Technology Solution
 ===========================================
 
 .. toctree::
