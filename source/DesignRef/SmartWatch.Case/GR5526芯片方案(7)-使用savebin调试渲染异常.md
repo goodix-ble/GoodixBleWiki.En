@@ -1,26 +1,27 @@
-## GR5526(7)-使用savebin调试渲染异常
+## GR5526 (7)-Debugging rendering exceptions using savebin
 
 [TOC]
 
-### 1. 背景
+### 1. Background
 
-使用LVGL等GUI框架开发显示类应用时，可能会遇到绘制的UI或元素在屏幕上显示异常的问题。排查异常时，可分两个阶段进行分析：
+When using GUI frameworks such as LVGL to develop display applications, you may encounter the problem that the drawn UI or elements display abnormally on the screen. When troubleshooting exceptions, the analysis can be conducted in two stages:
 
-- 第一阶段为渲染阶段：GUI框架渲染UI元素并输出到帧缓冲区Frame Buffer。
+- The first stage is the rendering stage: the GUI framework renders the UI elements and outputs them to the Frame Buffer.
 
-- 第二阶段为刷屏阶段：刷屏驱动接口将Frame Buffer中的数据送显到屏幕。
+- The second stage is the screen brushing stage, in which the screen brushing driver interface sends the data in the Frame Buffer to the screen.
 
-通过分析Frame Buffer的内容，可判断异常发生在渲染阶段还是刷屏阶段，随后进一步定位问题原因。
+By analyzing the content of Frame Buffer, it can be judged whether the exception occurs in the rendering stage or the screen brushing stage, and then further locate the cause of the problem.
 
 
 
-### 2. 分析Frame Buffer
+### 2. Analyze Frame Buffer
 
-#### 2.1 获取帧缓冲参数
+#### 2.1 Get Frame Buffer Parameters
 
-在抓取Frame Buffer数据之前，需要先获取以下帧缓冲区参数。
+Before grabbing the Frame Buffer data, you need to get the following Frame Buffer parameters.
 
-- 帧缓冲区起始地址：如果采用双缓冲区，那么需获取两个缓冲区的地址。一般而言，可在系统启动分配缓冲区空间时将其打印出来。
+- Frame buffer start address: If double buffers are used, the addresses of both buffers are obtained. In general, you can print buffer space when the system starts to allocate it.
+
 
   ```c
   void lv_port_disp_init(void)
@@ -45,16 +46,17 @@
 
   
 
-- 帧缓冲区大小：确定实际的缓冲区大小（长 x 宽 x 像素深度，单位为字节）。
+- Frame Buffer Size: Determines the actual buffer size (length X width X pixel depth in bytes).
 
 
 
-#### 2.2 调试状态下抓取帧缓冲区数据
+#### 2.2 Capture frame buffer data in debugging state
 
-为复现问题，可选择在目标UI渲染后准备刷屏时执行以下操作：
+To reproduce the problem, you can choose to do the following when the target UI is ready to be refreshed after rendering:
 
-- 程序上写入条件让程序在刷屏前Halt住。
-- 进入调试模式，在渲染完成后准备刷屏的接口代码前断点停住。
+- Write conditions on the program to let the program Halt before the screen is refreshed.
+- Enter the debugging mode, and stop the breakpoint before the interface code that is ready to brush the screen after rendering.
+
 
 ```c
 static void _disp_drv_flush(disp_drv_t * dev, void * buff, uint32_t buff_format, uint16_t w, uint16_t h) {
@@ -62,7 +64,8 @@ static void _disp_drv_flush(disp_drv_t * dev, void * buff, uint32_t buff_format,
 }
 ```
 
-待程序在目标位置停住后，通过J-Link连接设备。连接成功后，使用`savebin`命令抓取帧缓冲区数据，参考示例如下：
+After the program stops at the target position, connect the device through J-Link. After the connection is successful, use the `savebin` command to capture the frame buffer data. The reference example is as follows:
+
 
 ```c
 //savebin <filename>, <addr>, <NumBytes> (hex)
@@ -72,34 +75,34 @@ Opening binary file for writing... [D:/fb.rgba565]
 Reading 412232 bytes from addr 0x300A4A90 into file...O.K.
 ```
 
-上述示例将起始地址为0x300A4A90、大小为0x64A48（分辨率为454x454，格式为RGB565，大小为454 x 454 x 2字节，合0x64A48）的帧缓冲区数据Dump到D盘的*fb.rgba565*文件中。
+The above example Dumps the framebuffer data with a starting address of 0x300A4A90 and a size of 0x64A48 (resolution of 454x454, format of RGB565, size of 454 X 454 X 2 bytes, and 0x64A48) into the file of the D disk *fb.rgba565*.
 
-- savebin需根据帧缓冲区的格式计算Size和设置文件格式：
+- Savebin calculates the Size and formats the file according to the format of the framebuffer:
 
-| 常用帧缓冲区格式 | 对应枚举值 | 缓冲区大小公式 | 文件后缀  |
+|Common framebuffer format| 对应枚举值 | 缓冲区大小公式 | 文件后缀  |
 | ---------------- | ---------- | -------------- | --------- |
 | RGBA565          | 0x05       | W x H x 2      | \.rgba565 |
 | RGBA8888         | 0x06       | W x H x 4      | .rgba8888 |
 | TSC4             | 0x12       | W x H / 2      | .tsc4     |
-| TSC6或TSC6a      | 0x13/0x14  | W x H x 6 / 32 | .tsc6     |
+|TSC6 or TSC6a| 0x13/0x14  | W x H x 6 / 32 | .tsc6     |
 
-- 双缓冲区每次刷屏时都会切换缓冲区，可以根据Fush的接口入参确定，不要Dump错误。
+- The double buffer will switch the buffer every time the screen is refreshed. It can be determined according to the input parameters of the Fush interface. Do not Dump the error.
 
 
 
-#### 2.3 检查缓冲区异常
+#### 2.3 Check buffer exception
 
-1. 打开nema_pixpresso软件（位于[GrLvglImageTool](https://developers.goodix.com/zh/bbs/blog_detail/2996e8f9f352491eb0ccca468f28f2ce)软件的CmdTool目录下）。
+1. Open the nema _ pixpresso software (located [GrLvglImageTool](https://developers.goodix.com/zh/bbs/blog_detail/2996e8f9f352491eb0ccca468f28f2ce)in the CmdTool directory of the software).
 
-2. 在nema_pixpresso中，打开2.2章节使用savebin命令所Dump的文件（打开文件时需注意填写正确的分辨率，否则会显示错误），如下图所示：
+2. In the nema _ pixpresso, open the file that was Dumped using the savebin command in Section 2.2 (be careful to fill in the correct resolution when opening the file, otherwise an error will be displayed), as shown in the following figure:
 
 ![1714467382351](../../_images/savebin_gui_nema.png)
 
-3. 查看渲染结果是否符合预期。
+3. See if the rendered results are as expected.
 
-- 若效果不符合预期，则检查渲染阶段。
-- 若效果符合预期，则可判断问题出现在刷屏阶段。
-- 另外还有一种可能，即不小心修改了渲染和刷屏同步的代码，造成刷出去的帧缓冲区还没完成渲染。为避免出现这种情况，将双缓冲的使用同步即可。
+- If the effect is not as expected, check the rendering stage.
+- If the effect is in line with expectations, it can be judged that the problem occurs in the screen brushing stage.
+- Another possibility is to accidentally modify the code that synchronizes rendering and screen brushing, causing the frame buffer to be brushed out before rendering is completed. To avoid this, synchronize the use of double buffering.
 
 
 

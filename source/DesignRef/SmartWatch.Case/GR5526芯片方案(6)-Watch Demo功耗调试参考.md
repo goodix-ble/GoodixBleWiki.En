@@ -1,116 +1,117 @@
-## GR5526(6)-Watch Demo功耗调试参考
+## GR5526 (6)-Power Debug Reference for Watch Demo
 [TOC]
 
 
-- 注:  本文档适用于参考工程 ${GR5526_SDK}\projects\peripheral\graphics\graphics_lvgl_831_gpu_demo
+- Note: This document applies to the Reference Project ${ GR5526 _ SDK } \ projects \ peripheral \ graphics \ graphics _ lvgl _ 831 _ GPU _ demo.
 
 
 
-### 1. 参考工程说明 
+### 1. Refer to the engineering description
 
-- Watch Demo 工程是一个基于 GR5526 SK 开发的智能手表演示工程. 工程采用的 Lvgl 8.31 GUI框架, 基于GR5526的GPU进行移植优化, 具有帧率高、交互效果好、开发效率快等特点, 用户可以基于此工程进行手表或显示类产品的二次开发: 增修UI布局及交互、增加外设处理、增加业务交互逻辑、增修BLE Profile等. 能很好的加速用户的产品周期. 
+- Watch Demo project is a smart watch demo project based on GR5526 SK. The Lvgl 8.31 GUI framework used in the project is transplanted and optimized based on GR5526 GPU, which has the characteristics of high frame rate, good interactive effect and fast development efficiency. Users can carry out secondary development of watch or display products based on this project: add UI layout and interaction, add peripheral processing, add business interaction logic, add BLE Profile, etc. Can accelerate the user's product cycle very well.
 
-- 由于不同产品会设计不同的产品工作模式, 且模式间的状态转换条件各异, 因此产品的功耗(工作)模式设计具有多样性. 此Watch Demo示例工程提供了一种基础的工作模式管理策略, 一方面给用户设计工作模式时提供初级参考, 另一方面也帮助用户理解和快速调试产品的低功耗模式.
-
-
-
-### 2. 低功耗模式背景知识
-
-- 如果需要进行GR5526 芯片级的功耗评估, 建议使用 ${SDK}\rojects\ble\ble_peripheral\ble_app_pcs 工程进行. 并参考文档 《GR5526功耗模式及功耗测量说明》进行, 文档的在线网页连接为:   [GR5526功耗模式及功耗测量说明](https://docs.goodix.com/zh/online/detail/power_application_bl_b/V1.0/61ae20c6ecf2d6ea57ef7e7b77f80c08),  本文的功耗背景知识也依赖这篇文档, 请先行阅读.
--  如果要学习了解OS 环境下的功耗业务逻辑, 请查看工程       ${SDK}\projects\ble\ble_peripheral\ble_app_template_freertos, 它基于GR5526移植了FreeRTOS 系统、适配了休眠策略、开启了基础的BLE广播, 适合作为从OS开始从零架构的IOT类产品的模板工程. 工程对应的在线参考文档 [GR5xx FreeRTOS示例手册](https://docs.goodix.com/zh/online/detail/freertos_bl/V3.1/1018832044f1b7ff252f659fd41a50a2)
-- GR5xxx 系列芯片, FreeRTOS 环境下的低功耗休眠策略和 Bare (裸机)环境下, 存在差异, 前者基于 FreeRTOS 空闲任务的Tickless模式进行设计, 后者的休眠裸机在主栈主循环中管理。注意根据产品是否采用OS来选择合适的工程模板.
+- Because different products will be designed with different working modes, and the state transition conditions between modes are different, the design of power consumption (working) modes of products is diverse. This Watch Demo sample project provides a basic working mode management strategy. On the one hand, it provides a primary reference for users when designing working modes. On the other hand, it also helps users understand and quickly debug the low-power mode of the product.
 
 
 
-### 3. 基于Watch Demo 的低功耗调试
+### 2. Low Power Mode Background
 
-#### 3.1 原则
+- If a chip level power evaluation of the GR5526 is required, it is recommended that ${ SDK } \ rojects \ ble \ ble _ peripheral \ ble _ app _ PCs Engineering be used. Refer to the document "GR5526 Power Consumption Mode and Power Consumption Measurement Description". The online webpage of the document is: [GR5526 Power Mode and Power Measurement Description](https://docs.goodix.com/zh/online/detail/power_application_bl_b/V1.0/61ae20c6ecf2d6ea57ef7e7b77f80c08). The background knowledge of power consumption in this document also depends on this document. Please read it first.
+-  If you want to learn about the power consumption business logic in the OS environment, see the project ${ SDK } \ projects \ ble \ ble _ peripheral \ ble _ app _ template _ freertos. Based on GR5526, it transplants the FreeRTOS system, adapts the sleep strategy, and opens the basic BLE broadcast. It is suitable to be used as a template project for IOT products from OS to zero architecture. Online reference documents corresponding to the project
+- For GR5xxx series chips, the low-power sleep strategy in FreeRTOS environment is different from that in Bare (bare metal) environment. The former is designed based on the Tickless mode of FreeRTOS idle tasks, while the latter is managed in the main stack and main loop. Take care to select the appropriate engineering template depending on whether the product uses the OS.
 
-由于低功耗调试基于 GR5526 SK 开发板进行, 跟产品环境具备很大的差异, 比如: 使用的I/O 排布不同、挂载的外设不同、工作模式设计不同、Demo工程的业务逻辑不完整等原因, 本节主要描述调试的一般方法, 关于外设休眠处理方法、漏电的查找分析等一些业务场景强相关的调试, 并不再仔细描述. 
+
+
+### 3. Low Power Debugging Based on Watch Demo
+
+#### 3.1 Principle
+
+Since the low-power consumption debugging is based on the GR5526 SK development board, it is quite different from the product environment, for example, the I/O arrangement used is different, the mounted peripherals are different, the working mode design is different, and the business logic of the Demo project is incomplete. This section mainly describes the general method of debugging. Debugging strongly related to some business scenarios, such as peripheral sleep processing method and leakage search and analysis, will not be described in detail.
 
  
 
-#### 3.2 测试环境搭建
+#### 3.2 Test environment setup
 
-- 本测试采用电流回路测量法来判断系统的功耗状态, 另外也可以使用电压供电方法. 
+- In this test, the current loop measurement method is used to determine the power consumption state of the system, and the voltage supply method can also be used.
 
-- 下面的硬件配置适用于 GR5526 SK Rev.B 和Rev.C 电路版本. 点击参考 [GR5526 SK Rev.C 电路图](https://www.goodix.com/zh/docview/GR5526-SK-BASIC-RevC_V1.0?objectId=278&objectType=document&version=449)
+- The following hardware configurations apply to the GR5526 SK Rev. B and Rev. C circuit versions. Click Reference [GR5526 SK Rev. C Circuit Diagram](https://www.goodix.com/zh/docview/GR5526-SK-BASIC-RevC_V1.0?objectId=278&objectType=document&version=449)
 
-  - KeySight 设置为电流测量模式
+  - Key Sight is set to current measurement model
 
-  - 取掉 J1 的跳线帽. KeySight 输出Output+ 连接 J1.Pin1; KeySight 输出Output- 连接  J1.Pin2. 将KeySight串入电流回路
+  - Remove the jumper cap of J1. Key Sight Output + connection J1.Pin1; Key Sight Output-Connect J1.Pin2. Connect the Key Sight to the current circuit in series
 
-  - 拨码开关 S1 拨码模式: Pin2 和Pin3相连, Pin4和Pin5相连
+  - Dial switch S1 dial mode: Pin2 and Pin3 are connected, Pin4 and Pin5 are connected
 
-  - 拨码开关 S10 拨码模式为:  拨至VBAT 一侧
+  - Dial mode of dial switch S10: dial to VBAT side
 
-  - 拨码开关 S11 拨码模式为: 拨至 VCC一侧
+  - The dial mode of dial switch S11 is: dial to VCC side
 
-  - JLink-USB 口接PC USB, 用于电路供电和连接Jlink 调试.
+  - JLink-USB port is connected to PC USB for circuit power supply and Jlink debugging.
 
   - ![1705548135991](../../_images/app/measure_power.png)
 
     
 
-#### 3.3 Watch Demo工程跟休眠相关的主要任务
+#### 3.3 The main tasks of the Watch Demo project related to hibernation
 
-- 从 main 函数启动BLE 协议栈, 开启了名为  "SmartWatch" (早前版本广播名为: "5526_SK.X") 的广播, 并创建了几个参考BLE Profile
+- Started the BLE stack from the main function, opened a broadcast called "SmartWatch" (earlier broadcasts were called: "5526 _ SK. X" "), and created several reference BLE Profiles
 
-- Touch 检测任务, 主要用于周期性检测Touch的输入, 作为 GUI渲染任务的驱动事件输入；另外扩展了应用层面的工作状态管理 (用户可以根据产品重新设计工作状态管理逻辑)
-- Lvgl GUI渲染任务, 用于处理整个UI的渲染和显示
-- UI 外部事件处理任务, 负责将产生的按键事件等分发给 GUI任务处理
-- FreeRTOS 的 Idle 任务, 处理系统空闲、休眠唤醒的逻辑入口
+- The Touch detection task is mainly used to periodically detect the input of Touch as the driving event input of the GUI rendering task; in addition, the working state management at the application level is extended (the user can redesign the working state management logic according to the product).
+- Lvgl GUI rendering task, which handles the rendering and display of the entire UI
+- The UI external event processing task is responsible for distributing the generated key events to the GUI task processing
+- The Idle task of FreeRTOS handles the logical entry of system idle, sleep and wake-up.
 
  
 
-#### 3.4 Watch Demo的工作模式设计
+#### 3.4 Working mode design of Watch Demo
 
-在本参考工程中, 设计了三种应用层的工作模式:  
+In this reference project, three working modes of the application layer are designed:
 
-- Active 亮屏工作模式:  所有应用业务均在工作状态, GUI任务实时渲染, 屏幕常亮
+- Active bright screen working mode: all application services are in working state, GUI tasks are rendered in real time, and the screen is always bright.
 
-- 熄屏工作模式: 在这种模式下, 其他应用业务正常运行, 只有屏幕显示被关闭, GUI渲染及刷屏行为被暂停, 持续若干秒时间。 如果在此时间段内, 系统检测到有触摸屏幕的行为, 会直接点亮屏幕, 回到Active 模式工作; 如果超过时间段未检测到触摸行为, 进入系统的熄屏幕休眠模式
+- Screen-off working mode: In this mode, other application services run normally, only the screen display is turned off, and GUI rendering and screen brushing are suspended for several seconds. If the system detects the behavior of touching the screen within this period of time, it will directly light up the screen and return to Active mode. If no touch activity is detected over a period of time, the system enters a screen-off sleep mode
 
-- 熄屏休眠(Sleep)模式:  在这种模式下, GUI 相关的任务不工作、屏幕熄灭、所有外设按照产品设计进入掉电或周期性执行状态、芯片停止工作进入休眠。 熄屏休眠模式不会阻止周期性任务的执行. 周期性任务执行时, 芯片会重新唤醒工作, 完成后继续进入Sleep模式.  本参考工程的Sleep 模式下, 由于将Touch 停止工作(未实现休眠中断触发唤醒、用户需根据产品需要另行实现), 额外增加了按键唤醒. 用户可以通过SK 的 K1 & K2 按键唤醒屏幕、上电或唤醒所有外设， 让系统重新进入Active 亮屏工作模式.
-
-  
-
-一般情况下, 上述三种工作模式的电流依次从大到小, 根据产品不同，熄屏休眠模式的底电流 应该在 几十~几百uA 级别 (注: 芯片本身的休眠电流只有若干uA,这里的举例值包含了其他各类耗电外设)。
+- Screen-off Sleep mode: In this mode, GUI-related tasks do not work, the screen is off, all peripherals enter the power-down or periodic execution state according to the product design, and the chip stops working and enters Sleep. The screen-off sleep mode does not prevent the execution of periodic tasks. When the periodic task is executed, the chip will wake up again and continue to enter Sleep mode after completion. In the Sleep mode of this reference project, because the Touch is stopped working (the sleep interrupt trigger wake-up is not realized, and the user needs to realize it separately according to the product needs), an additional key wake-up is added. Users can wake up the screen, power up or wake up all peripherals through SK's K1 & K2 buttons, so that the system can re-enter the Active bright screen working mode.
 
   
 
-#### 3.5 休眠模式的调试
+In general, the currents of the above three working modes are from large to small. According to different products, the bottom current of the screen-off sleep mode should be at the level of tens to hundreds of uA (Note: the sleep current of the chip itself is only several uA, and the example values here include other power-consuming peripherals).
+
+  
+
+#### 3.5 Sleep Mode Debugging
 
 
 
-##### 3.5.1 原则
+##### 3.5.1 Principles
 
-系统休眠策略的大致原则是: 
+The general principles of the system sleep strategy are:
 
-- 系统非 Idle 任务运行完毕、BLE 当前工作完成、所有外设均工作完成处于Idle 状态、下一个可执行任务距离当前时间不少于5ms.  当进入 FreeRTOS的 Idle 任务时,  就会允许芯片进入Sleep 模式. 
-
-
-
-##### 3.5.2 通用条件
-
-系统进入低功耗休眠的前置条件一般是:
-
-- 检查是否有一直工作的任务, 确保任务设计符合产品逻辑
-- 检查是否有小于 5ms 的周期性事件
-- 确保 BLE 应用符合规范
-- 确保所有外设均已没有在工作处于Idle状态  
-
-一般情况下, 前面三个条件很容易检查和满足, 比较小的概率成为芯片不能休眠的原因. 更多概率的是最后一种情况: **有外设还处在工作态**. 
+- The non-idle task of the system is completed, the current work of BLE is completed, all peripherals are in the Idle state, and the distance between the next executable task and the current time is not less than 5ms. When the Idle task of FreeRTOS is entered, the chip is allowed to enter Sleep mode.
 
 
 
-##### 3.5.3 判断外设是否处于工作状态的方法
+##### 3.5.2 General conditions
 
-找出外设是否处于工作态的方法也很简单, SDK提供了2 个 u32 变量的bit位来记录每个外设当前是否在工作。 
+The preconditions for the system to enter low-power sleep are generally:
 
--   变量本身定义在SDK内部, 在头文件 ${SDK}\drivers\inc\hal\gr55xx_hal_pwr_mgmt.h 做了extern 引用. 
--   下面是变量名和对应的bit 位枚举, 枚举值对应的bit位标示了对应外设当前的状态：如果位1, 正在被使用; 如果为0, 则已进入idle 模式. 
--   当2个变量的所有位 均为0时, 表明外设允许休眠的条件也达成.
+- Check if there are tasks that work all the time to ensure that the task design is in line with the product logic.
+- Check for periodic events less than 5ms
+- Ensure BLE application meets specification
+- Make sure that all peripherals are not working in the Idle state
+
+In general, the first three conditions are easy to check and satisfy, and the relatively small probability is the reason why the chip cannot sleep. More probable is the last case: **Some peripherals are still in working state**.
+
+
+
+##### 3.5.3 Method for determining whether the peripheral is in working state
+
+It is also easy to find out whether the peripheral is working or not. The SDK provides two bits of u32 variables to record whether each peripheral is working or not.
+
+-   The variable itself is defined inside the SDK, and extern reference is made in the header file ${ SDK } \ drivers \ Inc \ Hal \ gr55xx _ Hal _ PWR _ mgmt. H.
+-   The following is an enumeration of the variable name and the corresponding bit. The bit corresponding to the enumeration value indicates the current state of the corresponding peripheral: if the bit is 1, it is being used; If 0, idle mode has been entered..
+-   When all bits of the 2 variables are 0, the condition that the peripheral is allowed to sleep is also met.
+
 
 
 
@@ -118,7 +119,8 @@
 extern volatile uint32_t g_devices_state; 
 ```
 
-对应管理的外设数量为32个, 最低bit位表征[DMA0]的是否工作，到高bit位表征[USB]是否工作. 
+The number of corresponding managed peripherals is 32. The lowest bit represents whether [DMA0] works, and the highest bit represents whether [USB] works.
+
 
 ```c
 		typedef enum
@@ -161,11 +163,13 @@ extern volatile uint32_t g_devices_state;
 
 
 
+
  ```c
 extern volatile uint32_t g_extra_devices_state;
  ```
 
-对应管理的外设如下:
+The corresponding managed peripherals are as follows:
+
 
 ```
 		typedef enum
@@ -180,47 +184,47 @@ extern volatile uint32_t g_extra_devices_state;
 
 
 
-##### 3.5.4 举例
+##### 3.5.4 Examples
 
--   如果进入Idle准备休眠前做状态检查时, 发现 g_extra_devices_state 变量的值为 2, 对应置位的bit位是 EXTRA_DEVICE_NUM_GPU， 表明当前的GPU 还没有完成工作. 因此还不能休眠
+-   If the value of the G _ extra _ devices _ state variable is found to be 2 during the status check before entering the Idle to prepare for sleep, the corresponding set bit is a EXTRA _ DEVICE _ NUM _ GPU, indicating that the current GPU has not completed its work. So you can't sleep yet.
 
-当找到了影响休眠的外设后, 进一步分析其还在工作的原因, 如果此时不应该还在工作, 则找出其不正常工作的原因进行解决即可.
+After finding the peripheral that affects dormancy, further analyze the reason why it is still working. If it should not be working at this time, find out the reason why it is not working properly and solve it.
 
-当休眠失败的情况下，查看外设工作状态变量值可以使用以下几种方法:
+In case of sleep failure, the following methods can be used to view the value of the peripheral working state variable:
 
-- 使用Keil的Debug 模式, 断点断在 port_pm.c 的函数 pwr_mgmt_enter_sleep_with_cond 种, 查看2个变量的值. 这个方法效率较低 
-- 通过Map表, 获得2个变量的SRAM地址, 使用 Jlink 连接SK 板查看.
-- 使用 Ozone 调试工具, 给变量增加定时刷新监测. 通过判断哪些bit 为1 进一步分析异常工作的外设. 
+- Using Keil's Debug mode, the breakpoint breaks the PWR _ mgmt _ enter _ sleep _ with _ cond of the function in the port _ pm. C to view the values of two variables. This method is less efficient.
+- Obtain the SRAM addresses of the two variables through the Map table, and use Jlink to connect the SK board to view.
+- Use the Ozone debugging tool to add timed refresh monitoring to the variables. Further analyze the abnormal working peripheral by determining which bits are 1.
 
-当芯片能周期性正常休眠时, 连接的JLink 会由于休眠自动断开, 这个也可以作为辅助判断芯片是否进入休眠的一个条件。
-
-
-
-#### 3.6 各工作模式的电流波形
-
-波形测量使用的KeySight 串入电流回路的方法,如果使用电压供电法, 波形有差异. 波形主要反映各模式电流的数量级差异, 用于判断工作模式是否切换正常, 不反应实际的电流精度 (没有仔细的做关闭外设、查漏电等    涉及具体业务层的操作)
+When the chip can periodically sleep normally, the connected JLink will be automatically disconnected due to sleep, which can also be used as an auxiliary condition to determine whether the chip enters sleep.
 
 
 
-##### 3.6.1 工作模式切换的电流波形
+#### 3.6 Current waveform of each operation mode
 
-- 波形1: 上电后从 **Active模式** 到 **熄屏模式** 到 **休眠模式** 的电流波形变化
+Waveform measurement uses the method of KeySight series connection into the current loop. If the voltage supply method is used, the waveform is different. The waveform mainly reflects the magnitude difference of the current of each mode, which is used to judge whether the working mode is switched normally, and does not reflect the actual current accuracy (without carefully closing the peripheral, checking the leakage and other operations related to the specific business layer).
+
+
+
+##### 3.6.1 Current waveform of working mode switching
+
+- Waveform 1: Current waveform change from **Active mode**to **Screen-off mode**to **Sleep mode**after power-on
 
   ![1705548617340](../../_images/app/sk_watch_demo_current_1.png)
 
 
 
-##### 3.6.2 带BLE广播休眠的电流波形
+##### 3.6.2 Current Waveform with BLE Broadcast Sleep
 
-- 波形2: 休眠模式下的电流波形展开
+- Waveform 2: current waveform expansion in sleep mode
 
-  >  周期性波形为 BLE广播
+  >  Periodic waveform is BLE broadcast
 
   ![1705548693897](../../_images/app/sk_watch_demo_current_2.png)
 
 
 
-当系统功耗完成模式层面的调试后, 就可以进入细致化调试阶段, 包括逐个优化各个外设的休眠策略、检查系统漏电、完善系统整体的功耗调优.
+When the system power consumption is debugged at the mode level, it can enter the detailed debugging stage, including optimizing the sleep strategy of each peripheral one by one, checking the system leakage, and improving the overall power consumption tuning of the system.
 
 
 
