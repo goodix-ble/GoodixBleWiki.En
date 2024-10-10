@@ -1,11 +1,11 @@
 
 
-技术方案
+Tech Case
 ===========================================
 
 .. toctree::
    :maxdepth: 12
 
-   智能手表方案/index
-   FMNA方案/index
+   SmartWatch.Case/index
+   FMNA.Case/index
 

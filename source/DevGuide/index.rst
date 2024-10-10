@@ -1,11 +1,11 @@
 
 
-开发向导
+Development Guide
 ===========================================
 
 .. toctree::
    :maxdepth: 6
 
-   使用向导
-   开发向导
+   UserGuide
+   DevGuide
 

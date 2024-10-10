@@ -1,14 +1,14 @@
 
 
-应用笔记
+Application Notes
 ===========================================
 
 .. toctree::
    :maxdepth: 12
 
-   系统/index
-   外设/index
-   蓝牙/index
-   工具/index
-   硬件/index
-   应用/index
+   System/index
+   Peripherals/index
+   BLE/index
+   Tools/index
+   Hardware/index
+   Application/index
