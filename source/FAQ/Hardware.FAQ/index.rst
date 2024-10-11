@@ -1,6 +1,6 @@
 
 
-Business for Hardware
+FAQ for Hardware
 ===========================================
 
 .. toctree::
