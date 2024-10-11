@@ -11,7 +11,7 @@
 # from recommonmark.transform import AutoStructify
 
 
-project = '汇顶BLE知识库'
+project = 'Knowledge Base for Goodix BLE'
 copyright = '2024, Goodix'
 author = 'nix.long'
 release = 'v1.0'
