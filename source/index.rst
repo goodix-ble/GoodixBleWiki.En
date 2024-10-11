@@ -9,8 +9,8 @@ Goodix BLE Wiki
 .. toctree::
    :maxdepth: 12
 
-   开发向导/index
-   应用笔记/index
-   设计参考/index
-   常见问题/index
+   DevGuide/index
+   AppNote/index
+   DesignRef/index
+   FAQ/index
    Language
