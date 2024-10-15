@@ -1,27 +1,26 @@
-# Goodix BLE知识库使用向导
+# Goodix BLE Knowledge Base Usage Wizard
 
 
 
-## 1. 知识分类
+## 1. Knowledge Categorization
 
-​	知识库包括开发向导、应用笔记、技术方案和常见问题4大类知识模块。
+The knowledge base includes 4 categories of knowledge modules: Development Wizard, Application Notes, Technical Solutions and FAQ.
 
-1.  开发向导：帮助用户快速索引知识。用户可以从这里快速获取产品信息、技术文档、源码SDK、技术社区、代理服务等全方位信息。
+1. Development Guide: helps users to quickly index knowledge. Users can get product information, technical documents, source code SDK, technical community, agent service and other information here. 2.
 
-2.  应用笔记：总结了Bluetooth LE SoC项目开发中各模块的重要知识点和使用要点，并采用小篇幅的应用笔记方式呈现给用户。应用笔记按照系统、外设、蓝牙、工具、硬件等维度进行分类索引。用户可以通过页面左侧的导航菜单快速定位。
+2. Application Notes: Summarizes the important knowledge and usage points of each module in the development of Bluetooth LE SoC project, and presents them to the users in the form of small application notes. The application notes are categorized and indexed according to the dimensions of system, peripherals, Bluetooth, tools and hardware. Users can quickly locate them through the navigation menu on the left side of the page.
 
-3.  技术方案：从产品维度系统性地介绍市场成熟的软件参考方案，方便用户参考使用，帮助产品项目快速落地。
+3. Tech Case: systematically introduce the market mature software reference solutions from the product dimension, which is convenient for users to refer to and use, and helps the product project to land quickly.
 
-4.  常见问题：类似于应用笔记，将Bluetooth LE SDK和SoC开发使用过程常遇到和咨询的问题进行总结，形成FAQ文档，方便用户查阅。常见问题按照系统、外设、蓝牙、工具、硬件、商务等维度进行分类索引。用户可以通过页面左侧的导航菜单快速定位。
+4. FAQ: Similar to the application notes, we summarize the frequently encountered and inquired questions during the development and use of Bluetooth LE SDK and SoC, and form a FAQ document for users' easy reference. The FAQ is categorized and indexed according to the dimensions of system, peripherals, Bluetooth, tools, hardware, and business. Users can quickly locate them through the navigation menu on the left side of the page.
 
 
 
-## 2. 使用向导
-1. 索引方式阅读
+## 2. User Wizard
+1. Indexed Reading
 
-    通过 ” 知识分类 “  章节熟悉知识库的知识分类方法，然后索引跳转至对应知识页面正向阅读，获取所需知识点。
+    Familiarize yourself with the knowledge classification method of the knowledge base through the “ Knowledge Classification ” section, and then jump to the corresponding knowledge page to read in the right direction to get the required knowledge.
 
-2. 查询方式获取
+2. Querying
 
-   对于使用蓝牙芯片或SDK过程中遇到的特定问题，可以根据问题的关键字，在查询框进行关键字搜索，查看是否已经有同类问题的解决方法描述。
-
+   For specific problems encountered during the use of Bluetooth chips or SDK, you can perform a keyword search in the query box according to the keyword of the problem to see if there is already a description of the solution to the same problem.
