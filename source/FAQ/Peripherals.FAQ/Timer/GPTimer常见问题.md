@@ -1,37 +1,38 @@
-## GPTimer常见问题
+## FAQ for GPTimer
 
 
 
-### 1. _app_tim.c_与_app_timer.c_有什么区别？哪些定时器是低功耗定时器？哪些不是？
-   - GR5xx SoC，基于系统时钟的定时器有Timer和Dual Timer，这两个都不是低功耗定时器，在系统睡眠的时候不能工作；基于系统慢速时钟（频率一般为32K左右）的定时器有Sleep Timer和RTC，他们是低功耗定时器，在系统睡眠的时候可以工作。
+### 1. What is the difference between _app_tim.c_ and _app_timer.c_? Which timers are low power timers? Which ones are not?
+   - GR5xx SoC, the timers based on system clock are Timer and Dual Timer, both of which are not low-power timers and can't work when the system sleeps; the timers based on system slow clock (the frequency is usually around 32K) are Sleep Timer and RTC, they are low-power timers and can work when the system sleeps.
 
-   - 基于Timer构造的App驱动文件为_app_tim.c_。
-   
-     基于Dual Timer构建的驱动文件为_app_dual_tim.c_。
-   
-     基于Sleep Timer构建的驱动文件为_app_timer.c_。
-   
-     基于RTC构建的驱动文件为_app_rtc.c_。
-
-
-
-### 2. 使用Timer/Dual Timer定时，利用中断里翻转IO的方式测试定时准确度，发现误差比较大，原因是什么？
-
--   中断被抢占：检查是否有比Timer/Dual Timer中断优先级更高的中断频繁来抢占，如果存在，需要提高Timer中断的优先级。
-
-- 中断响应慢：检查从进入TIMERx_IRQHandler到用户的回调函数的执行时间，建议所有函数都放在RAMCODE执行。如有必要，可重新实现TIMERx_IRQHandler。
-
-- IO翻转需要调用LL层的接口，这样IO控制的效率更高。
+        - The App driver file constructed based on Timer is  app_tim.c.
+        
+        - The driver file constructed based on Dual Timer is  app_dual_tim.c.
+        
+        - The driver file constructed based on Sleep Timer is  app_timer.c.
+        
+        - The driver file built based on RTC is  app_rtc.c.
 
 
 
-### 3. 使用Timer/Dual Timer定时，利用中断里翻转IO的方式测试定时准确度，发现第一个周期的误差很大，后面的周期符合要求，原因是什么？
+### 2. Using Timer/Dual Timer timing, test the timing accuracy by flipping the IO in interrupt, and found the error is relatively large, what is the reason?
 
-- 其实每个定时周期时间到，响应中断都需要时间。而第一个周期响应时间显得更长，主要是响应过程有部分函数（比如用户的回调函数）是在Flash上，第一次从Flash加载到Cache需要更长时间。
+- Interrupts are being preempted: check if there are interrupts with higher priority than Timer/Dual Timer interrupts that are frequently preempted, if there are, you need to increase the priority of Timer interrupts.
 
-- 定时时间到，中断响应需要从进入TIMERx_IRQHandler()开始一步一步执行到用户设置的回调函数，然后在回调函数里面执行IO控制操作。为了提高效率，可以在_app_tim.c/app_dual_tim.c_重构TIMERx_IRQHandler，然后把要求优先响应的IO控制放在TIMERx_IRQHandler的最前面；以Timer0为例：
+- Slow interrupt response: check the execution time from entering TIMERx_IRQHandler to the user's callback function, it is recommended that all functions are placed in RAMCODE for execution. If necessary, reimplement TIMERx_IRQHandler.
 
-    ```C
+- The IO flip-flop needs to call the LL layer interface so that the IO control is more efficient.
+
+
+
+### 3. Using Timer/Dual Timer timing, test the timing accuracy by flipping the IO in the interrupt, and found that the error of the first cycle is very large, and the later cycles meet the requirement, what is the reason?
+
+- In fact, each timing cycle time to respond to the interrupt will take time. In fact, it takes time to respond to the interrupt when the time of each timing cycle comes, but the response time of the first cycle is longer, mainly because some functions (such as user callback functions) are on Flash, and it takes longer time to load them from Flash to Cache for the first time.
+
+- When the timer is up, the interrupt response needs to be executed step by step from entering TIMERx_IRQHandler() to the callback function set by the user, and then the IO control operation is executed inside the callback function. To improve efficiency, you can refactor TIMERx_IRQHandler in _app_tim.c/app_dual_tim.c_, and then put the IO control that requires a priority response at the top of TIMERx_IRQHandler; take Timer0 as an example:
+
+
+```C
     #if 0
     #define TIMER_HANDLER(index, val) \
     SECTION_RAM_CODE void TIMER##index##_IRQHandler(void)\
@@ -53,7 +54,4 @@
     {
         hal_timer_irq_handler(&p_tim_env[APP_TIM_ID_1]->handle);
     }
-    ```
-
-
-​      
+```

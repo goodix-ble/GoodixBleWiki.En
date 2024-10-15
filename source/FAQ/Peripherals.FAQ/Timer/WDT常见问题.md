@@ -1,18 +1,18 @@
-## WDT常见问题
+## FAQ for WDT
 
 
 
-### 1. 看门狗不工作（或者在预定时间内没有喂狗，但没产生复位）的原因有哪些？
+### 1. What are the reasons why the watchdog does not work (or does not feed the dog for a predetermined period of time, but does not generate a reset)?
 
-- 首先检查看门狗初始化接口的返回值，确认是否初始化成功。经常出现alarm_counter的值超出范围而导致初始化不成功。初始化参数的具体设置方法请参考《[GR5xx APP驱动用户手册](https://docs.goodix.com/zh/online/app_driver_bl/V1.4)》“APP AON_WDT驱动”章节。
-- 通过调用ll_aon_wdt_is_enabled()接口检查看门狗是否使能，会不会因为软件篡改导致看门狗被异常关闭。
-- 通过调用ll_aon_wdt_get_counter()接口检查看门狗计数是否在运行。
-- 如果看门狗计数没有运行，在看门狗已使能的前提下，检查慢速时钟是否正常。如果慢速时钟源是外部32K晶体，需要检查32K晶体是否正常。
+- First check the return value of the watchdog initialization interface to make sure whether the initialization is successful. Often the value of alarm_counter is out of range and the initialization is not successful. Please refer to the chapter “APP AON_WDT Driver” in [GR5xx APP Driver User's Manual](https://docs.goodix.com/zh/online/app_driver_bl/V1.4) for the details of the initialization parameters.
+- Check whether the watchdog is enabled or not by calling ll_aon_wdt_is_enabled() interface, and whether the watchdog will be abnormally shut down due to software tampering.
+- Check if the watchdog counter is running by calling the ll_aon_wdt_get_counter() interface.
+- If the watchdog counter is not running, check that the slow clock is normal, provided that the watchdog is enabled. If the slow clock source is an external 32K crystal, you need to check if the 32K crystal is normal.
 
 
 
-### 2. 看门狗复位时间不对，原因是什么？
+### 2. The watchdog reset time is not correct, what is the reason?
 
-- 检查Counter的值是否正确，注意GR551x Counter的单位是慢速时钟的Tick，其他芯片Counter单位是ms。
-- 把慢速时钟频率SystemCoreLowClock打印出来，检查慢速时钟频率与理解的是否存在很大偏差。
-- GR5525/GR5526/GR533x系列芯片在SDK上默认每隔30s会重新校准测算SystemCoreLowClock的值，如果在30s内慢速时钟频率发生较大变化，由于还没来得及校准，会因为频率偏差导致看门狗实际计数时间有较大偏差。
+- Check if the value of Counter is correct, note that the unit of GR551x Counter is Tick of slow clock, and the unit of Counter of other chips is ms.
+- Print out the slow clock frequency SystemCoreLowClock and check whether the slow clock frequency deviates greatly from the understanding.
+- GR5525/GR5526/GR533x series chips will re-calibrate the value of SystemCoreLowClock every 30s by default on the SDK. If the slow clock frequency changes greatly within 30s, it will lead to a large deviation of the actual counting time of the watchdog because of the frequency deviation as it hasn't had time to calibrate yet.

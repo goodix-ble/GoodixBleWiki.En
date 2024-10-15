@@ -1,32 +1,31 @@
-# SPI常见问题
+## FAQ for SPI
 
 
 
-## 1. SPI支持的最大频率是多少？
+### 1. What is the maximum frequency supported by SPI?
 
--   SPI模块分为SPI Master和SPI Slave，其中SPI Master支持的最大频率是系统最高频率的二分之一，SPI Master支持的分频系数为2～65535之间的偶数，不支持奇数分频。
--   各款芯片SPI Master模块的最大频率支持如下：
-    -   GR551x全系列芯片最高主频为64 MHz，SPI Master的最大工作频率为32 MHz，时钟源为系统时钟。
-    -   GR5525全系列芯片最高主频为96 MHz，SPI Master的最大工作频率为48 MHz，时钟源为外设时钟。
-    -   GR5526全系列芯片最高主频为96 MHz，SPI Master的最大工作频率为48 MHz，时钟源为外设时钟。
-    -   GR533x全系列芯片最高主频为64 MHz，SPI Master的最大工作频率为32 MHz，时钟源为外设时钟。
-
-
-
-## 2. 什么是软件片选，什么是硬件片选，使用有什么区别？
-
--   软件片选：在进行SPI传输前，由软件拉低控制CS引脚所在的IO；SPI传输完成后，由软件拉高控制CS引脚所在的IO。CS的行为由软件代码控制。这个时候的CS引脚IO需要配置为Output模式。
--   硬件片选：SPI的片选信号的拉低和拉高，全部由芯片的SPI模块负责，这个时候CS引脚所在IO需要配置为CS功能的Mux模式。
--   为什么会存在软件片选？
-    -   SPI在发送数据时，有可能因为数据量大、传输速率高或CPU来不及处理等原因，发送时向SPI FIFO喂数据的速度跟不上导致FIFO变空，如果此时使用了硬件片选，就会将CS进行自动拉高释放，而产生错误的访问时序。
--   什么时候需要使用软件片选？
-    -   当传输数据量比较大、SPI频率配置比较高时，建议使用软件片选。由于数据量大小和频率高低是一个相对概念，无法精确地基于场景进行计算，因此建议所有使用SPI传输的场景都启用软件片选。这个建议适用于GR551x、GR5525、GR5526、GR533x所有系列芯片。
-    -   SPI在App驱动层预置了软件片选支持，使用的时候注意开启相关控制宏即可。详情可参考_app_spi.c_中的驱动代码。
+- SPI modules are divided into SPI Master and SPI Slave, in which the maximum frequency supported by SPI Master is one-half of the maximum system frequency. SPI Master supports even number of crossover coefficients between 2 and 65535, and does not support odd number of crossover frequencies.
+- The maximum frequency supported by each chip SPI Master module is as follows:
+    - GR551x full series of chips maximum main frequency is 64 MHz, SPI Master's maximum operating frequency is 32 MHz, the clock source is the system clock.
+    - The maximum frequency of GR5525 chips is 96 MHz, the maximum frequency of SPI Master is 48 MHz, and the clock source is the peripheral clock.
+    - GR5526 full series chips have a maximum frequency of 96 MHz, the maximum frequency of SPI Master is 48 MHz, and the clock source is the peripheral clock.
+    - GR533x full series chips have a maximum main frequency of 64 MHz, a maximum SPI Master frequency of 32 MHz, and a peripheral clock source.
 
 
 
-## 3. SPI接收数据时发生了回调错误事件APP_SPI_EVT_ERROR，该怎么处理？
+### 2. What is software chip select, what is hardware chip select, and what is the difference in usage?
 
--   SPI在接收数据的时候，有可能因为数据量大、传输速率高或CPU来不及处理等原因，导致SPI模块的接收FIFO被Slave发送过来的数据塞满，发生FIFO接收溢出错误（Receive Overflow Error）。当发生这个错误时，会通过回调事件APP_SPI_EVT_ERROR告知用户。正确的处理方法是，调用接口重新收一遍数据。另外，这种情况，请使用DMA传输模式降低概率。
--   如果不是上述原因，同时使用DMA传输方式的话，则可能是DMA的传输数据量过大，需要限制DMA单次传输在4095拍以内。
+- Software chip select: Before SPI transfer, the software pulls down the IO where CS pin is located; after SPI transfer is completed, the software pulls up the IO where CS pin is located. the behavior of CS is controlled by the software code. The CS behavior is controlled by the software code. The CS pin IO at this time needs to be configured as Output mode.
+- Hardware Chip Select: The pull-down and pull-up of the SPI chip select signal are all taken care of by the SPI module of the chip, and the IO where the CS pin is located at this time needs to be configured as the Mux mode of the CS function.
+- Why does software chip select exist?
+    - When SPI sends data, it is possible that because of the large amount of data, high transmission rate or CPU can not process in time, etc., the speed of feeding data to the SPI FIFO cannot keep up with the speed of sending, resulting in the FIFO becomes empty, and if the hardware chip select is used at this time, the CS will be automatically pulled up to release, and the wrong access timing will be generated.
+- When do I need to use software chip select?
+    - It is recommended to use software chip select when the transmission data volume is large and the SPI frequency configuration is high. Since data size and frequency are relative concepts that cannot be calculated precisely based on the scenario, it is recommended that software chip select be enabled for all scenarios that use SPI transmission. This recommendation applies to all series of GR551x, GR5525, GR5526, and GR533x chips.
+    - SPI is preconfigured with software chip select support in the app driver layer, just pay attention to turn on the related control macros when you use it. For details, please refer to the driver code in _app_spi.c_.
 
+
+
+### 3. A callback error event APP_SPI_EVT_ERROR occurs when SPI receives data, how should I handle it?
+
+- When SPI receives data, it is possible that the receive FIFO of the SPI module is stuffed with the data sent from Slave and a FIFO receive overflow error (Receive Overflow Error) occurs due to a large amount of data, a high transfer rate, or the CPU not being able to process it in time. When this error occurs, the user is informed via the callback event APP_SPI_EVT_ERROR. The correct way to handle this is to call the interface to receive the data again. Also, in this case, please use DMA transfer mode to reduce the probability.
+- If it is not the above reason and DMA transfer mode is used at the same time, the amount of data transferred by DMA may be too large, and it is necessary to limit the DMA single transfer to 4095 beats or less.

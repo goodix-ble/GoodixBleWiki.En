@@ -1,97 +1,105 @@
-# ADC常见问题
-
-​	本章主要描述在使用ADC模块时，可能出现的问题、原因及处理方法。
-## 1. 调用异步采集接口一直无法产生完成中断
-
-1.  问题描述
-
-    调用app_adc_dma_conversion_async(conversion, TEST_CONV_LENGTH)接口启动采集，一直无法产生完成中断。
-
-2.  问题分析
-    
-    - conversion地址没有4字节对齐。由于内部DMA的align配置为WORD，所以要求buffer入参地址4字节对齐。
-    - TEST_CONV_LENGTH超过DMA长度限制，这里len最大不能超过4095*2。
-    - conversion是局部变量，然后在调用app_adc_dma_conversion_async的函数外面等完成中断。此时已退出原来的函数，导致局部变量释放，DMA搬运的目标地址不是合法的地址。
-3.  处理方法
-    - 检查conversion是否4字节对齐，如果不是则需要强制4字节对齐。
-    - 检查入参len参数是否超过4095*2。
-    - 检查是否存在conversion是局部变量、被释放的可能。
-
-*类似问题：调用app_adc_multi_channel_conversion_async接口采集，第二个以及后续通道的数据是乱的。*
+## FQA for ADC 
 
 
 
-## 2. 部分内部参考电压档位采集出来的结果误差很大
+This chapter describes the problems, causes, and treatments that may occur when using the ADC module.
 
-1.  问题描述
+### 1. Calling the asynchronous acquisition interface keeps failing to generate a completion interrupt
 
-    使用内部参考源时，发现大档位参考源测量出来的ADC结果误差较大。
+1. Problem Description
 
-2.  问题分析
+    Calling the app_adc_dma_conversion_async(conversion, TEST_CONV_LENGTH) interface to initiate an acquisition has been unable to generate a completion interrupt.
 
-    芯片供电电压过低，无法支撑选择的参考电压档位所需的参考电压。不同参考电压，对芯片的供电电压是有要求的，具体如下：
+2. Problem Analysis
+   
+    - The conversion address is not 4-byte aligned. Since the internal DMA align is configured as WORD, the buffer input address is required to be 4-byte aligned.
+    - TEST_CONV_LENGTH exceeds the DMA length limitation, here len cannot exceed 4095*2.
+    - Conversion is a local variable, and then waits for the completion of the interrupt outside the function calling app_adc_dma_conversion_async. At this point, the original function has been exited, resulting in the release of the local variable, the target address of the DMA handling is not a legitimate address.
+3. Handling method
+    - Check whether the conversion is 4-byte aligned, if not, we need to force 4-byte alignment.
+    - Check if the len parameter exceeds 4095*2.
+    - Check if conversion is a local variable, and if it is not, we need to force it to be 4-byte aligned. Check if the input parameter len exceeds 4095*2.
+
+* Similar problem: call app_adc_multi_channel_conversion_async interface to capture, the data of the second and subsequent channels are messed up. *
 
 
-| 参考源档位 | 芯片供电电压范围 |
+
+### 2. Some of the internal reference voltage stalls are captured with large errors in the results
+
+1. Problem description
+
+    When using an internal reference source, it is found that the ADC results measured by a large reference source have a large error.
+
+2. Problem Analysis
+
+    The chip supply voltage is too low to support the reference voltage required for the selected reference voltage bracket. Different reference voltages require the chip supply voltage as follows:
+
+
+| Reference source gear | Chip supply voltage range |
 | ---------- | ---------------- |
-| 0P8V       | 2.1 V～3.8 V     |
-| 1P2V       | 2.6 V～3.8 V     |
-| 1P6V       | 3.2 V～3.8 V     |
+| 0P8V | 2.1 V to 3.8 V |
+| 1P2V | 2.6 V~3.8 V |
+| 1P6V | 3.2 V to 3.8 V |
 
 
-3.  处理方法
+3. Treatment
 
-    提高芯片的供电电压，或者降低参考电压档位，让芯片供电电压与参考电压匹配。
-
-
-
-## 3. 高采样率时采集出来的结果误差很大
-
-1.  问题描述
-
-    基于16 MHz的ADC采样时钟，采集出来的结果有很大波动，而且误差很大。
-
-2.  问题分析
-
-    电路外部的阻抗较大，导致充电时间太久，超过2个Clock没能建立稳定的信号保持。ADC的采集电路如下：
-
-    ![](../../../_images/adc/3-1-1.png) 
-
-    ADC内部有2 pF的电容，这就要求用户外部电路的阻抗R与ADC内部电容C组成的RC充电电路上，充电时间不能超过信号采样保持时间。信号保持时间是2个ADC Clock，所以配置的采样时钟越高，要求的保持时间就越短。
-
-3.  处理方法
-
-    降低ADC采样时钟频率，或者减小外部电路的阻抗R。
+    Increase the power supply voltage of the chip, or lower the reference voltage gear so that the chip power supply voltage matches the reference voltage.
 
 
 
-## 4. 异步采集接口速度慢
+### 3. High sampling rate with large error in the result.
 
-1.  问题描述
+1. Problem Description
 
-    调用app_adc_dma_conversion_async()接口采集指定长度数据，发现采集时间比较长，远超出配置的采样速度。
+    Based on the 16 MHz ADC sampling clock, the acquired result has a big fluctuation and the error is very big.
 
-2.  问题分析
-    - 可能是在采样完成的回调函数里面加了打印。
-    - 异步接口需要响应DMA的传输完成中断，会比同步接口慢一些。
+2. Problem Analysis
 
-3.  处理方法
+    The large impedance outside the circuit causes the charging time to be too long and more than 2 Clocks failed to establish a stable signal hold.The ADC acquisition circuit is as follows:
 
-    如果追求采样速度，或者为了测试采样率，建议用同步接口。
+    
+
+    ​    ![](../../../_images/adc/3-1-1.png) 
+
+    
+
+    The ADC has an internal capacitance of 2 pF, which requires that the impedance R of the user's external circuit and the ADC's internal capacitance C form an RC charging circuit on which the charging time must not exceed the signal sampling hold time. Signal hold time is 2 ADC Clock, so the higher the configured sampling clock, the shorter the required hold time.
+
+3. Processing methods
+
+    Reduce the ADC Sampling Clock frequency, or reduce the impedance R of the external circuit.
 
 
 
-## 5. 同步采集接口无法产生数据
+### 4. Slow Asynchronous Acquisition Interface
 
-1.  问题描述
+1. Problem Description
 
-    调用app_adc_conversion_sync()同步接口采集，发现无法产生ADC数据而超时退出。
+    The app_adc_dma_conversion_async() interface is called to acquire data of the specified length, and the acquisition time is found to be relatively long, far exceeding the configured sampling speed.
 
-2. 问题分析
+2. Problem Analysis
+    - It is possible that printing was added inside the callback function for sampling completion.
+    - The asynchronous interface needs to respond to the DMA transfer completion interrupt, which will be slower than the synchronous interface.
 
-   - 在比Bluetooth LE中断优先级更高的中断里调用了采集接口，该接口与PMU Calibration里面的ADC操作冲突。
-   - 在PMU Calibration Disable ADC后被抢占，然后在App conversion采集接口不会去重新Enable ADC，只是Enable ADC Clock。
+3. Treatment
 
-3.  处理方法
+    If you are looking for sampling speed, or to test the sampling rate, it is recommended to use the synchronous interface.
 
-    降低采集线程的优先级，不能在比Bluetooth LE中断优先级更高的地方调采集接口；否则需要统筹与PMU Calibration里ADC操作的互斥关系。
+
+
+### 5. Synchronous capture interface fails to generate data
+
+1. Problem Description
+
+    Calling app_adc_conversion_sync() to synchronize the interface acquisition, and found that it could not generate ADC data and timed out.
+
+2. Problem Analysis
+
+   - The acquisition interface is called in an interrupt with a higher priority than the Bluetooth LE interrupt, which conflicts with the ADC operation in PMU Calibration.
+   - After PMU Calibration Disable ADC, it is preempted, and then in App conversion, the acquisition interface will not re-enable ADC, but only Enable ADC Clock.
+
+3. Handling method
+
+    Decrease the priority of the acquisition thread, can't call the acquisition interface at a higher priority than the Bluetooth LE interrupt; otherwise, need to coordinate the mutual exclusion relationship with the ADC operation in PMU Calibration.
+

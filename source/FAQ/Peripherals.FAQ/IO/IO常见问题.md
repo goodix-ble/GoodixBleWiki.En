@@ -1,38 +1,38 @@
-# I/O常见问题
+## FAQ for I/O
 
 
 
-## 1. 如何处理IO漏电导致睡眠功耗高的问题（睡眠前如何正确进行IO的配置和检测）?
+### 1. How to deal with the problem of high sleep power consumption due to IO leakage (how to properly configure and detect IOs before sleep)?
 
-- 需要按照应用笔记中介绍的上下拉电阻配置原则，正确配置每个IO的上下拉电阻。
-- 在分析问题时，可以在睡眠前把每个IO的上下拉配置情况读取出来逐一检查。具体的做法是，实现睡眠前检测IO的函数，函数里面把GPIO、AON IO、MSIO的上下拉配置都读取出来；然后通过pwr_mgmt_register_io_dump_func()把该函数注册到睡眠前的函数钩子io_dump_func_t。这样真正进入睡眠前，SDK就会调用上下拉配置读取的函数，把睡眠前的IO上下拉配置读取出来进行检查。具体方法可参考论坛讨论“[GR551x 如何在睡眠前测量GPIO上下拉状态分析GPIO配置是否正确](https://developers.goodix.com/zh/bbs/detail/66ed78f2b95140b0b8748a5f8f9aef80)”。
+- It is necessary to correctly configure the pull-up and pull-down resistors of each IO according to the pull-up and pull-down resistor configuration principles introduced in the application notes.
+- When analyzing the problem, the pull-up and pull-down configuration of each IO can be read out and checked one by one before sleep. The specific approach is to implement a function to detect the IOs before sleep, and inside the function, read out the pull-down configuration of GPIO, AON IO, and MSIO; and then register the function to the function hook io_dump_func_t before sleep through pwr_mgmt_register_io_dump_func(). so that before really going to sleep, the SDK will call the function of read pull-down configuration to read out the IO pull-down configuration before sleep for checking. For details, please refer to the forum discussion “[GR551x how to measure the GPIO pull-down status before sleep to analyze whether the GPIO configuration is correct or not](https://developers.goodix.com/zh/bbs/detail/66ed78f2b95140b0b8748a5f8f9aef80)”.
 
 
 
-## 2. 如何处理IO中断丢失的问题？
+### 2. How to deal with IO interrupt loss?
 
-- 检查中断回调函数app_io_event_handler()中，根据p_evt判断中断引脚号时，不能用if...else...的结构，因为可能存在几个引脚同时响应一个回调函数的情况。SDK的示例代码是正确的判断结构：
+- Check that in the interrupt callback function app_io_event_handler(), when determining the interrupt pin number based on p_evt, you can't use if... .else... The example code in the SDK is the correct structure for the judgment:
 
-    ```c
+```c
     if (p_evt->pin == APP_GPIO_KEY0_PIN)
     {
     }
     if (p_evt->pin == APP_GPIO_KEY1_PIN)
     {
     }
-    ```
+```
 
-- 引脚中断是分组的，GPIO0~15响应的是EXT0_IRQ，GPIO16~31响应的是EXT1_IRQ，GPIO32~33响应的是EXT2_IRQ，AON IO响应的是AON_EXT_IRQ。同一组的引脚如果它们的中断触发时间比较接近，那么它们可能会同时响应一个IRQ。
-
-
-
-## 3. IO有没有推挽输出模式？
-
-- GR5xx系列芯片的IO没有推挽输出模式。各个IO的驱动电流有限，具体可参见Datasheet关于IO章节的Electrical Specifications部分。
+- Pin interrupts are grouped, with GPIO0~15 responding to EXT0_IRQ, GPIO16~31 responding to EXT1_IRQ, GPIO32~33 responding to EXT2_IRQ, and the AON IO responding to AON_EXT_IRQ. pins in the same group may respond to both if their interrupt triggers are relatively close to each other. AON IO responds to AON_EXT_IRQ.
 
 
 
-## 4. 利用IO翻转输出方波，频率误差很大，是什么原因？
+### 3. Does IO have push-pull output mode?
 
-- 检查是否设置IO电平的函数执行效率慢导致。如果需要快速翻转IO，可以在初始化完成后调用LL层函数，比如ll_gpio_set_output_pin\ll_gpio_reset_output_pin、ll_gpio_toggle_pin，AON_GPIO\MSIO同理。
-- 此外，函数放在SRAM执行可以进一步提高速率，在函数名前加SECTION_RAM_CODE即可。
+- There is no push-pull output mode for the IOs of the GR5xx series chips. Each IO has a limited drive current, which can be found in the Electrical Specifications section of the IO chapter of the Datasheet.
+
+
+
+### 4. What is the reason for the large frequency error when outputting a square wave using IO flip-flop?
+
+- Check if the function to set the IO level has slow execution efficiency. If you need to flip IO quickly, you can call LL level functions after initialization is done, such as ll_gpio_set_output_pin\ll_gpio_reset_output_pin, ll_gpio_toggle_pin, and the same for AON_GPIO\MSIO.
+- In addition, the function can be placed in the SRAM execution can further improve the rate, in the function name before the addition of SECTION_RAM_CODE can be.

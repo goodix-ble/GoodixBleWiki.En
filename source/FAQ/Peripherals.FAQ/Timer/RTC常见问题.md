@@ -1,29 +1,29 @@
-## RTC常见问题
+## FAQ for RTC
 
 
 
-### 1. RTC计时误差大的原因是什么？
+### 1. What are the reasons for the large RTC timing errors?
 
-- RTC是基于慢速时钟源工作的，所以它的精度与慢速时钟源的精度相关。
+- RTC works based on a slow clock source, so its accuracy is related to the accuracy of the slow clock source.
 
-- 我们SDK都会对慢速时钟源进行校准。所谓的校准，其实是基于32M的高速精确时钟去测试获取慢速时钟的真正频率，修正32.768K这个数值。所以32M的精度也至关重要，RTC测试前需要先用Goodix在线或离线工具对32M晶振进行校准。
+- Our SDK will calibrate the slow clock source. The so-called calibration is actually based on the 32M high-speed accurate clock to test to get the real frequency of the slow clock, and correct the value of 32.768K. So the accuracy of 32M is also crucial, and the 32M crystal needs to be calibrated with Goodix online or offline tool before RTC test.
 
-- 除GR551x以外的芯片，SDK默认每隔30s对慢速时钟进行校准；GR551x则在冷启动的时候校准一下，1.7.0及以前的SDK版本RTC校准方法有Bug，需要按照论坛方法进行修正，详见“[如何提高RTC的精度](https://developers.goodix.com/zh/bbs/detail/429620fdd9dc4d9787bf0e07b135bf1b)”。
-
-
-
-### 2. 如何根据RTC获取到系统运行时间？
-
-- 首先要确保RTC已经初始化，可调用app_rtc的初始化接口对RTC进行初始化。
-
-- 调用hal_pwr_get_timer_current_value(PWR_TIMER_TYPE_CAL_TIMER, (x)) 获取原始的RTC数据，注意第一个入参是PWR_TIMER_TYPE_CAL_TIMER。
-
-- 获取到RTC计数数据后，调用sys_lpclk_get()获取当前的慢速时钟频率，根据与慢速时钟频率的关系，转换为ms或者μs。
+- For chips other than GR551x, SDK calibrates the slow clock every 30s by default; GR551x calibrates it during cold start. 1.7.0 and previous SDK versions have bugs in the RTC calibration method, which need to be corrected according to the forum method, for details, please refer to “[How to Improve RTC's Accuracy](https://developers.goodix.com/zh/bbs/detail/429620fdd9dc4d9787bf0e07b135bf1b)”.
 
 
 
-### 3. RTC不工作，或者调用app_rtc_get_time(&time)发现获取到的时间一直不变，原因是什么？
+### 2. How to get the system runtime according to RTC?
 
-- 首先确认慢速时钟源的选择，是选择内部还是外部。
-- 如果选择的是内部慢速时钟源，对于GR551x或者GR5526，RTC是基于Bluetooth LE Timer构造的，所以需要确保蓝牙协议栈已初始化。
-- 如果选择的是外部慢速时钟源，确保32K晶振是否焊接正常。
+- First of all, make sure the RTC has been initialized, you can call the initialization interface of app_rtc to initialize the RTC.
+
+- Call hal_pwr_get_timer_current_value(PWR_TIMER_TYPE_CAL_TIMER, (x)) to get the raw RTC data, note the first input is PWR_TIMER_TYPE_CAL_TIMER.
+
+- After getting the RTC count data, call sys_lpclk_get() to get the current slow clock frequency, which is converted to ms or μs depending on the relationship with the slow clock frequency.
+
+
+
+### 3. The RTC does not work, or call app_rtc_get_time(&time) and find that the time obtained remains the same, what is the reason?
+
+- First confirm the selection of the slow clock source, whether internal or external is selected.
+- If you choose internal slow clock source, for GR551x or GR5526, the RTC is constructed based on Bluetooth LE Timer, so you need to make sure the Bluetooth stack is initialized.
+- If the choice is external slow clock source, make sure the 32K crystal is soldered properly.
