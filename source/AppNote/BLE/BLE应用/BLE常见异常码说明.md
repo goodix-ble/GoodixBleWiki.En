@@ -1,60 +1,60 @@
-## BLE常见异常码说明
+## BLE exception code
 
 
 
-### 1. BLE断连原因介绍分析
+### 1. BLE disconnected reason introduction and analysis
 
-BLE断连事件的event中有断连的原因*gapc_evt.params.disconnected.reason*，可通过断连原因初步定位问题。
+The event of BLE disconnected event has the reason of disconnection *gapc_evt.params.disconnected.reason*, which can be used to locate the problem initially.
 
 
 
-### 2. 常见断连
+### 2. Common causes of disconnection
 
-#### 2.1 0x98超时断连
+#### 2.1 0x98 Timeout Disconnection
 
-对应BLE Spec 0x08错误码。可能是由于主设备突然停止发送数据包导致从设备超时而断连，或是由于从设备突然无法正常接收数据而出现超时断连。
+Corresponds to BLE Spec 0x08 error code. The problem may be caused by the master device suddenly stops sending packets and the slave device times out, or the slave device suddenly fails to receive data properly and times out.
 
-出现该问题后，应当：
+When this problem occurs, you should:
 
-1. 先确认射频性能是否正常，即是否出现了远离或天线是否正常。
+1. first confirm that the RF performance is normal, i.e., whether the away or antenna appears to be normal.
 
-2. 如果射频性能正常，则需确认主设备或从设备代码调度是否正常，即是否存在长时间关中断、长时间占用高优先级中断的操作。
+2. if the RF performance is normal, confirm whether the master or slave device code scheduling is normal, i.e. whether there is a long time off interrupt, long time occupation of high priority interrupt operation.
 
-	GR5525\GR5526\GR5331等芯片可通过如下方法确认调度是否正常，即isr和start有规律地均匀产生。
+	Chips such as GR5525\GR5526\GR5331 can be used to confirm if the scheduling is normal by the following method, i.e. isr and start are generated regularly and evenly.
 	
 	```
 	typedef void (*diag_trace_func_t)(void);
 	extern diag_trace_func_t diag_evt_start_cbk_start_func; 
-	extern diag_trace_func_t diag_evt_start_cbk_done_func; 
-	extern diag_trace_func_t diag_ble_isr_start_func; 
+	extern diag_trace_func_t diag_evt_start_cbk_done_func; extern diag_trace_func_t diag_evt_start_cbk_start_func 
+	extern diag_trace_func_t diag_ble_isr_start_func; extern diag_trace_func_t diag_ble_isr_start_func 
 	extern diag_trace_func_t diag_ble_isr_done_func;
 	
-	void evt_start_debug_gpio_set();
-	void evt_start_debug_gpio_reset();
+	void evt_start_debug_gpio_set().
+	void evt_start_debug_gpio_reset(); void evt_start_debug_gpio_reset().
 	void ble_isr_debug_gpio_set();
-	void ble_isr_debug_gpio_reset();
+	void ble_isr_debug_gpio_reset(); void
 	
-	diag_evt_start_cbk_start_func = evt_start_debug_gpio_set;
+	diag_evt_start_cbk_start_func = evt_start_debug_gpio_set; void ble_isr_debug_gpio_reset(); void ble_isr_debug_gpio_reset()
 	diag_evt_start_cbk_done_func = evt_start_debug_gpio_reset;
-	diag_ble_isr_start_func = ble_isr_debug_gpio_set;
+	diag_ble_isr_start_func = ble_isr_debug_gpio_set; diag_ble_isr_start_func = evt_start_debug_gpio_reset
 	diag_ble_isr_done_func = ble_isr_debug_gpio_reset;
 	```
 	
-	GR5515芯片可通过如下方法确认调度是否正常，即isr和start有规律地均匀产生。
+	The GR5515 chip can confirm that the scheduling is normal, i.e., isr and start are generated regularly and evenly, by the following.
 	
 	```
 	typedef void (*diag_trace_func_t)(void);
 	extern diag_trace_func_t diag_evt_start_cbk_start_func; 
-	extern diag_trace_func_t diag_evt_start_cbk_done_func; 
-	extern diag_trace_func_t diag_no25_isr_start_func; 
-	extern diag_trace_func_t diag_no25_isr_done_func;
+	extern diag_trace_func_t diag_evt_start_cbk_done_func; extern diag_trace_func_t diag_evt_start_cbk_start_func 
+	extern diag_trace_func_t diag_no25_isr_start_func; extern diag_trace_func_t diag_no25_isr_start_func 
+	extern diag_trace_func_t diag_no25_isr_done_func; void evt_start_delete_func
 	
-	void evt_start_debug_gpio_set();
+	void evt_start_debug_gpio_set().
 	void evt_start_debug_gpio_reset();
 	void ble_isr_debug_gpio_set();
-	void ble_isr_debug_gpio_reset();
+	void ble_isr_debug_gpio_reset(); void
 	
-	diag_evt_start_cbk_start_func = evt_start_debug_gpio_set;
+	diag_evt_start_cbk_start_func = evt_start_debug_gpio_set; void ble_isr_debug_gpio_reset(); void ble_isr_debug_gpio_reset()
 	diag_evt_start_cbk_done_func = evt_start_debug_gpio_reset;
 	diag_no25_isr_start_func = ble_isr_debug_gpio_set;
 	diag_no25_isr_done_func = ble_isr_debug_gpio_reset;
@@ -62,54 +62,53 @@ BLE断连事件的event中有断连的原因*gapc_evt.params.disconnected.reason
 	
 	
 
-#### 2.2 0xB8即时指令错过
+#### 2.2 0xB8 Immediate Instruction Misses
 
-对应BLE Spec 0x28错误码。指主设备约定某一时刻执行的操作（信道表更新、连接参数更新或PHY更新等），但从设备在约定时刻之后才接收到这些数据包。导致该问题的原因分析同0x98。
+Corresponds to BLE Spec 0x28 error code. Refers to operations that the master device agrees to perform at a certain moment (channel table update, connection parameter update, or PHY update, etc.), but the slave device receives these packets after the agreed moment. The cause of this problem is analyzed as 0x98.
 
-出现该问题后，应当：
+When this problem occurs, you should:
 
-1. 先确认射频性能是否正常，即是否出现了远离或天线是否正常。
-2. 如果射频性能正常，则需确认主设备或从设备代码调度是否正常，即是否存在长时间关中断、长时间占用高优先级中断的操作。
-
-
-
-#### 2.3 0xB2响应超时
-
-对应BLE Spec 0x22错误码。指发送给对端的指令（加密请求、连接参数更新请求、数据长度更新请求或PHY更新请求等），对端没有及时回复（40s之内），本端出现0xB2断连，对端则出现0xA3断连。
-
-出现该问题后，需对端检查没有及时回复的原因：是否不支持本端发送的指令，或出现异常无法正常回复。
+1. first confirm that the RF performance is normal, i.e. whether the away or antenna appears to be normal.
+2. if the RF performance is normal, confirm whether the master or slave device code scheduling is normal, i.e., whether there are operations that turn off interrupts for a long time, or occupy high-priority interrupts for a long time.
 
 
 
-#### 2.4 0xCE建连失败
+#### 2.3 0xB2 Response Timeout
 
-该断连常出现在主设备端。即主设备接收到广播后发起连接请求，但从设备未收到请求。根据Spec协议规定，主设备发起连接请求后，默认对方是可以正常接收到请求，主设备会进入连接态。如果从设备未能在接收到连接请求后的6个连接间隔内给出正常回复，主设备将会上报断连错误码0xCE。
+Corresponds to BLE Spec 0x22 error code. It refers to the command (encryption request, connection parameter update request, data length update request or PHY update request, etc.) sent to the opposite end, and the opposite end does not reply in time (within 40s), the local end appears to be disconnected at 0xB2, and the opposite end appears to be disconnected at 0xA3.
 
-出现该问题后，需确认：环境是否有过多蓝牙设备，或者主从设备之间的距离是否太远。
-
-#### 2.5 0xA3远端主动断连
-
-对应BLE Spec 0x13错误码。该断连原因较为常见，即对端设备主动关闭蓝牙或应用主动断开蓝牙连接，均会在从设备端出现该断连。若没有出现主动关闭蓝牙或断开连接的操作，则需抓取空口包确认在断连前40s是否存在对端设备发起了SMP/GATT/LLCP流程，但本端设备无响应的情况。若本端支持该流程但未使能，则需将其使能；若本端设备不支持该流程，则需要通知对端设备取消该流程。
+When this problem occurs, the peer should check the reason for not replying in time: whether the command sent by the peer is not supported, or whether there is an abnormality that prevents it from replying normally.
 
 
 
-#### 2.6 0xA6本端主动断连
+#### 2.4 0xCE Failure to establish connection
 
-对应BLE Spec 0x16错误码。本端主动断开BLE。
+This disconnection often occurs at the master device side. That is, the master device receives the broadcast and initiates a connection request, but the slave device does not receive the request. According to the Spec protocol, after the master device initiates a connection request, by default the other party is able to receive the request normally, and the master device will enter the connection state. If the slave device fails to give a normal reply within 6 connection intervals after receiving the connection request, the master device will report the disconnection error code 0xCE.
 
+When this problem occurs, you need to check whether there are too many Bluetooth devices in the environment, or whether the distance between master and slave devices is too far.
 
+#### 2.5 0xA3 Remote Active Disconnection
 
-#### 2.7 0xCD加密相关断连
-
-对应BLE Spec 0x3D错误码。
-
-1. 确认两端设备是否存在清除绑定信息、修改绑定信息或修改安全参数等操作。若存在，则需确认操作是否满足正常业务需求。如满足需求，则是正常出现0xCD断连，否则需要调整流程。
-
-2. 确保在配对加密过程中不存在非配对加密的LLCP流程（连接参数更新、信道表更新、数据长度更新等一系列控制流程）插入。如果存在，则会出现0xCD断连。
+Corresponds to BLE Spec 0x13 error code. This is a common cause of disconnection, i.e., if the remote device turns off the Bluetooth or the application disconnects the Bluetooth connection, the disconnection will occur at the slave device. If there is no active shutdown of Bluetooth or disconnection, it is necessary to capture the air packet to confirm whether there is a case that the device at the other end initiated the SMP/GATT/LLCP process 40s before the disconnection but there is no response from the device at the local end. If the local end supports the process but does not enable it, it needs to enable it; if the local end device does not support the process, it needs to notify the peer device to cancel the process.
 
 
 
-#### 2.8 其他断连
+#### 2.6 0xA6 Local active disconnection
 
-更多内容，请参考`SDK_Folder\components\sdk\ble_error.h`。
+Corresponds to BLE Spec 0x16 error code. This end actively disconnects from BLE.
 
+
+
+#### 2.7 0xCD Crypto related disconnection
+
+Corresponds to BLE Spec 0x3D error code.
+
+1. Confirm whether there are operations such as clearing binding information, modifying binding information or modifying security parameters on both devices. If there is, confirm whether the operation meets normal business requirements. If it meets the demand, then it is a normal occurrence of 0xCD disconnection, otherwise the process needs to be adjusted.
+
+2. Ensure that there is no non-paired encryption LLCP process (a series of control processes such as connection parameter update, channel table update, data length update, and so on) inserted during the pair encryption process. If present, 0xCD disconnection will occur.
+
+
+
+#### 2.8 Other Disconnects
+
+For more, see `SDK_Folder\components\sdk\ble_error.h`.

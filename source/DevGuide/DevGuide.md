@@ -20,7 +20,7 @@ When users are ready to understand or design/develop products based on Goodix Bl
 
 Goodix currently offers a family of Bluetooth LE SoCs covering the high-end, mid-range and entry-level markets.
 
-- [Goodix Bluetooth LE SoC Selection Chart](https://www.goodix.com/zh/down/resource/Goodix_Bluetooth_Chipset_Selection_Guide?objectId=5&objectType= design_resource&version=64)
+-  [Goodix Bluetooth LE SoC Selection Chart](https://www.goodix.com/zh/down/resource/Goodix_Bluetooth_Chipset_Selection_Guide?objectId=5&objectType= design_resource&version=64) 
 
 ![](../_images/goodi_ble_chipset_select_guide.png)
 

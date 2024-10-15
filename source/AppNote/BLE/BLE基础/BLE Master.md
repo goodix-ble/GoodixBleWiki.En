@@ -1,54 +1,56 @@
 ## BLE Master
 
-### 1. BLE Master扫描基本功能介绍
+### 1. Introduction to the basic functions of BLE Master scanning
 
--	BLE Master，主设备，即负责扫描设备并且发起连接请求的设备。
--	作为Master，GR5xx可以连接多台从设备，即对一台从设备发起连接成功后，再对另一台从设备发起连接。
--	启动扫描后，可通过`BLE_GAPM_EVT_SCAN_START`事件查看扫描是否启动成功。
--	可以通过设置扫描超时时间timeout，控制扫描的时间。当timeout设置为0时，表示一直扫描，需手动停止扫描；当timeout设置为其他值时，会自动停止扫描。停止扫描后会上报`BLE_GAPM_EVT_SCAN_STOP`事件。
--	扫描参数中的scan_dup_filt可过滤重复广播。但在蓝牙设备特别多的场景下，该功能只能降低上报广播的频率，无法完全过滤重复广播。
--	扫描参数中的use_whitelist也是一种过滤策略，可过滤加入到白名单列表中的设备。
--	扫描参数中的scan_type可设置为`BLE_GAP_SCAN_ACTIVE`（主动扫描）和`BLE_GAP_SCAN_PASSIVE`（被动扫描）。主动扫描会随机地发起扫描请求包，被动扫描则不会发起扫描请求包。
--	扫描参数中的interval和window用于控制扫描间隔和开窗时间，并且window值必须小于等于interval值。
--	作为Master，发起连接时可设置连接参数，包括interval 、latency、timeout。
+- BLE Master is the device responsible for scanning devices and initiating connection requests. As a master, GR5xx can connect to multiple slave devices.
+- As a master, GR5xx can connect to multiple slave devices, i.e., after initiating a connection to one slave device successfully, it can initiate a connection to another slave device.
+- After the scan is started, you can check whether the scan is started successfully by using the `BLE_GAPM_EVT_SCAN_START` event.
+- The duration of the scan can be controlled by setting the scan timeout time. When timeout is set to 0, it means scanning is always on and you need to stop scanning manually; when timeout is set to other values, scanning will be stopped automatically. When the timeout is set to other values, the scanning will be stopped automatically. The `BLE_GAPM_EVT_SCAN_STOP` event will be reported after the scanning is stopped.
+- The scan_dup_filt in the scan parameter can filter duplicate broadcasts. However, in a scenario with a particularly large number of Bluetooth devices, this function can only reduce the frequency of reported broadcasts, and cannot completely filter duplicate broadcasts.
+- The use_whitelist in the scan parameter is also a filtering strategy to filter the devices added to the whitelist list.
+- The scan_type in the scan parameter can be set to `BLE_GAP_SCAN_ACTIVE` (active scan) and `BLE_GAP_SCAN_PASSIVE` (passive scan). Active scanning initiates scan request packets randomly, while passive scanning does not initiate scan request packets.
+- The interval and window in the scan parameters are used to control the scan interval and window opening time, and the window value must be less than or equal to the interval value.
+- As a master, you can set the connection parameters, including interval, latency, and timeout, when initiating a connection.
 
-### 2. BLE Master扫描应用笔记
 
-- 在需要扫描扩展广播的场景下，使用扩展扫描，传统扫描无法获取扩展广播包。如需扩展扫描的使用方法，可参考GR551x SDK V1.7.0版本中的扩展扫描示例工程：`SDK_Folder\projects\ble\ble_basic_example\ble_app_gap_extended_scan`，其中SDK_Folder为SDK根目录。
-- 将扫描参数中的interval和window设置成相同的值，可将射频的RX占空比开到最大，即最长时间地处于RX状态。
-- 每一个扫描interval，只会扫描一个信道。与广播不同，广播的每个interval，会在三个信道上进行广播。
-- 扫描到的广播数据会在BLE_GAPM_EVT_ADV_REPORT事件中上报。
-- 发起连接时，可以通过设置conn_timeout来配置连接超时时间，即在设定的时间内若未连接上目标设备，则停止发起连接。
-- GR5xx扫描信道支持配置私有信道。具体配置方法，请咨询FAE。
+
+### 2. BLE Master Scanning Application Notes
+
+- Extended scanning is used in scenarios where extended broadcast scanning is required, and traditional scanning cannot obtain extended broadcast packets. For more information on how to use extended scanning, please refer to the extended scanning example project in the GR551x SDK version V1.7.0: `SDK_Folder\projects\ble\ble_basic_example\ble_app_gap_extended_scan`, where SDK_Folder is the root directory of the SDK. root directory.
+- Setting the interval and window in the scan parameter to the same value turns on the RX duty cycle of the RF to the maximum, i.e., it will be in the RX state for the longest time.
+- For each scan interval, only one channel will be scanned. Unlike broadcasting, each interval of broadcasting will broadcast on three channels.
+- The scanned broadcast data is reported in the BLE_GAPM_EVT_ADV_REPORT event.
+- When initiating a connection, you can configure the connection timeout by setting conn_timeout, which means that if the target device is not connected within the set time, the initiation of the connection will stop.
+- GR5xx scanning channel supports configuration of private channel. Please consult FAE for details.
+
+
 
 ### 3. FAQ
 
-- **Q**：发起连接是否需要停止扫描？
+#### 3.1 Do I need to stop scanning when I initiate a connection?
 
-  **A**：不需要停止扫描也可以直接对目标设备发起连接。连接上目标设备后，扫描不会停止。
+  **A**: You do not need to stop scanning to connect to the target device. The scanning will not stop after connecting to the target device.
 
-- **Q**：是否支持同时对多台设备发起连接？
+#### 3.2 Does it support to connect to multiple devices at the same time?
 
-  **A**：一次只能对一台设备发起连接。无法同时对多台设备发起连接。
+  **A**: You can only connect to one device at a time. It is not possible to connect to multiple devices at the same time.
 
-- **Q**：是否支持设置扫描功率？
+#### 3.3  Does it support to set scanning power?
 
-  **A**：没有扫描功率这个说法。扫描的性能仅与灵敏度、抗干扰指标相关。
+  **A**: There is no such thing as scanning power. The performance of scanning is only related to the sensitivity and anti-interference index.
 
-- **Q**：如何使用扫描白名单功能？
+#### 3.4 How to use the scanning whitelist function?
 
-  **A**：1. 已经与目标设备完成了配对绑定。
+  **A**: 1. Pairing binding has been completed with the target device.
 
-  ​      2. 已经将目标设备加入到白名单中。
+  2. The target device has been added to the whitelist. 3.
 
-  ​      3. 再次扫描时将use_whitelist设置为true。
+  3. set use_whitelist to true when scanning again.
 
-- **Q**：Master是否可以作为Server？Slave是否可以作为Client？
+#### 3.5 Can Master act as Server and Slave act as Client?
 
-  **A**：Master和Slave是两种不同的角色。Master通常指发起连接和控制通信的设备，而Slave则是被连接和被控制的设备。
+  **A**: Master and Slave are two different roles. master usually refers to the device that initiates the connection and controls the communication, while Slave is the device that is connected and controlled.
 
-  在BLE中，GATT（Generic Attribute Profile）定义了基于属性的服务和特征，类似于传统的客户端-服务器模型。可以通过GATT协议在BLE Master设备上实现Server角色，提供服务和特征。而Slave设备则可以作为客户端与Master连接，并进行通信。
-
-  因此，BLE Master可以充当Server，向连接的设备提供服务和特征。例如，iPhone作为Master，并支持ANCS服务。
-
+  - In BLE, GATT (Generic Attribute Profile) defines attribute-based services and features, similar to the traditional client-server model. The Server role can be implemented on a BLE Master device through the GATT protocol to provide services and features. The Slave device, on the other hand, can connect to the Master as a client and communicate with it.
+- Thus, the BLE Master can act as a Server and provide services and features to the connected devices. For example, iPhone acts as Master and supports ANCS services.   
   

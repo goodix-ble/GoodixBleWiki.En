@@ -1,49 +1,48 @@
-## BLE数据传输速率
+## BLE Data Rates
 
 
 
-### 1. 理论传输速率
+### 1. Theoretical Transmission Rate
 
-* BLE在物理层支持2M PHY、1M PHY和Coded PHY。
-* BLE数据传输已知信息：
-  * 采用GFSK调制方式，2M PHY每一个bit占用时间为0.5 μs，1M PHY占用1 μs。
-  * 数据包的时间间隔(T_IFS)为固定的150 μs。
-  * 传输时隙格式为：TX数据包 + 数据包间距 + RX空包 + 数据包间距 
-  * ATT层数据传输格式为：前导码（1M为1字节，2M为2字节）+ 存取地址（4字节）+ Header（2字节）+ Payload（251字节）+ CRC（3字节）
-  * 对于在GATT之上运行的应用程序，I2CAP和ATT都有自己的开销。通常，GATT的最大有效载荷为（251 - 7）= 244字节。
-* 使用2M PHY，理论传输速率计算如下：
-  * TX数据包总长度 = 2096 bits，占用时间为1048 μs。
-  * RX空包总长度 = 88 bits，占用时间为44 μs。
-  * 一次传输总时间为：1048 + 44 +（150*2） = 1392 μs
-  * 可计算出LE 2M PHY模式下应用层的**最大数据传输速率 = (244* 8) / 1392 µs ≈  1402 kbps**。
-* 使用1M PHY，理论传输速率计算如下：
-  * TX数据包总长度 = 2120 bits，占用时间为2088 μs。
-  * RX空包总长度 = 80 bits，占用时间为80 μs。
-  * 一次传输总时间为：2120+80+（150*2） = 2500 μs
-  * 可计算出LE 1M PHY模式下应用层的**最大数据传输速率 = (244* 8) / 2500 µs ≈  780 kbps**。
+* BLE supports 2M PHY, 1M PHY and Coded PHY at the physical layer.
+* BLE data transmits known information:
+  * Using GFSK modulation, 2M PHY occupies 0.5 μs per bit and 1M PHY occupies 1 μs.
+  * The packet time interval (T_IFS) is a fixed 150 μs.
+  * Transmission time slot format is: TX packet + packet spacing + RX null packet + packet spacing 
+  * ATT layer data transmission format is: Preamble (1 byte for 1M, 2 bytes for 2M) + Access address (4 bytes) + Header (2 bytes) + Payload (251 bytes) + CRC (3 bytes)
+  * For applications running on top of GATT, both I2CAP and ATT have their own overhead. Typically, the maximum payload for GATT is (251 - 7) = 244 bytes.
+* Using 2M PHY, the theoretical transmission rate is calculated as follows:
+  * TX packet total length = 2096 bits with an occupancy time of 1048 μs.
+  * Total RX null packet length = 88 bits, occupying 44 μs.
+  * The total time for one transmission is: 1048 + 44 + (150*2) = 1392 μs
+  * ** Maximum data rate for application layer in LE 2M PHY mode can be calculated = (244* 8) / 1392 µs ≈ 1402 kbps**.
+* Using 1M PHY, the theoretical transmission rate is calculated as follows:
+  * TX packet total length = 2120 bits, occupying 2088 µs.
+  * Total RX null packet length = 80 bits, occupying 80 μs.
+  * Total time for one transmission is: 2120 + 80 + (150*2) = 2500 μs
+  * ** Maximum data transfer rate for application layer in LE 1M PHY mode can be calculated = (244* 8) / 2500 µs ≈ 780 kbps**.
 
 
 
-### 2. BLE数据传输速率影响因素
+### 2. Factors affecting BLE data transfer rate
 
-*  影响BLE传输速率的因素较多，包括PDU、CI、MTU、CE和PHY参数、RF性能、环境、Master和Slave之间的距离，以及通信模式等。
-* Slave和Master常用的通信模式有Indicate、Notify、Write Without Response、Write With Response。对于Indicate、Write With Response，都需要对端应答的模式，一个Interval只会发送一包数据。
-* BLE Connection相关配置参数主要影响通信实时性、吞吐率、功耗、抗干扰性、断链响应实时性等。其中，吞吐率主要与两个因素相关：通信周期CI和每个通信点可传输的数据量（MTU和PDU）。
-* 并非CI越小，数据吞吐率就越高；或者CI越大，吞吐率越高。CI越小，整个时间段预留硬件准备时间的占比越大，实际通信数据时间越短，这样看来CI需要配置较大。但当CI越大，一旦出现数据错误，浪费CI中剩余时间越多，这样看来CI需要配置比较小，可快速继续下一次通信。
-* **在高数据吞吐率场景，一般采用典型经验值，CI为30 ms～45 ms、PHY为2M、PDU为251、MTU为247**。
-* 如果需要对BLE数据传输速率进行测试，可以使用SDK中的`SDK_Folder\projects\ble\ble_peripheral\ble_app_throughput`示例工程，配合GRToolbox工具进行测试。
+* There are more factors affecting the BLE transmission rate, including PDU, CI, MTU, CE and PHY parameters, RF performance, environment, distance between Master and Slave, and communication modes.
+* The communication modes commonly used by Slave and Master are Indicate, Notify, Write Without Response, and Write With Response. for Indicate and Write With Response, all of them require the mode of response from the opposite end, and an Interval will only send One Interval will only send one packet of data.
+* BLE Connection related configuration parameters mainly affect the real-time communication, throughput rate, power consumption, anti-interference, real-time response to broken link, etc. Among them, throughput rate is mainly related to two factors. Among them, the throughput rate is mainly related to two factors: the communication period CI and the amount of data (MTU and PDU) that can be transmitted by each communication point.
+* It is not the case that the smaller the CI, the higher the data throughput rate; or the larger the CI, the higher the throughput rate. the smaller the CI, the larger the proportion of the entire time period reserved for hardware preparation time, the shorter the actual communication data time, so it seems that the CI needs to be configured larger. However, when the CI is larger, once a data error occurs, the more time remaining in the CI is wasted, so it seems that the CI needs to be configured smaller, and the next communication can be quickly continued.
+* ** In high data throughput scenarios, typical empirical values are generally used, with a CI of 30 ms to 45 ms, a PHY of 2M, a PDU of 251, and an MTU of 247**.
+* If you need to test the BLE data transfer rate, you can use the `SDK_Folder\projects\ble\ble_peripheral\ble_app_throughput` example project in the SDK with the GRToolbox tool.
 
 
 
 ### 3. FAQ
 
-**Q**：在手机端想修改PDU参数，但没有找到API接口，怎么实现？
+#### 3.1 I want to modify the PDU parameters in cell phone, but I didn't find the API interface, how can I do it?
 
-**A**：手机端发起参数更新，可获取的确定值为MTU。如果要在连接后，精确地修改连接参数，通常需使用手机发送命令到Slave芯片，由芯片发起参数更新，具体的实现可以参考SDK中的Throughput示例工程。
+**A**: When the cell phone initiates the parameter update, the MTU is the value that can be obtained, if you want to modify the connection parameter accurately after the connection is made, you usually need to use the cell phone to send commands to the Slave chip, and then the chip will initiate the parameter update, the specific implementation can be referred to the Throughput sample project in the SDK.
 
-使用手机进行MTU设置时，会进行一次PDU Update，将手机端的PDU Max值进行更新。如需单独发送指令让设备端进行PDU设置，则需先将MTU进行更新，否则手机端一直默认最大PDU Length为27。而当设备端发起比27大的MTU值更新时，将操作失败。
+When the cell phone is used for MTU setting, a PDU Update will be performed to update the PDU Max value of the cell phone. If you need to send a separate command to the device side for PDU setting, you need to update the MTU first, otherwise the phone side will always default to a maximum PDU Length of 27, and when the device side initiates an update of the MTU value larger than 27, the operation will fail.
 
-**Q**：吞吐率测试时，为什么苹果手机吞吐率偏低？
+#### 3.2 Why is the throughput rate of Apple phone low during throughput rate test?
 
-**A**：iOS默认的连接间隔CI为30 ms。不同的手机操作系统，CI更新，可以接受的值不一样。iOS支持的最小CI为20 ms，但不能像Android 一样，CI可以更新到最小值7.5 ms。若iOS版本不同，则MTU也不一样，为185 Bytes左右。所以iOS BLE传输速率，不能像Android一样，达到最优值。
-
+**A**: iOS default connection interval CI is 30 ms. different cell phone OS, CI update, acceptable value is not the same. iOS supports minimum CI of 20 ms, but can not be like Android, CI can be updated to the minimum value of 7.5 ms. if the iOS version is different, then the MTU is not the same, it is about 185 Bytes. So the iOS BLE transfer rate can't reach the optimal value like Android.

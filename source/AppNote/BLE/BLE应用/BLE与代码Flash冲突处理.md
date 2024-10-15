@@ -1,47 +1,51 @@
-## BLE与执行代码Flash冲突处理
+## Conflict handling between BLE and XIP-Flash
 
 
 
-在GR5xx系列芯片中，BLE任务在最高优先级中断中执行调度，允许打断但是打断时间不宜过长。但片上Flash操作必须关闭中断。因此，当Flash操作和BLE调度同时发生时，就会产生冲突。
+In the GR5xx series chips, BLE tasks are scheduled in the highest priority interrupt, and interruptions are allowed but should not be too long. However, the interrupt must be turned off for on-chip Flash operation. Therefore, when Flash operation and BLE scheduling occur at the same time, a conflict occurs.
 
-### 1. 如何避免BLE与Flash之间的操作冲突
-Flash以Page为基础单位，每256 Bytes为1 Page，每4096 Bytes为1 Sector。其中，Read操作没有长度限制；Write操作以1 Page为基础单位；Erase操作以1 Sector为基础单位。另外，由于Flash特性，只能由1写为0。因此，如果需要重新写入同一个Page，必须先擦除整片Sector。
 
-- Read 1 Sector：143.63 μs；Write 1 Sector：26.47 ms；Erase 1 Sector：17.25 ms。
 
-- Read 2 Sectors：282.88 μs；Write 2 Sectors：53.09 ms；Erase 2 Sectors：34.30 ms。
+### 1. How to avoid conflicts between BLE and Flash operations
 
-- 根据读、写、擦除长度，耗时按照线性增长。
+Flash is based on Page, 1 Page for every 256 Bytes and 1 Sector for every 4096 Bytes, where Read operation has no length limitation, Write operation is based on 1 Page, and Erase operation is based on 1 Sector. In addition, due to the characteristics of Flash, only 1 can be written to 0. Therefore, if you need to rewrite the same Page, you must erase the entire Sector first.
 
-一般情况下，Android设备刚连接上BLE时的连接参数为45 ms Interval、5s Timeout。在此参数下，如需一次擦除40 KB Flash，只需在每个Sector操作之间增加45 ms delay，来释放中断让BLE调度。每次有一个连接间隔会因操作Flash关中断错过。按照该方法操作40 KB Flash，在保证蓝牙稳定连接的情况下，需要耗时900 ms。
+- Read 1 Sector: 143.63 μs; Write 1 Sector: 26.47 ms; Erase 1 Sector: 17.25 ms.
 
-一般情况下，iOS设备刚连接上BLE时的连接参数为30 ms Interval。在此参数下，如需一次擦写40 KB Flash，只需在每个Sector操作之间增加30ms delay，来释放中断让BLE调度。每次有一个连接间隔会因操作Flash关中断错过。按照该方法操作40 KB Flash，在保证蓝牙稳定链接的情况下，需要耗时750 ms。
+- Read 2 Sectors: 282.88 μs; Write 2 Sectors: 53.09 ms; Erase 2 Sectors: 34.30 ms.
 
-**那什么时候需要每个Sector Delay，什么时候不需要呢？**
+- Depending on the read, write, and erase lengths, the elapsed time increases linearly.
 
-假设操作一次Flash的时间为N ms，连接间隔为M ms，timeout为T ms：
+Generally, the connection parameters when the Android device is first connected to the BLE are 45 ms Interval, 5s Timeout, under this parameter, if you need to erase 40 KB of Flash at a time, you only need to add 45 ms delay between each Sector operation to release the interrupt for the BLE to schedule. One connection interval at a time will be missed by operating the Flash off interrupt. Operating the 40 KB Flash in this way takes 900 ms with a stable Bluetooth connection.
 
-a. 当M > N时，操作Flash完全不需要Delay。即操作一次Flash需要95 ms，连接间隔为100 ms，那么可不Delay。
+In general, the connection parameter for an iOS device when it first connects to BLE is 30 ms Interval, under this parameter, if you want to erase and write 40 KB Flash at a time, you only need to add a 30 ms delay between each Sector operation to release the interrupt for BLE to schedule. One connection interval at a time will be missed by operating the Flash off interrupt. Operating the 40 KB Flash in this way takes 750 ms with a guaranteed stable Bluetooth link.
+
+
+
+### 2. So when is each Sector Delay needed and when is it not? 
+
+Assume that the time to operate one Flash is N ms, the connection interval is M ms, and the timeout is T ms:
+
+a. When M > N, no Delay is required to operate Flash at all, i.e., it takes 95 ms to operate Flash and 100 ms to connect, then no Delay is required. b. When M > N, no Delay is required to operate Flash at all, i.e., it takes 95 ms to operate Flash and 100 ms to connect.
 
 ![](../../../_images/ble/BLE_FLASH_A.PNG) 
 
-b. 当T < N时，操作Flash的时间比Timeout的时间还要长，则推荐每操作一个Sector Delay一次M ms。
+b. When T < N, it takes longer to operate Flash than Timeout, then it is recommended to Delay M ms once for each Sector.
 
 ![](../../../_images/ble/BLE_FLASH_B.PNG) 
 
-c. 当M*6 < N时，操作Flash时刻正好是建连时刻，从设备接收到连接请求后6个interval内必须有回复。则推荐每操作一个Sector Delay一次M ms。
+c. When M*6 < N, the operation Flash moment is exactly the connection building moment, and there must be a reply within 6 intervals after the connection request is received from the device. Then it is recommended to delay M ms once per Sector operation.
 
 ![](../../../_images/ble/BLE_FLASH_C.PNG) 
 
-d. 当M < N < (5*M) 且 (5*M <T)时，操作Flash时间可以保证建连时序，无需Delay。
+d. When M < N < (5*M) and (5*M < T), the operation Flash time can guarantee the build time sequence without Delay.
 
 ![](../../../_images/ble/BLE_FLASH_D.PNG) 
 
-最后推荐操作Flash的时刻有如下注意点：
+The last recommended moment to operate Flash has the following notes:
 
-1. 请避开蓝牙刚连接的时间，因为刚连接上Timeout时间较短，例如iOS只有720 ms。这样可以避免情形c的发生。
-2. 请在蓝牙连接稳定后操作，例如前期发现服务等操作完成后进入维持连接状态，即在情形a时刻操作Flash。
-3. 如果业务无法在a情形下操作，那么每操作1 Sector，进行一次1个Interval的Delay，以保证蓝牙连接的稳定性。
-
+1. Please avoid the time when Bluetooth is just connected, because the Timeout time is shorter when it is just connected, e.g. only 720 ms for iOS. this can avoid the situation c.
+2. Please operate after the Bluetooth connection is stabilized, e.g. after the pre-discovery service and other operations have been completed to enter the state of maintaining the connection, i.e., operate Flash at the moment of situation a. 3.
+3. If the service cannot be operated in scenario a, then for every 1 Sector operation, perform a Delay of 1 Interval to ensure the stability of the Bluetooth connection.
 
 

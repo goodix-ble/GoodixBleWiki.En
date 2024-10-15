@@ -2,61 +2,61 @@
 
 
 
-### 1. BLE Profile基本概念介绍
+### 1. Introduction to the basic concept of BLE Profile
 
-- BLE Profile指包含对应Client、Server以及相互之间操作说明的配置文件。
-- 单个Profile可能包含若干个Service。
-- 单个Service包含若干个Character，这些Character由若干个UUID组成。
-- UUID是蓝牙规范中通用唯一标识符，用于标识蓝牙规范中提到的几乎所有实例。例如，标识某个服务、属性等。
-- UUID分为蓝牙规范预留部分和用户自定义部分。
-- 在一个BLE Server中，必须包含两个基本Profile：GAP & GATT，在协议栈中默认添加，无需用户添加。其他Profile可由用户自行按需定义添加。
-- 详细概念介绍，请参考蓝牙规范《[Core Specification 5.4](https://www.bluetooth.com/specifications/core54-html/)》。
-- 蓝牙规范预定义UUID，参考链接https://www.bluetooth.com/specifications/assigned-numbers/。
+- A BLE Profile is a configuration file that contains descriptions of the operations of a Client, a Server, and each other.
+- A single profile may contain several services.
+- A single Service may contain several Characters, which are composed of several UUIDs.
+- A UUID is a universally unique identifier used in the Bluetooth specification to identify almost all instances mentioned in the Bluetooth specification. For example, to identify a particular service, property, etc.
+- UUIDs are divided into Bluetooth specification reserved parts and user-defined parts.
+- In a BLE Server, there are two basic Profiles that must be included: GAP & GATT, which are added by default in the protocol stack and do not need to be added by the user. The other profiles can be added by user-defined profiles.
+- Please refer to the Bluetooth specification “[Core Specification 5.4](https://www.bluetooth.com/specifications/core54-html/)” for more details.
+- For the predefined UUID of Bluetooth specification, please refer to the link https://www.bluetooth.com/specifications/assigned-numbers/.
 
 
 
-### 2. BLE Profile应用笔记
+### 2. BLE Profile Application Notes
 
-- 添加自定义Service，参考文档《[GR5xx应用及自定义Sample Service](https://docs.goodix.com/zh/online/custom_sample_service_bl/)》。
-- 创建、修改自定义Service中的Character，参考文档《[GR5xx应用及自定义Sample Service](https://docs.goodix.com/zh/online/custom_sample_service_bl/)》中`samples_attr_tab[SAMPLES_IDX_NB]`定义，进行创建和修改。
-- 添加自定义`128-bit uuid`示例，参考文档《[GR5xx应用及自定义Sample Service](https://docs.goodix.com/zh/online/custom_sample_service_bl/)》中`samples_attr_tab[SAMPLES_IDX_NB]`。
-- 添加`16-bit uuid`示例，请参考任意标准Service示例，如`SDK_Folder\components\profiles\cts\cts.c`中的`cts_attr_tab[CTS_IDX_NB]`。
+- Add custom Service, refer to the document “[GR5xx Application and Custom Sample Service](https://docs.goodix.com/zh/online/custom_sample_service_bl/)”.
+- Create and modify Character in the custom Service, refer to document << [GR5xx应用及自定义Sample Service](https://docs.goodix.com/zh/online/custom_sample_service_bl/) >> in samples  `samples_attr_tab[SAMPLES_IDX_NB]` definition for creation and modification.
+- To add a custom `128-bit uuid` example, refer to the   `samples_attr_tab[SAMPLES_IDX_NB]` defined in the document << [GR5xx应用及自定义Sample Service](https://docs.goodix.com/zh/online/custom_sample_service_bl/) >>.
+- To add `16-bit uuid` example, please refer to any standard Service example, such as `cts_attr_tab[CTS_IDX_NB]` in `SDK_Folder\components\profiles\cts\cts.c`.
 
 
 
 ### 3. FAQ
 
-- **Q**：在示例工程中未添加任何Service，但连接手机后能看到两个Service。请问这两个Service是从哪里来的？分别有什么用处？
+#### 3.1 I didn't add any Service in the sample project, but I can see two Services after connecting to the phone, where do these two Services come from? What are they used for?
 
-  **A**：这两个服务分别是`Generic Access Service`和`Generic Attribute Service`，为BLE协议栈必需的基础服务，在底层由BLE协议栈默认添加。
+  **A**: These two services are `Generic Access Service` and `Generic Attribute Service`, which are the basic services required by the BLE stack, and are added by default by the BLE stack at the bottom layer.
 
-  - `Generic Access Service（UUID 1800）`为`Generic Access Profile`的服务组成部分。`Generic Access Profile`简称GAP，定义了与发现蓝牙设备（未连接状态）相关的通用程序，以及连接蓝牙设备（连接状态）的链路管理，也规定了与使用不同安全级别相关的程序。另外，该配置文件包含用户界面可访问参数的通用格式要求。
+  - The `Generic Access Service (UUID 1800)` is a service component of the `Generic Access Profile`. The `Generic Access Profile`, abbreviated as GAP, defines the generic procedures related to the discovery of Bluetooth devices (unconnected state) and the link management for connecting Bluetooth devices (connected state), as well as the procedures related to the use of different security levels. In addition, this profile contains requirements for a common format for user interface accessible parameters.
 
-  - `Generic Attribute Service（UUID 1801）`为`Generic Attribute Profile`的服务组成部分。`Generic Attribute Profile`简称GATT，定义了通用属性配置文件。它使用属性协议描述了一个服务框架，用于发现服务以及在对等设备上读取和写入特征值。
+  - The `Generic Attribute Service (UUID 1801)` is the service component of the `Generic Attribute Profile`. The `Generic Attribute Profile`, abbreviated as GATT, defines a generic attribute profile. It uses the Attribute Protocol to describe a framework of services for discovering services and for reading and writing feature values on peer devices.
 
-    这两个服务完全由协议栈维护，不需要用户额外操作，用户只需了解即可。
+    These two services are maintained entirely by the protocol stack and require no additional user action; the user only needs to know about them.
 
-- **Q**：芯片创建BLE服务的数量有限制吗？最大可支持创建多少个服务？
+#### 3.2 Is there a limit to the number of BLE services that can be created by the chip? What is the maximum number of services that can be supported to be created?
 
-  **A**：请参考SDK中*custom_config.h*文件中`CFG_MAX_PRFS`的配置范围。 目前，配置范围为`1 ~ 64`。
+  **A**: Please refer to the configuration range of `CFG_MAX_PRFS` in the *custom_config.h* file in the SDK. Currently, the configuration range is `1 ~ 64`.
 
-- **Q**：执行`ble_gattc_prf_read`，回调的status为`0x0005`，是什么意思？
+#### 3.3 Execute `ble_gattc_prf_read` and the callback status is `0x0005`, what does it mean?
 
-  **A**：`0x0005`表示：
+  **A**: `0x0005` means:
 
-  - 该指令用于读取对应handle的值，读写值需要注意权限问题。
+  - This instruction is used to read the value of the corresponding handle, reading and writing the value need to pay attention to the permission problem.
 
-  - 需检查Server端对应Character的权限是否设置正确，或者当前连接状态是否满足操作权限。
-  - 当前连接状态安全等级不够，需要先进行认证，再进行读值操作。
+  - You need to check whether the permissions of the corresponding Character on the Server side are set correctly, or whether the current connection status meets the operation permissions.
+  - If the current connection status is not secure enough, you need to authenticate first, and then read the value.
 
-- **Q**：SDK中文件传输有没有范例，实现该功能的方法有什么建议？
+#### 3.4  Is there any example of file transfer in SDK and what is the suggested method to realize this function?
 
-  **A**：请参考示例工程`SDK_Folder\projects\ble\ble_peripheral\ble_app_uart`。具体使用方法，请参考文档《[GR5xx Serial Port Profile示例手册](https://docs.goodix.com/zh/online/serial_port_bl)》。
+  **A**: Please refer to the example project `SDK_Folder\projects\ble\ble_peripheral\ble_app_uart`. Please refer to the document `[GR5xx Serial Port Profile Example Manual](https://docs.goodix.com/zh/online/serial_port_bl)' for details on how to use it.
 
-- **Q**：关于`static void samples_cccd_set_cb(uint8_t conn_idx, uint16_t handle, uint16_t cccd_value)`函数，在连接时总会报一个`cccd_value = SAMPLES_EVT_TX_NOTIFICATION_DISABLED`事件，请问这个函数的作用是什么？这个值的含义是什么？
+#### 3.5 Regarding the `static void samples_cccd_set_cb(uint8_t conn_idx, uint16_t handle, uint16_t cccd_value)` function, when connecting it will always report a `cccd_value = SAMPLES_EVT_TX_ NOTIFICATION_DISABLED` event when connecting. What is the meaning of this value?
 
-  **A**：每次建立连接时，该回调接口用于通知用户恢复cccd值。如果设备bonded，恢复的cccd值将是上次保存到NVDS的值；如果是非bond设备，恢复的值为默认值0。
+  **A** : This callback interface is used to notify the user to restore the cccd value every time a connection is established. If the device is bonded, the restored cccd value will be the value last saved to NVDS; if it is a non-bonded device, the restored value is the default value 0.
 
-  cccd value属于`Client Characteristic Configuration`特征的Value，用户控制Server端发送通知和指示。可以理解为Server端为对端保存的一个订阅信息，表示是否订阅Server端的通知和指示。
+  - The cccd value belongs to the Value of the `Client Characteristic Configuration` feature, where the user controls the Server side to send notifications and instructions. It can be understood as a subscription information that Server side keeps for the peer side, indicating whether or not to subscribe to the notifications and instructions of Server side.
 
-  Client需要通过发起write请求写操作来修改cccd value。如果写操作时设备已经bond，写的cccd value同时存放到NVDS里面。下次建立连接时，如果对端是已经bond的设备，将会从NVDS里面加载订阅信息，通过此接口恢复`cccd value`通知给用户；如果连接的是非bond设备，此接口也会调用通知用户设置`cccd value `为默认值。
+  - The Client needs to modify the cccd value by initiating a write request, and if the device is bonded during the write operation, the written cccd value is stored in the NVDS at the same time. If the device is bonded when the write operation is performed, the cccd value will be stored in the NVDS. The next time a connection is established, if the device is bonded, the subscription information will be loaded from the NVDS, and the cccd value will be restored to the user through this interface; if the device is not bonded, this interface will be called to notify the user that the cccd value is set to the default value.
