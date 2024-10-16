@@ -1,14 +1,15 @@
-# 堆(Heap)的使用建议
+## Suggestions for the use of Heap
 
-在Goodix Bluetooth LE各SDK中，存在如下堆管理器，应用层可以根据业务需要采用。
+In Goodix Bluetooth LE SDKs, there are the following heap managers, which can be used by the application layer according to the business needs.
 
-| 堆类型           | 说明                                                         | 一般建议 | 使用范围 |
+| Heap Type | Description | General Suggestions | Usage Scope |
 | ---------------- | ------------------------------------------------------------ | ---- | ---- |
-| 标准库malloc     | 源自编译器提供的标准库，可以通过工程配置文件的SYSTEM_HEAP_SIZE配置和启用 | 如果OS环境下建议不开启，使用OS Heap | 全系SoC |
-| FreeRTOS Heap    | OS提供的堆管理器                                            | OS环境下应用优先使用 | 全系SoC |
-| app_memory.c/.h  | SDK提供的简易堆管理器                   | 不建议在应用中使用 | 不建议使用 |
-| app_graphics_mem | 仅适用于GR5526，将应用未使用完的SRAM和PSRAM合成Heap进行管理 | 建议用在Graphics和大块数据缓存场景，休眠时会掉电处理 | GR5526 |
+| std   malloc     | Derived from the standard library provided by the compiler, it can be configured and enabled via SYSTEM_HEAP_SIZE  | recommended not to enable it in OS environments, and to use the OS Heap | all SoCs |
+| FreeRTOS Heap    | Heap Manager by FreeRTOS                                            | under FreeRTOS | all SoCs |
+| app_memory.c/.h  | simple heap management                   | Not recommended | Not recommended  |
+| app_graphics_mem | For GR5526 only, the application's unused SRAM and PSRAM are synthesized into a Heap for management. | Recommended for Graphics and large block data caching scenarios, power down processing when hibernating | GR5526 |
 
-- 一般情况下不优先使用标准库堆管理器，如果是应用算法要求独占内存堆块或有特殊的执行要求，可以视情况启用。
-- 除此外，用户还可以自行引进其他合适的堆管理器。
+- The standard library heap manager is not normally prioritized, but can be enabled as appropriate if the application algorithms require exclusive memory heap blocks or if there are special execution requirements.
+
+- In addition, users can introduce other suitable heap managers on their own.
 

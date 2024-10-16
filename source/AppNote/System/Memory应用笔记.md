@@ -1,14 +1,14 @@
-## Memory应用笔记
+## Memory application notes
 
 
 
-### 1. 基本功能介绍
+### 1. Introduction to Basic Functions
 
 
 
-#### 1.1 Memory资源概述
+#### 1.1 Memory Resources Overview
 
-- GR5xx提供的Memory资源如下（更多详情参见对应芯片Datasheet）：
+- The Memory resources provided by GR5xx are as follows (see the corresponding chip Datasheet for more details):
 
 | SoC    | SRAM (Up to KB)  | Flash (Up to KB) |
 | ------ | ---------------- | ---------------- |
@@ -18,11 +18,11 @@
 | GR5525 | 256              | 1024             |
 | GR5526 | 512              | 1024             |
 
-#### 1.2 Memory布局
-- 不同芯片的SRAM和Flash布局有所不同，详情见芯片对应的开发者指南，如GR551x的Flash和SRAM布局可参考《[GR551x开发者指南](https://docs.goodix.com/zh/online/gr551x_develop_guide/V2.7)》“Flash存储映射”和“RAM存储映射”章节。
+#### 1.2 Memory Layout
+- The SRAM and Flash layout varies from chip to chip, please refer to the corresponding developer's guide for details, e.g. for the Flash and SRAM layout of GR551x, please refer to [GR551x开发者指南](https://docs.goodix.com/zh/online/gr551x_develop_guide/V2.7).
 
-#### 1.3 典型应用资源使用和用户可用资源情况
-- GR5515典型应用资源使用和用户可用资源情况（基于SDK V2.0.1, ARMCC V5.06 update 1(build 61), -O2, System stack 8KB, System heap 0KB。不同SDK版本、SDK示例、编译器和优化选项，结果有所不同，以实际编译结果为准）：
+#### 1.3 Typical Application Resource Usage and User Available Resources
+- GR5515 typical application resource usage and user available resources (based on SDK V2.0.1, ARMCC V5.06 update 1(build 61), -O2, System stack 8KB, System heap 0KB. The results may vary with different SDK versions, SDK examples, compilers and optimization options, and the actual compilation results shall prevail). (Results may vary with different SDK versions, SDK examples, compilers and optimization options:)
 
 
 | Role               | Example                  | ADV Number  | SCAN Number | Bluetooth LE Connection Number | Bluetooth LE Bond Number | System Used SRAM (KB) | System Used Flash (KB) | Customer Available SRAM (KB) | Customer Available Flash (KB) |
@@ -33,7 +33,7 @@
 | Peripheral         |  ble_app_cts             |    1       |    0       |            4          |        4        |           60         |          83           |             196             |                941                 |
 | Central+Peripheral | ble_app_hrs_rscs_relay   |    1        |    1        |            4          |        4        |           66         |          99           |             190             |                925                 |
 
-- GR533x典型应用资源使用和用户可用资源情况（基于SDK V1.0.5, ARMCC V5.06 update 1(build 61), -O2, System stack 4KB, System heap 0KB。不同SDK版本、SDK示例、编译器和优化选项，结果有所不同，以实际编译结果为准）：
+- GR533x typical application resource usage and user available resources (based on SDK V1.0.5, ARMCC V5.06 update 1(build 61), -O2, System stack 4KB, System heap 0KB. Results may vary with different SDK versions, SDK examples, compilers, and optimization options. (Results may vary with different SDK versions, SDK examples, compilers and optimization options:)
 
 | Role               | Example                | GATTC Support | GATTS Support | Master Support | Slave Support | ADV Number | SCAN Number | Bluetooth LE Connection Number | Bluetooth LE Bond Number | System Used SRAM (KB) | System Used Flash (KB) | Customer Available SRAM (KB) | Customer Available Flash (KB) |
 | ------------------ | ---------------------- | ------------- | ------------- | -------------- | ------------- | ---------- | ----------- | ------------------------------ | ------------------------ | --------------------- | ---------------------- | ---------------------------- | ----------------------------- |
@@ -45,85 +45,90 @@
 
 
 
-### 2. 应用笔记
 
-#### 2.1 链接脚本应用指南（以ARMCC Scatter File为例，其他链接脚本类似）
-不同芯片的Scatter文件略有差异，以下是GR551x的Scatter文件的各个执行域，其他芯片类似：
+### 2. Application Notes
+
+#### 2.1 Link Script Application Guide (ARMCC Scatter File as an example, other link scripts are similar)
+The Scatter file varies slightly from chip to chip, the following are the individual execution fields of the Scatter file for the GR551x, other chips are similar:
 - LR_FLASH
-    - 固件的加载域，指定固件的起始地址（APP_CODE_RUN_ADDR）和固件最大大小（FLASH_SIZE）。
+    - Firmware load field, specify the start address of the firmware (APP_CODE_RUN_ADDR) and the maximum size of the firmware (FLASH_SIZE).
 - FLASH_CODE
-    - 固件代码执行域，指定固件代码段的起始地址（APP_CODE_RUN_ADDR）和代码段的最大大小（APP_MAX_CODE_SIZE）。
+    - Firmware code execution domain specifying the start address of the firmware code segment (APP_CODE_RUN_ADDR) and the maximum size of the code segment (APP_MAX_CODE_SIZE).
 - TINY_RAM_SPACE
-    - SDK内部存放代码的RAM区域，用户无需关注此区域。
+    - The RAM area where the SDK stores the code internally, the user does not need to pay attention to this area.
 - FPB
-    - SDK内部存放FPB数据的RAM区域，用户无需关注此区域。
+    - The RAM area inside the SDK where the FPB data is stored, so the user does not need to pay attention to this area.
 - RAM_RW
-    - 存放程序已经初始化且数据不为0的全局变量的区域。
+    - RAM_RW Area for global variables that have been initialized by the program and have non-zero data.
 - RAM_CODE
-    - 存放SDK和用户代码的RAM区域。
-    - 放在RAM_CODE的代码可以分为两类：
-        - 一是某些函数由于涉及到Flash操作的代码必须常驻内存，如果放到Flash中就会造成死机。
-        - ⼆是放到RAM中执⾏的函数每次被调⽤时不需要在Cache未命中时从Flash重新读取，可以节省时间，所以对于⼀些执⾏时间有要求的函数可以放到常驻内存，提⾼执⾏效率。SDK中将睡眠唤醒等⼀些需要经常执⾏的函数常驻内存，⼤⼤降低执⾏时间，最终达到节省功耗的目的。
+    - The RAM area where the SDK and user code are stored.
+    - The code in RAM_CODE can be divided into two categories:
+        - One is that some functions must be resident in the memory due to the code related to Flash operation, which will cause crash if it is put into Flash.
+        - Second, functions executed in RAM can save time because they do not need to be re-read from Flash when the Cache is not hit each time the function is called, so functions that require execution time can be executed in RAM to increase execution efficiency, and functions that need to be executed frequently, such as sleep and wakeup, can be executed in RAM in the SDK to greatly reduce execution time, which in turn saves power consumption.
 - RAM_RESERVE
-    - RAM不会被初始化的执行域。
+    - RAM_RESERVE is an execution field in which RAM is not initialized.
 - RAM_ZI
-    - RAM中存放程序未初始化的全局变量和初始化为0的全局变量的区域。
+    - The area of RAM that holds the uninitialized global variables of the program and the global variables that are initialized to zero.
 - ARM_LIB_HEAP
-    - C库内存动态分配的Heap（如malloc等函数），C库的malloc等函数由于不具备线程安全，不建议用户使用C库提供的内存动态分配函数（如malloc）和内部带有malloc函数的C库函数（如strdup）。若用户是裸机开发，可使用app_memory模块；若使用RTOS，则建议使用RTOS的内存分配函数。
+    - C library memory dynamic allocation of Heap (such as malloc and other functions), C library malloc and other functions due to the lack of thread-safe, it is not recommended that users use the C library to provide memory dynamic allocation function (such as malloc) and internal with malloc function of the C library function (such as strdup). If the user is bare-metal development, app_memory module can be used; if using RTOS, it is recommended to use the memory allocation function of RTOS.
 - ARM_LIB_STACK
-    - 系统栈执行域。用户可以根据实际情况调整栈大小，GR551x的栈空间不能小于8 KB，GR531x的栈空间不能小于4 KB。
+    - System stack execution field. Users can adjust the stack size according to the actual situation, the stack space of GR551x can not be less than 8 KB, and the stack space of GR531x can not be less than 4 KB.
 
-#### 2.2 计算程序所用RAM和固件大小（ARMCC编译器，其他编译器可参考以下方法）
+#### 2.2 Calculate the RAM and firmware size used by the program (ARMCC compiler, other compilers can refer to the following method)
 
-##### 2.2.1 GR551x（SDK V2.0.1，用户未修改链接脚本）
-- GR551x RAM使用情况
-    - 在```\Keil_5\Listings```目录找到map文件。
-    - 用文本编辑器打开map文件，找到```ARM_LIB_HEAP```的起始地址并记为```ARM_LIB_HEAP_START_ADDR```，如下所示```ARM_LIB_HEAP```的起始地址为```0x0080ce28```：
+##### 2.2.1 GR551x (SDK V2.0.1, user unmodified link script)
+- GR551x RAM usage
+    - Find the map file in the ```\Keil_5\Listings``` directory.
+    - Open the map file with a text editor and find the start address of ```ARM_LIB_HEAP``` and note it as ARM_LIB_HEAP_START_ADDR  as shown below  ARM_LIB_HEAP  starts at ``0x0080ce28``:
         ```
         Execution Region ARM_LIB_HEAP (Base: 0x0080ce28, Size: 0x00000000, Max: 0x00000000, ABSOLUTE)
-        Base Addr    Size         Type   Attr      Idx    E Section Name        Object
-        0x0080ce28   0x00000000   Zero   RW            1    ARM_LIB_HEAP.bss    anon$$obj.o
+        Base Addr Size Type Attr Idx E Section Name Object
+        0x0080ce28 0x00000000 Zero RW 1 ARM_LIB_HEAP.bss anon$$obj.o
         ```
-    - 可用以下公式算出RAM使用为```59.45 KB```：
-        ```
+    - The following formula can be used to calculate the RAM usage as ```59.45 KB```:
+        ```c
         RAM_USED = ARM_LIB_HEAP_START_ADDR - RAM_BASE_ADDR + SYSTEM_HEAP_SIZE + SYSTEM_STACK_SIZE
-        // 假设ARM_LIB_HEAP_START_ADDR=0x0080ce28，SYSTEM_HEAP_SIZE = 0KB, SYSTEM_STACK_SIZE= 8KB
+        // Assume ARM_LIB_HEAP_START_ADDR = 0x0080ce28, SYSTEM_HEAP_SIZE = 0KB, SYSTEM_STACK_SIZE= 8KB.
         RAM_USED = 0x0080ce28 - 0x00800000 + 0 * 1024 + 8 * 1024 = 60872 B = 59.45 KB
+        
         ```
-- GR551x固件大小
-    - 有多种获得固件大小的方法，以下是两种比较常用的方法：
-        - 第一种是最直接的方法，在```\Keil_5\Listings```目录找到.bin文件，直接查看文件的大小。
-        - 第二种方法是分析map文件：
-            - 在```\Keil_5\Listings```目录找到map文件。
-            - 用文本编辑器打开map文件并找到```Total ROM Size (Code + RO Data + RW Data)```，如下所示，固件大小为```82.21 KB```：
+- GR551x Firmware Size
+    - There are multiple ways to get the firmware size, here are two of the more common methods:
+        - The first is the most direct method, find the .bin file in the ```\Keil_5\Listings``` directory and check the file size directly.
+        - The second method is to analyze the map file:
+            - Find the map file in the ```\Keil_5\Listings``` directory.
+            - Open the map file with a text editor and find ```Total ROM Size (Code + RO Data + RW Data)``` as shown below, the firmware size is ``82.21 KB``:
                 ```
-                Total RO  Size (Code + RO Data)                82952 (  81.01kB)
-                Total RW  Size (RW Data + ZI Data)             30192 (  29.48kB)
-                Total ROM Size (Code + RO Data + RW Data)      84184 (  82.21kB)
+                Total RO Size (Code + RO Data) 82952 ( 81.01kB)
+                Total RW Size (RW Data + ZI Data) 30192 ( 29.48kB)
+                Total ROM Size (Code + RO Data + RW Data) 84184 ( 82.21kB)
                 ```
-##### 2.2.2 GR533x （SDK V1.0.5，用户未修改链接脚本）
-- GR533x RAM使用情况
-    - 在```\Keil_5\Listings```目录找到map文件。
-    - 用文本编辑器打开map文件，找到```FPB_TABLE```的起始地址并记为```FPB_TABLE_START_ADDR```，如下所示```FPB_TABLE```的起始地址为```0x20008500```：
+##### 2.2.2 GR533x (SDK V1.0.5, user unmodified link script)
+- GR533x RAM usage
+    - Find the map file in the ```\Keil_5\Listings``` directory.
+    - Open the map file with a text editor and locate the start address of ```FPB_TABLE``` and note it as ``FPB_TABLE_START_ADDR``` as shown below ```FPB_TABLE``` starts at ``0x20008500``:
         ```
         Execution Region FPB_TABLE (Base: 0x20008500, Size: 0x00000040, Max: 0x00000050, ABSOLUTE)
-        Base Addr    Size         Type   Attr      Idx    E Section Name        Object
-        0x20008500   0x00000040   Data   RW         2700    FPB                 ble_sdk.lib(sdk_fpb_mgmt.o)
+        Base Addr Size Type Attr Idx E Section Name Object
+        0x20008500 0x00000040 Data RW 2700 FPB ble_sdk.lib(sdk_fpb_mgmt.o)
         ```
-    - 找到```ARM_LIB_STACK```的起始地址并记为```ARM_LIB_STACK_START_ADDR```，如下所示```ARM_LIB_STACK```的起始地址为```0x20013b80```：
+    - Find the start address of ```ARM_LIB_STACK`` and write it down as ```ARM_LIB_STACK_START_ADDR`` as shown below ```ARM_LIB_STACK`` starts at ``0x20013b80``:
         ```
         Execution Region ARM_LIB_STACK (Base: 0x20013b80, Size: 0x00002000, Max: 0x00002000, ABSOLUTE)
-        Base Addr    Size         Type   Attr      Idx    E Section Name        Object
-        0x20013b80   0x00002000   Zero   RW            2    ARM_LIB_STACK.bss   anon$$obj.o
+        Base Addr Size Type Attr Idx E Section Name Object
+        0x20013b80 0x00002000 Zero RW 2 ARM_LIB_STACK.bss anon$$obj.o
         ```
-    - 可用以下公式算出RAM使用为```50.44 KB```：
+    - The following formula can be used to calculate the RAM usage as ```50.44 KB``:
         ```
-        // RAM_END_ADDR - ARM_LIB_STACK_START_ADDR，是因为System stack后面会分配一段RAM区域给BLE Controller用
+        // RAM_END_ADDR - ARM_LIB_STACK_START_ADDR because the System stack allocates a section of RAM behind it for the BLE Controller.
         RAM_USED = FPB_TABLE_START_ADDR - RAM_BASE_ADDR + FPB_TABLE_SIZE + SYSTEM_HEAP_SIZE + (RAM_END_ADDR - ARM_LIB_STACK_START_ADDR)
-        // 假设FPB_TABLE_START_ADDR=0x20008500，SYSTEM_HEAP_SIZE = 0KB, ARM_LIB_STACK_START_ADDR=0x20013b80
+        // Assume FPB_TABLE_START_ADDR = 0x20008500, SYSTEM_HEAP_SIZE = 0KB, ARM_LIB_STACK_START_ADDR = 0x20013b80
         RAM_USED = 0x20008500 - 0x20000000 + 0x40 + 0 * 1024 + (0x20018000 - 0x20013b80) = 51648 B = 50.44 KB
+        ``
         ```
-- GR33xx固件大小
+- GR33xx firmware size
   
-    -  GR533x的固件大小可参考```GR551x 固件大小```的计算方法。
+    - The GR533x firmware size can be calculated by referring to the ``GR551x firmware size``.
+
+
 

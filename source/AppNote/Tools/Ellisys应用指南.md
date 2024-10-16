@@ -1,155 +1,161 @@
-## Ellisys抓包工具使用指南
+## Ellisys User Guide
 
-[toc]
+[TOC]
 
-### 1. 重要提示
+### 1. Important Note
 
-抓包器属于贵重设备，一台价值15W~50W不等，更换维修费用高昂，且维修需要寄回瑞士原厂维修，时间较长。为避免纠纷，请切记使用过程中规范使用，避免电源故障，跌落等导致设备异常。
+Ellisys packet grabber is a valuable equipment, the value of a 15W~50W range, replacement and maintenance costs are high, and the repair needs to be sent back to the original Swiss factory for repair, which takes a long time. In order to avoid disputes, please remember to use the device in a standardized way to avoid power failure, falling and other abnormalities.
 
-### 2. 前言
 
-ellisys抓包工具，需要配合Ellisys Bluetooth Analyzer一起使用。
 
-经典蓝牙抓包需要抓包器硬件支持，软件还是一致。由于我们主要业务是BLE，固本文档主要以BLE抓包为例。
+### 2. Preface
 
-该软件最新版本下载地址 https://www.ellisys.com/better_analysis/bta_latest.htm
+Ellisys Bluetooth Analyzer is a packet grabbing tool that needs to be used together with Ellisys Bluetooth Analyzer.
 
-软件会根据协议更新而同步更新，故建议尽量保持使用最新版本。
+Classic Bluetooth packet capture requires packet capturing hardware support, the software is still consistent. As our main business is BLE, solid this document mainly to BLE packet capture as an example.
 
-本文档仅对如何快速开始以及使用过程中典型问题做简要说明，全面详细使用说明介绍，可参考软件安装目录下官方用户指引文档：install_patch\Ellisys\Ellisys Bluetooth Analyzer\Documentation\Ellisys Bluetooth Analyzer User Manual.pdf
+The latest version of the software download address https://www.ellisys.com/better_analysis/bta_latest.htm
 
-### 3. 关于硬件
+The software will be updated synchronously according to the protocol update, so it is recommended to keep using the latest version as much as possible.
 
-- 我们使用的ellisys抓包器，主要有三种型号，如下图从左到右，依次为：Vanguard ，Explorer  ，Tracker。
+This document is only a brief explanation of how to start quickly and typical problems in the process of using the software. For comprehensive and detailed instructions, please refer to the official user guide document in the installation directory of the software: install_patch\Ellisys\Ellisys Bluetooth Analyzer\Documentation\Ellisys Bluetooth Analyzer User Manual.pdf
+
+
+
+### 3. About the hardware
+
+- The ellisys packet grabbers we use come in three main models, as shown below from left to right: Vanguard, Explorer, Tracker.
 
   ![抓包器型号](../../_images/elisys/MACHINE_MODEL.bmp)
 
-- Vanguard和Explorer均必须外接专用电源适配器供电，USB连接线仅用于数据传输。这两种抓包器均可用于抓蓝牙双模空中包。
+- Both Vanguard and Explorer must be powered externally by a dedicated power adapter, and the USB cable is for data transfer only. Both packet grabbers can be used to grab Bluetooth dual-mode over-the-air packets.
 
-- Tracker可以使用USB连接线供电，即USB可用于数据传输和供电两种功能。笔记本电脑USB口也可能存在供电不足的问题，这时可能需要将笔记本插上电源或是更换电脑尝试。
+- The Tracker can be powered using the USB connection cable, i.e. USB can be used for both data transfer and power supply. Laptop USB ports may also be underpowered, so you may need to plug the laptop into a power source or try a different computer.
 
-- 蓝牙抓包数据传输量较大，请尽量使用优质USB线，避免出现供电不足或是抓包异常中断问题。
+- Bluetooth packet grabber data transmission volume is large, please try to use high-quality USB cable, to avoid insufficient power supply or packet grabbing abnormal interruptions.
 
-- 抓包器均需要外接天线，请确认天线功能正常，且已旋紧。
+- All packet grabbers need an external antenna, please make sure the antenna is functioning properly and has been screwed tightly.
 
 
 
-### 4. 开始使用
+### 4. Getting Started
 
-#### 4.1 主界面介绍
+#### 4.1 Main Interface
 
-打开Ellisys Bluetooth Analyzer如下图:
+Open Ellisys Bluetooth Analyzer as below.
 
 ![抓包软件主界面](../../_images/elisys/MACHINE_UI.bmp)
 
-1~5功能简介：
+1~5 Function Introduction:
 
-1. 软件配置：
-   - File：打开历史抓包文件。也可以直接双击.btt后缀文件直接打开。
-   - View：抓包各种功能小窗口打开/关闭。
-   - Record：抓包各种参数配置。这个条目我们最常用。
-   - Help：用户指引文档打开，最新软件版本下载，当前软件版本信息查看。
-2. 窗口选择：
-   - Welcome：默认打开界面。
-   - Low Energy Overview：BLE抓包均处于这个界面。
-   - BR/EDR Overview：BT抓包均处于这个界面。
-3. 历史抓包文件：快速打开最近打开的抓包文件。
-4. 原生抓包文件，软件安装后默认就会存在，用于演示抓包样式。其中LowEnergyXXXX.btt即表示为BLE抓包文件。
-5. User Manual即为官方用户指引文档。
-6. 一些其他官方文档。
+1. software configuration:
+   - File: Open the history capture file. You can also double-click the .btt file to open it directly.
+   - View: open/close the small window of various functions of packet capture.
+   - Record: capture a variety of parameter configuration. This entry is the most commonly used.
+   - Help: open the user guide document, download the latest software version, view the current software version information.
+2. window selection:
+   - Welcome: the default interface.
+   - Low Energy Overview: BLE packet capture is in this interface.
+   - BR/EDR Overview: BT capture packets are in this interface. 3.
+3. Historical Packet Files: Quickly open the recently opened packet files. 4.
+4. Native packet capture file, which exists by default after the software is installed and is used to demonstrate the packet capture style. LowEnergyXXXX.btt is the BLE capture file. 5.
+5. User Manual, which is the official user guide document. 6.
+6. some other official documents.
 
 
 
-#### 4.2 快速开始
+#### 4.2 Quick Start
 
-本节介绍如何快速开始依次抓包。
+This section describes how to quickly start capturing packets sequentially.
 
-1. 打开Ellisys Bluetooth Analyzer软件
-2. 连接抓包器电源，USB连接抓包器和电脑，等待半分钟，设备初始化。Vanguard设备初始化等待时间可能需要1~2分钟。
-3. 点击Record直接即开始抓包，界面自动跳到抓包显示界面。BLE设备抓包，会跳转到Low Energy Overview，双模设备抓包，会跳转到BR/EDR Overview。
-4. 经过短暂的初始化后，设备开始抓包。这时Record按钮变灰，旁边的Stop 和 Restart按钮变得可以点击。
-5. 抓包界面Low Energy Overview开始列出抓到的空口信号，并自动解析出来。
-6. 抓包完毕后后，点击Stop停止本次抓包。
-7. 停止抓包后，抓包数据仍然保留在缓存中，并未保存。保存操作需要点击保存按钮或是在关闭界面时的弹框提示中，点击保存。
-8. 如果本次数据不理想，可以在抓包过程中，直接点Restart快速清除当前数据，重新开始抓包。请注意，restart操作，不会保存任何数据。
-9. 在周围蓝牙数据较多的情况下，抓包数据可能积累的很快。长时间抓包，不仅会极大的占用系统硬盘空间，也可能会因为抓包文件过大而不好搬移。因此如需长时间抓包，请务必设置好抓包自动保存位置和大小，见后文中的Capture Management界面下的自动保存配置。
+1. Open Ellisys Bluetooth Analyzer software. 2.
+2. Connect the packet grabber to the power supply, connect the USB to the packet grabber and the computer, and wait for half a minute for the device to initialize; the initialization of the Vanguard device may take 1-2 minutes. 3.
+3. Click Record to start capturing packets, and the interface will automatically jump to the packet capturing display interface; for BLE devices, it will jump to Low Energy Overview, and for dual-mode devices, it will jump to BR/EDR Overview. 4. After a short initialization period, the device will be connected to the power supply of the packet capturing device.
+4. After a short initialization, the device starts to capture packets. At this time, the Record button is grayed out, and the Stop and Restart buttons next to it become clickable.
+5. The Low Energy Overview interface lists the captured empty port signals and parses them out automatically.
+6. When the capture is finished, click Stop to stop the capture.
+7. After stopping the capture, the captured data is still in the cache and is not saved. To save the data, you need to click the Save button or click Save in the popup box when you close the interface. 8.
+8. If the data is not good, you can tap Restart to clear the current data and restart the packet capture. Please note that restart operation will not save any data. 9.
+9. In the case of more Bluetooth data around, the packet capture data may accumulate very quickly. Capturing packets for a long time will not only take up a lot of system hard disk space, but also may not be easy to move because of the large size of the capture file. Therefore, if you need to capture packets for a long time, please make sure to set up the auto-save location and size of the captured packets, see Auto-save Configuration under Capture Management interface in the following section.
 
-以上流程中涉及几个按钮如下图所示：
+The above process involves several buttons as shown below:
 
 ![快速开始](../../_images/elisys/QUICK_START.bmp)
 
-#### 4.3 抓包配置
+#### 4.3 Packet Catching Configuration
 
-通常，我们直接快速开始，就可以抓到需要的空口包。但也有一些情况，我们可能需要一些简单的配置，来使我们的抓包内容更准确。
+Usually, we can just quickly start and catch the desired air port packets. However, there are cases where we may need some simple configurations to make our packet capture more accurate.
 
-这些配置通常无法在抓包过程中生效，因此请在点击Record之前，进行配置操作。
+These configurations usually can't take effect during the packet capture process, so please do the configuration operation before clicking Record.
 
-如下图打开抓包配置界面：
+The following figure opens the packet capture configuration interface:
 
 ![打开配置](../../_images/elisys/OpenConfig.bmp)
 
-以下是常用的配置操作：
+The following are common configuration operations:
 
-1. Wireless界面：
+1. Wireless interface:
 
-   - Classic Bluetooth (BR/EDR) : 配置为可抓经典蓝牙空口包（需要硬件支持）。
-   - Bluetooth Low Energy : 配置为可抓BLE空口包。以下三个选项我们一般全部选中。
-     - Bluetooth 5 Low Energy 2 Mbps : 支持抓2 M PHY包。
-     - Bluetooth 5 Low Energy Coded（long Range）：支持抓Coded PHY包。
-     - Bluetooth 5 Low Energy Advertising Extension : 支持抓扩展广播。
-   - Bluetooth Radio：调节天线增益。空口信号并不是越高越好，需要调节增益值，使空口信号处于合适强度才能达到最好效果。
-     - RF Gain：默认为0 dB。正数为增加增益，用于目标信号距离较远，信号较弱。负数为减少增益，用于目标距离过近，信号过强。
+   - Classic Bluetooth (BR/EDR) : Configured to catch classic Bluetooth air packets (hardware support required).
+   - Bluetooth Low Energy : Configured to capture BLE packets. The following three options are usually all checked.
+     - Bluetooth 5 Low Energy 2 Mbps : Support to capture 2 M PHY packets.
+     - Bluetooth 5 Low Energy Coded (long range) : Support to capture Coded PHY packets.
+     - Bluetooth 5 Low Energy Advertising Extension : Support to capture extended broadcast.
+   - Bluetooth Radio: Adjust the antenna gain. The air port signal is not the higher the better, you need to adjust the gain value, so that the air port signal is at the right strength to achieve the best results.
+     - RF Gain: Default is 0 dB, positive number is to increase the gain, used when the target signal is far away and the signal is weak. Negative number is to decrease the gain, which is used when the target distance is too close and the signal is too strong.
 
    ![Wireless界面](../../_images/elisys/Wireless_UI.bmp)
 
-2. Wired界面：
+2. Wired interface:
 
-   - Logic Transitions and inputs：有一些涉及到时序的问题，可能需要拉芯片信号线，配合空口包来观察时序，分析问题。
-     - Add signal input (Alt+S) : 增加一个信号分析线
-     - Add bus input（Alt+B）:增加一组信号分析线，多根信号线用来表示多个状态或是表示数字。
-     - 对应设备拉线方法，请参考官方用户指引文档，章节“24. Flying Leads Probe – Explorer”，以及章节“25. Flying Leads Probe – Tracker and Vanguard ”。
+   - Logic Transitions and inputs: There are some problems involving timing, you may need to pull the chip signal line, together with the air port packet to observe the timing and analyze the problem.
+     - Add signal input (Alt+S) : Add a signal analysis line
+     - Add bus input (Alt+B): Add a set of signal analyzing lines, multiple signal lines are used to represent multiple states or numbers.
+     - Please refer to the official user's guide document, section “24. Flying Leads Probe - Explorer” and section “25. - Tracker and Vanguard”.
 
    ![Wired界面](../../_images/elisys/Wired_UI.bmp)
 
-3. Capture Management界面：自动保存相关设置。
+3. Capture Management interface: Automatically save relevant settings.
 
-   - Capture storage：抓包自动保存位置和命名规则。
-   - Automatic Segmentation：长时间抓包，请务必设置自动分段保存，方便发现问题后，只保留问题数据那个分段包。
+   - Capture storage: Capture automatically save the location and naming rules.
+   - Automatic Segmentation: For long time packet capture, please make sure to set automatic segmentation to save the packet, so that only the segmented packet will be kept after the problem is found.
 
    ![Capture management](../../_images/elisys/Capture_management.bmp)
 
-4. 保存配置和读取配置：
+4. Save configurations and read configurations:
 
-   - Save settings：可以通过配置界面最下面的按钮 ，将本次配置保存到本地。
-   - Load Setting from file：点击恢复之前保存的配置，在需要配置快速恢复或是重新安装了软件后使用。
+   - Save settings: You can save the current configuration locally by using the button at the bottom of the configuration screen.
+   - Load Setting from file: Click to restore the saved configuration, which can be used when you need to configure fast recovery or reinstall the software.
 
-#### 4.4 空口包过滤
+#### 4.4 Only lip packet filtering
 
-随着当前蓝牙技术的普及，我们生活和工作中，许多设备均带有蓝牙功能，导致我们在抓包时，可能会抓到许多我们不需要的空口包，这些包会对我们分析问题造成一些干扰，影响我们分析问题的效率。
+With the popularity of the current Bluetooth technology, we live and work, many devices with Bluetooth functionality, resulting in the capture of packets, we may capture many of our unwanted null packets, these packets will cause some interference in our analysis of the problem, affecting the efficiency of our analysis of the problem.
 
-针对这种情况，我们可以通过简单的配置，来过滤空口包。
+To deal with this situation, we can filter the empty port packets by simple configuration.
 
-以下方式可以在抓包开始前，抓包进行中，抓包停止后，任意时刻进行。两种方式任选其一即可：
+The following ways can be done at any moment before the capture starts, while the capture is in progress, and after the capture stops. Either of the two ways can be selected:
 
-- 根据设备地址选择：
+- Choose according to the device address:
 
-  1. 点击抓包界面右上侧，Filtering : Exclude Background--> configure，进入设备选择界面。
-  2. 在Device Database区域，找到自己的设备地址。可以在Search框内输入设备地址或是名字快速搜索。
-  3. 双击目标地址，即可看到地址被加入到Traffic Filtering Criteria。
-  4. 只加入一个地址，会过滤出这个地址发出的以及发给这个地址的空口包。加入多个地址则只会过滤出这些地址发出的数据包。
-  5. 点击Apply后生效，之后即可看到广播空口包已经被过滤在Low Energy Overview窗口呈现出来。
-  6. 示意图如下。
+  1. Click Filtering : Exclude Background--> configure on the upper right side of the packet capture interface to enter the device selection interface. 2.
+  2. In the Device Database area, find your device address. You can enter the device address or name in the Search box to quickly search for it. 3.
+  3. Double-click the target address to see it added to the Traffic Filtering Criteria. 4.
+  4. If you add only one address, it will filter out the air packets sent from and to this address. If you add more than one address, only the packets sent from those addresses will be filtered.
+  5. Click Apply to take effect, and then you can see that the broadcast air packets have been filtered in the Low Energy Overview window.
+  6. The schematic is shown below.
 
   ![地址过滤](../../_images/elisys/ADDR_FILTER.bmp)
 
-- 根据空口包选择过滤
+- To select filtering based on air packets
 
-  1. 切换到空口包界面。
-  2. 选择想要过滤出来的空口包，点击右键选择。
-  3. 右键弹出菜单，最上面三个选项为根据协议过滤，接下来三个选项为根据设备过滤。
-  4. 下图中，选择两个设备连接过程中的ATT空口包上，点击右键下拉菜单选择。
+  1. Switch to the Null Packets screen.
+  2. Select the empty packet you want to filter out and right-click to select it.
+  3. Right-click to bring up a pop-up menu, the top three options are filter by protocol, and the next three options are filter by device. 4.
+  4. In the following figure, select the ATT air packets during the connection of two devices, and click the right drop-down menu to select.
 
   ![空口选择过滤](../../_images/elisys/AIR_FILTER.bmp)
+
+
 
 ### 5. FAQ
 

@@ -1,80 +1,80 @@
-## RF应用笔记
+## RF Application Notes
 
 
 
+### 1. Introduction to GR5xx RF
 
-### 1. GR5xx RF介绍
+* GR551x Series Chip RF Metrics
 
-* GR551x系列芯片RF指标
+  * Bluetooth LE Connectivity: Bluetooth LE 5.1
+  * Supported Data Rate: 1 Mbps, 2 Mbps, LR (500 kbps, 125 kbps)
+  * Transmit power: -20 dBm ~ +7 dBm
+  * 96 dBm receive sensitivity (in 1 Mbps mode)
+  * -93 dBm receive sensitivity (in 2 Mbps mode)
+  * -99 dBm receive sensitivity (in LR 500 kbps mode)
+  * -102 dBm receive sensitivity (LR 125 kbps mode)
+  * TX power consumption: 5.6 mA @ 0 dBm, 1 Mbps
+  * RX power consumption: 4.8 mA @ 1 Mbps
 
-  * Bluetooth LE Connectivity：Bluetooth LE 5.1
-  * 支持数据传输速率：1 Mbps、2 Mbps、LR（500 kbps、125 kbps）
-  * 发射功率：–20 dBm ～ +7 dBm
-  * 96 dBm接收灵敏度（1 Mbps模式下）
-  * –93 dBm接收灵敏度（2 Mbps模式下）
-  * –99 dBm接收灵敏度（LR 500 kbps模式下）
-  * –102 dBm接收灵敏度（LR 125 kbps模式下）
-  * TX功耗：5.6 mA @ 0 dBm, 1 Mbps
-  * RX功耗：4.8 mA @ 1 Mbps
+* GR5526 Series Chip RF Metrics
 
-* GR5526系列芯片RF指标
+  * Bluetooth LE Connectivity: Bluetooth LE 5.3
+  * Supported data rate: 1 Mbps, 2 Mbps, LR (500 kbps, 125 kbps)
+  * Transmit power: -20 dBm ~ +7 dBm
+  * -98 dBm receive sensitivity (in 1 Mbps mode)
+  * -94 dBm receive sensitivity (in 2 Mbps mode)
+  * -101 dBm receive sensitivity (in LR 500 kbps mode)
+  * -104 dBm receive sensitivity (LR 125 kbps mode) 
+  * TX power consumption: 4.0 mA @ 0 dBm, 1 Mbps
+  * RX power consumption: 3.5 mA @ 1 Mbps
+  * AoA/AoD, LE synchronization channel
 
-  * Bluetooth LE Connectivity：Bluetooth LE 5.3
-  * 支持数据传输速率：1 Mbps、2 Mbps、LR（500 kbps、125 kbps）
-  * 发射功率：–20 dBm ～ +7 dBm
-  * –98 dBm接收灵敏度（1 Mbps模式下）
-  * –94 dBm接收灵敏度（2 Mbps模式下）
-  * –101 dBm接收灵敏度（LR 500 kbps模式下）
-  * –104 dBm接收灵敏度（LR 125 kbps模式下） 
-  * TX功耗: 4.0 mA @ 0 dBm, 1 Mbps
-  * RX功耗: 3.5 mA @ 1 Mbps
-  * AoA/AoD、LE同步通道
+* GR5525 Series Chip RF Specifications
 
-* GR5525系列芯片RF指标
+  * Bluetooth LE Connectivity: Bluetooth LE 5.3
+  * Supported Data Rate: 1 Mbps, 2 Mbps, LR (500 kbps, 125 kbps)
+  * Transmit power: -20 dBm ~ +7 dBm
+  * -97 dBm receive sensitivity (in 1 Mbps mode)
+  * -93 dBm receive sensitivity (in 2 Mbps mode)
+  * -101 dBm receive sensitivity (in LR 500 kbps mode)
+  * -103 dBm receive sensitivity (LR 125 kbps mode)
+  * TX power consumption: 6.3 mA @ 0 dBm output power (64 MHz system clock)
+  * RX power consumption: 5.3 mA @ 1 Mbps (64 MHz system clock)  
 
-  * Bluetooth LE Connectivity：Bluetooth LE 5.3
-  * 支持数据传输速率：1 Mbps、2 Mbps、LR（500 kbps、125 kbps）
-  * 发射功率：–20 dBm ～ +7 dBm
-  * –97 dBm接收灵敏度（1 Mbps模式下）
-  * –93 dBm接收灵敏度（2 Mbps模式下）
-  * –101 dBm接收灵敏度（LR 500 kbps模式下）
-  * –103 dBm接收灵敏度（LR 125 kbps模式下）
-  * TX功耗：6.3 mA @ 0 dBm输出功率（64 MHz系统时钟）
-  * RX功耗：5.3 mA @ 1 Mbps（64 MHz系统时钟）  
+* GR533x Series Chip RF Metrics
 
-* GR533x系列芯片RF指标
+  * Bluetooth LE Connectivity: Bluetooth LE 5.3
 
-  * Bluetooth LE Connectivity：Bluetooth LE 5.3
+  * Supported Data Rate: 1 Mbps, 2 Mbps, LR (500 kbps, 125 kbps)
 
-  * 支持数据传输速率：1 Mbps、2 Mbps、LR（500 kbps、125 kbps）
+  * Transmit power:
+    GR5330/GR5331: up to 6 dBm
+    GR5332: up to 15 dBm
 
-  * 发射功率：
-    GR5330/GR5331：高达6 dBm
-    GR5332：高达15 dBm
+  * Receive sensitivity:
 
-  * 接收灵敏度：
+    GR5330/GR5331: -97.5 dBm @ 1 Mbps
+    GR5332: -99 dBm @ 1 Mbps
 
-    GR5330/GR5331：–97.5 dBm @ 1 Mbps
-    GR5332：–99 dBm @ 1 Mbps
+  * GR5330/GR5331 power consumption @ 3.3 V VBAT input:
+    TX power consumption: 3.8 mA @ 0 dBm output power (DC-DC supply, 16 MHz system clock)
+    RX power consumption: 4.7 mA @ 1 Mbps (DC-DC powered, 16 MHz system clock)
 
-  * GR5330/GR5331功耗 @ 3.3 V VBAT输入：
-    TX功耗：3.8 mA @ 0 dBm输出功率（DC-DC供电、16 MHz系统时钟）
-    RX功耗：4.7 mA @ 1 Mbps（DC-DC供电、16 MHz系统时钟）
+  * GR5332 power consumption @ 3.3 V VBAT:
+    TX power consumption: 5.9 mA @ 0 dBm output power (DC-DC supply, 16 MHz system clock)
+    TX power consumption: 86.3 mA @ 15 dBm output power (SYS_LDO supply, 64 MHz system clock)
+    RX power consumption: 4.9 mA @ 1 Mbps (DC-DC powered, 16 MHz system clock)
 
-  * GR5332功耗 @ 3.3 V VBAT：
-    TX功耗：5.9 mA @ 0 dBm输出功率（DC-DC供电、16 MHz系统时钟）
-    TX功耗：86.3 mA @ 15 dBm输出功率（SYS_LDO供电、64 MHz系统时钟）
-    RX功耗：4.9 mA @ 1 Mbps（DC-DC供电、16MHz系统时钟）
 
-### 2. GR5xx RF应用笔记
 
-- GR533x系列不同型号支持不同的PA类型，GR5332系列支持HPA（–10 dBm～+15 dBm）和SPA（–20 dBm～+5 dBm），GR5331/GR5330系列支持SPA（–20 dBm～+6 dBm）和UPA（–15 dBm～+2 dBm）。
-- GR5332系列使用HPA工作时，只能使用SYSLDO供电模式。
-- GR5331/GR5330仅使用UPA模式的情况下可以简化匹配BOM数量。
-- GR533x的RF PA介绍详情请参考《[GR533x RF PA应用指南](https://docs.goodix.com/zh/online/rf_pa_bl_d/V1.2)》。
-- RF端口匹配器件布局应遵循PCB设计要求，匹配网络中的元器件应尽可能地靠近RF引脚（即RF_RX与RF_TX），并将匹配网络的第一个元器件放置在离RF引脚不超过1 mm的位置。
-- RF走线尽可能短而直，如结构限制需要转弯，则转角处要求倒圆弧。禁止出现直角或小于90°夹角走线。
-- RF线优选走表层，避免打过孔换层，避免走线存在分支，RF走线下方必须保证完整参考地平面。RF走线与芯片Pin之间建议走渐变线，并且RF线宽尽量设计和匹配器件焊盘一致，避免由于元器件的焊盘宽度与走线宽度不一致而破坏50 Ω传输线特性阻抗的连续性。
-- DCDC纹波对RF性能影响较大，不合理的DCDC接地回路会影响RF性能指标，建议按照设计指南要求合理设计DCDC外围器件布局，尽可能减小接地回路路径，将DCDC纹波控制在小于16 mV。
-- RF指标需要校准晶体后再进行测试。
+### 2. GR5xx RF Application Notes
 
+- Different models of GR533x series support different PA types, GR5332 series support HPA (-10 dBm to +15 dBm) and SPA (-20 dBm to +5 dBm), GR5331/GR5330 series support SPA (-20 dBm to +6 dBm) and UPA (-15 dBm to +2 dBm).
+- The GR5332 series can only use the SYSLDO power supply mode when operating with HPA.
+- The GR5331/GR5330 can simplify the number of matching BOMs when using only the UPA mode.
+- For details of RF PA introduction of GR533x, please refer to “[GR533x RF PA Application Guide](https://docs.goodix.com/zh/online/rf_pa_bl_d/V1.2)”.
+- The RF port matching device layout should follow the PCB design requirements. Components in the matching network should be placed as close as possible to the RF pins (i.e., RF_RX vs. RF_TX), and the first component in the matching network should be placed no more than 1 mm away from the RF pins.
+- RF alignments should be as short and straight as possible, and if structural constraints require a turn, the corner should be chamfered. Right angle or less than 90° angle alignment is prohibited.
+- RF line is preferred to go to the surface layer, to avoid punching holes to change the layer, to avoid branching of the alignment, RF alignment must be guaranteed below the complete reference ground plane. RF alignment and chip Pin between the proposed gradient line, and RF line width as far as possible to design and match the device pad consistent, to avoid the components of the pad width and the width of the alignment is inconsistent with the disruption of the continuity of the 50 Ω transmission line characteristics of the impedance.
+- DCDC ripple has a large impact on RF performance, unreasonable DCDC ground loop will affect RF performance indicators, it is recommended to follow the design guidelines to rationally design the layout of the DCDC peripheral devices, minimize the ground loop path, the DCDC ripple control at less than 16 mV.
+- RF indicators need to calibrate the crystal before testing.
