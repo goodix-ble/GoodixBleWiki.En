@@ -15,44 +15,60 @@ Since the Example project is already provided in the SDK package, let's download
 
 Use Keil to open the project file located at projects/peripheral/graphics/graphics _ lvgl _ 831 _ GPU _ demo/keil-5/graphics _ lvgl _ 831 _ GPU _ demo. Uvprojx, You can see the official Example project:
 
- ![在这里插入图片描述](https://img-blog.csdnimg.cn/06792e57bf134066b0d55b0699d269e5.png)
+
+ ![在这里插入图片描述](https://img-blog.csdnimg.cn/06792e57bf134066b0d55b0699d269e5.png) 
 
 
-It can be seen that the content of the project is quite complicated, but it doesn't matter. Let's first download the firmware to see the effect, and then slowly gnaw this hard bone. Click the Build button or press the shortcut key F7 to compile. The initial compilation may take a long time. ![在这里插入图片描述](https://img-blog.csdnimg.cn/53bd70a311994745b54f70b50583c54d.png)
+It can be seen that the content of the project is quite complicated, but it doesn't matter. Let's first download the firmware to see the effect, and then slowly gnaw this hard bone. Click the Build button or press the shortcut key F7 to compile. The initial compilation may take a long time.
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/53bd70a311994745b54f70b50583c54d.png)
 
 
-After the compilation is completed, click the Download button or press the shortcut key F8 to download, wait for the firmware download to be completed, and then you can see the effect: ![在这里插入图片描述](https://img-blog.csdnimg.cn/9793a3b793894005ba3a88e5567fb47a.png)
+After the compilation is completed, click the Download button or press the shortcut key F8 to download, wait for the firmware download to be completed, and then you can see the effect:
 
-
-
-As you can see, the screen is flowery. Because the image resource referenced by Example is not stored in the same location as the firmware, the image resource needs to be downloaded separately, and the GProgrammer tool needs to be used. After opening GProgrammer, find the option of GR5526VGBIP and click OK: ![在这里插入图片描述](https://img-blog.csdnimg.cn/6baacaf00b38483fa79f3a078e3fc73e.png)
-
-
-
-Then there will be a pop-up window on the right, click Connect to connect to the development board: ![在这里插入图片描述](https://img-blog.csdnimg.cn/5e3e89121af343febae5765ad0dc4e2e.png)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/9793a3b793894005ba3a88e5567fb47a.png) 
 
 
 
-After the development board is connected, select the second "Flash" in the left row of icons to enter the resource burning interface: ![在这里插入图片描述](https://img-blog.csdnimg.cn/c4a40a5d7a214d998eeb066dc7b546bf.png)
+As you can see, the screen is flowery. Because the image resource referenced by Example is not stored in the same location as the firmware, the image resource needs to be downloaded separately, and the GProgrammer tool needs to be used. After opening GProgrammer, find the option of GR5526VGBIP and click OK: 
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/6baacaf00b38483fa79f3a078e3fc73e.png) 
 
 
 
-Select External Flash and click Config. A dialog box will pop up, asking to select the interface corresponding to the Flash of the storage resource. For the GR5526 SK development board, select QSPI0, keep the default configuration for the rest, and click Apply. Moments later, you can see that GProgrammer has recognized the XTX25Q64B 8m Flash on the board. ![在这里插入图片描述](https://img-blog.csdnimg.cn/6dadb92637964bfb92d54df4ea178d1c.png)![在这里插入图片描述](https://img-blog.csdnimg.cn/225f2b44732747ea80481b50055abace.png)
+Then there will be a pop-up window on the right, click Connect to connect to the development board:
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/5e3e89121af343febae5765ad0dc4e2e.png) 
+
+
+
+After the development board is connected, select the second "Flash" in the left row of icons to enter the resource burning interface:
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/c4a40a5d7a214d998eeb066dc7b546bf.png) 
+
+
+
+Select External Flash and click Config. A dialog box will pop up, asking to select the interface corresponding to the Flash of the storage resource. For the GR5526 SK development board, select QSPI0, keep the default configuration for the rest, and click Apply. Moments later, you can see that GProgrammer has recognized the XTX25Q64B 8m Flash on the board. 
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/6dadb92637964bfb92d54df4ea178d1c.png) ![在这里插入图片描述](https://img-blog.csdnimg.cn/225f2b44732747ea80481b50055abace.png) 
 
 
 
 
 
-In the Download Data area below, click the folder on the right to find the image resource file. The image resource file has a 0x0000 _ 2023-06-06 _ 17-38-37.bin in the Image _ Resource folder of the Example project. Select this file, fill in 0 for the download address, and click Download to start downloading the image resource. Since this resource is more than 5m, it should take some time to download. ![在这里插入图片描述](https://img-blog.csdnimg.cn/d8752757e72a4f4e9b3d92461b3ba06c.png)
+In the Download Data area below, click the folder on the right to find the image resource file. The image resource file has a 0x0000 _ 2023-06-06 _ 17-38-37.bin in the Image _ Resource folder of the Example project. Select this file, fill in 0 for the download address, and click Download to start downloading the image resource. Since this resource is more than 5m, it should take some time to download. 
 
- ![在这里插入图片描述](https://img-blog.csdnimg.cn/042043ccd70a4504af92c9f80759d183.png)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/d8752757e72a4f4e9b3d92461b3ba06c.png)
+
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/042043ccd70a4504af92c9f80759d183.png)
 
 
 
 
 After downloading, press the Reset button on the board to let the firmware run again, and then see the effect:
 
- ![在这里插入图片描述](https://img-blog.csdnimg.cn/42e3b91e71744ad9b9a2feb2f84dd19c.png)![在这里插入图片描述](https://img-blog.csdnimg.cn/3dd34ba69dd3447aa7d29e9e343d6c3d.png)![在这里插入图片描述](https://img-blog.csdnimg.cn/0c67b5c55612440eafa3afe2d09bfbb6.png)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/42e3b91e71744ad9b9a2feb2f84dd19c.png) ![在这里插入图片描述](https://img-blog.csdnimg.cn/3dd34ba69dd3447aa7d29e9e343d6c3d.png) ![在这里插入图片描述](https://img-blog.csdnimg.cn/0c67b5c55612440eafa3afe2d09bfbb6.png) 
 
 
 
@@ -195,7 +211,7 @@ Create a window Set the window background color to black Set the window backgrou
 
 It's more orthodox to use a header file to expose all the public interfaces, so I'm just going to be lazy and call extern directly. After adding the code, compile and download it directly to see the effect:
 
- ![在这里插入图片描述](https://img-blog.csdnimg.cn/2060778b76d94df9b733328d351ad745.png)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/2060778b76d94df9b733328d351ad745.png) 
 
 
 You can see the words "Hello World" appear in the middle of the screen, which is the window we just created. The following is a basic introduction to the use of LVGL based on the window just created.
@@ -219,7 +235,7 @@ All other controls "inherit" the lv _ obj _ t structure by putting it in the fir
 
 LVGL manages all objects according to the structure of the object tree. An object has one or zero parent objects, and an object can have several child objects:
 
- ![在这里插入图片描述](https://img-blog.csdnimg.cn/16184235b8724fd79a836ffca3f23686.png)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/16184235b8724fd79a836ffca3f23686.png) 
 
 In an object tree, a parent object can be viewed as a container for its children. So the child objects are not displayed beyond the parent object, and the position of the child object is calculated relative to the parent object.
 
@@ -317,6 +333,10 @@ The final layout code is as follows:
 
 Compile, download, to see the effect:
 
- ![在这里插入图片描述](https://img-blog.csdnimg.cn/0030910738494d72bff4c5e887fdae88.png)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/0030910738494d72bff4c5e887fdae88.png) 
+
+
+
+
 
 As you can see, the styles we set and the new controls we added are displayed correctly. Through a simple layout example, this article describes how to build a simple LV GL interface based on the LVGL Example in the GR5526 SDK. In the next article, I'll make the interface really interactive by adding a press animation and an event handler for the last btn control added.

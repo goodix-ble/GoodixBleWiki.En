@@ -50,17 +50,17 @@ Once the DFU scheme is confirmed (here mainly confirming the backend dual-zone u
  ![](../../../_images/dfu/DFU_6.png)
 
 
-* **Demarcation Area Description** **SCA Info:** SCA (System Configuration Area)
-* **SCA Info:** SCA (System Configuration Area) System Configuration Area, mainly used for storing system information and App bootloader boot parameter configuration information.
-     * **APP Info：***Application Firmware Info Area, used to store the parameter information of application firmware running in Bank0 area.
-     * **DFU Info: **DFU firmware info area, used to store information related to new firmware in Bank1 area.
-     * **Firmware save addr: **Start address of new firmware save.
+* **Demarcation Area Description** **SCA Info:**  SCA (System Configuration Area)
+* **SCA Info:**  SCA (System Configuration Area) System Configuration Area, mainly used for storing system information and App bootloader boot parameter configuration information.
+     * **APP Info：** Application Firmware Info Area, used to store the parameter information of application firmware running in Bank0 area.
+     * **DFU Info: ** DFU firmware info area, used to store information related to new firmware in Bank1 area.
+     * **Firmware save addr: ** Start address of new firmware save.
      * **Image Info:** Parameter information of the new firmware.
      * **DFU mode pattern:** Used to identify the current running DFU mode.
-     * **App bootloader: **App bootloader firmware storage and running area.
-     * **Bank0: **App firmware storage and running area.
-     * **Bank1: **New firmware cache area, new firmware that passes the validity check will be copied to Bank0.
-     * **NVDS (Non-volatile Data Storage): **Non-volatile data storage area.
+     * **App bootloader: ** App bootloader firmware storage and running area.
+     * **Bank0: ** App firmware storage and running area.
+     * **Bank1: ** New firmware cache area, new firmware that passes the validity check will be copied to Bank0.
+     * **NVDS (Non-volatile Data Storage): ** Non-volatile data storage area.
 
 
 

@@ -12,6 +12,8 @@
 | GR5525 | 4: I2C0 to I2C3         | Standard Mode: 100k bit/s<br><br>Fast Mode: 400k bit/s<br><br>Fast Plus Mode: 1M bit/s<br><br>High Speed Mode: 3.4M bit/s | TX FIFO: 32 x 8 bits<br><br>RX FIFO: 32 x 8 bits |
 | GR5526 | 6: I2C0 to I2C5         | Standard Mode: 100k bit/s<br><br>Fast Mode: 400k bit/s<br><br>Fast Plus Mode: 1M bit/s<br><br>High Speed Mode: 3.4M bit/s | TX FIFO: 32 x 8 bits<br><br>RX FIFO: 32 x 8 bits |
 | GR533x | 2: I2C0, I2C1           | Standard Mode: 100k bit/s<br><br>Fast Mode: 400k bit/s<br><br>Fast Plus Mode: 1M bit/s | TX FIFO: 8 x 8 bits<br><br>RX FIFO: 8 x 8 bits   |
+
+
 - Each I2C instance can be configured as either Master or Slave.
 - Supports both 7-bit and 10-bit address modes.
 - Supports Polling mode, interrupt mode, and DMA mode.

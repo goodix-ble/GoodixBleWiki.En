@@ -65,7 +65,7 @@
 - Refer to `uint16_t ble_sec_enc_cfm(uint8_t conn_idx, const ble_sec_cfm_enc_t *p_cfm_enc)` for the part of the call.
 - The reference code is below:
 
-````
+```c
 cfm_enc.req_type = BLE_SEC_TK_REQ;
 cfm_enc.accept = true;
 memset(cfm_enc.data.tk.key, 0, 16);

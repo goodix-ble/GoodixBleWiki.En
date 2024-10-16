@@ -13,15 +13,24 @@
 
 ### 1.2 Synchronous and Asynchronous Access
 - Synchronous Access: Generally, the Master initiates an access operation to the target Slave device. This operation can involve various scenarios such as read/write operations, command execution, communication, etc. After initiating the operation, the Master waits for the operation to complete. The Master proceeds with other transactions only when the operation status indicates completion.
+
 - Asynchronous Access: Generally, the Master initiates an access operation to the target Slave device but does not wait for the operation to complete. Instead, it immediately proceeds to execute other transactions. The Master is notified of the completion of the previous access operation through hardware or software mechanisms (or the Master periodically queries during the intervals of other transactions) to ensure the transaction is complete.
+
+
 
 | Operation | Advantages | Disadvantages |
 | --- | --- | --- |
 | Synchronous | Simple program logic, tasks executed serially | Master spends too much time waiting, leading to low utilization and insufficient performance exploitation of the chip |
 | Asynchronous | Allows all Masters to run simultaneously as much as possible, fully exploiting chip performance | Program logic is generally more complex than synchronous operations |
+
+
+
 In high-bandwidth product development, it is recommended to design the interface architecture in such a way that both the CPU and DMA can operate simultaneously. The CPU handles instruction-based transactions, while the DMA handles large data transfer transactions. For instance, in products such as watches, an A-B Buffer architecture is used. While the CPU executes rendering transactions, the DMA transfers data to the screen for display.
 
+
+
 ## 2. Data Transmission Behavior
+
 The following example explains how to send 10 Kbytes of data from SRAM through the QSPI interface. The same principle applies to SPIM (SPI Master), and further details on SPIM behavior will not be provided.
 
 ### 2.1 Writing Data from CPU to Screen via QSPI
