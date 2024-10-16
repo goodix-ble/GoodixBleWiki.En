@@ -28,10 +28,10 @@ Goodix currently offers a family of Bluetooth LE SoCs covering the high-end, mid
 
 | Bluetooth LE SoC | SDK Download Link | Note |
 | ---------------- | -------------------------------------------------- | -------------- |
-| GR551x | https://www.goodix.com/zh/software_tool/gr551x_sdk | Please download the latest version |
-| GR5525 | https://www.goodix.com/zh/software_tool/gr5525_sdk | Please download the latest version |
-| GR5526 | https://www.goodix.com/zh/software_tool/gr5526_sdk | Please download the latest version |
-| GR533x | https://www.goodix.com/zh/software_tool/gr5526_sdk | Please download the latest version |
+| GR551x | https://www.goodix.com/en/software_tool/gr551x_sdk | Please download the latest version |
+| GR5525 | https://www.goodix.com/en/software_tool/gr5525_sdk | Please download the latest version |
+| GR5526 | https://www.goodix.com/en/software_tool/gr5526_sdk | Please download the latest version |
+| GR533x | https://www.goodix.com/en/software_tool/gr533x_sdk | Please download the latest version |
 
 
 
@@ -86,16 +86,16 @@ Some of the commonly used standard software is listed below:
 
 | Software | Type | Description | Download | For SoC |
 | ---- | ---- | ---- | -------- | ------- |
-| GProgrammer | Program Resource Burning and Configuration Tool | 一款支持Bluetooth LE全系列芯片的固件烧录工具，用于开发调试，支持固件下载、Flash读写、eFuse烧写、固件加密加签等功能。在量产阶段，Bluetooth LE系列芯片产品的批量烧录测试，可采用PLT Lite和GRPLT Lite配置工具进行批量烧录测试 | https://www.goodix.com/zh/software_tool/gprogrammer_ble | Bluetooth LE全系SoC |
-| GRToolbox | Mobile Development and Verification App | 一款专为汇顶科技低功耗蓝牙产品设计的移动端工具，提供Android & iOS版本，可扫描、配置连接参数、演示标准Profile，以及调试汇顶科技低功耗蓝牙平台的Profile/Service | https://www.goodix.com/zh/software_tool/grtoolbox | Bluetooth LE全系SoC |
-| GRDirect Test Mode Tool| DTM Test Tool | 用于Goodix Bluetooth LE DTM (Direct Test Mode) 测试 | https://www.goodix.com/zh/download?objectId=107&objectType=software | Bluetooth LE全系SoC |
-| GRPLT Lite | Product Line Tool | 为PLT Lite的配套工具，客户可使用该软件将开发完毕的应用固件、资源文件、量产配置等打包，通过串口下载至PLT Lite | https://www.goodix.com/zh/software_tool/grplt_lite | Bluetooth LE全系SoC |
-| GRUart | 串口工具 | PC串口调试助手，适用于串口日志及协议栈日志打印 | https://www.goodix.com/zh/download?objectId=64&objectType=software | Bluetooth LE全系SoC |
-| NemaPixpresso | Image Resource Generator Tool | 用于图片和各种图像格式的转换，也可用于FrameBuffer的分析 | 随 LouisUI打包 | GR5526 |
-| gdx_font_conv | Font Resource Generator Tool | 用于生成支持GPU渲染的LVGL字体文件 | https://developers.goodix.com/zh/bbs/blog_detail/6b29cdf5923247029f4357a65de1b065 | GR5526 |
-| LouisUI | Image Resource Generator Tool | 用于将图片资源批量生成符合LVGL规范同时支持GPU渲染的.bin格式，并生成资源描述符文件 | https://developers.goodix.com/zh/bbs/blog_detail/2996e8f9f352491eb0ccca468f28f2ce | GR5526 |
-| GRPPK | Power Consumption Test Tool | 配合PPK板进行产品的功耗评估 | 采购PPK后请向代理索取 | Bluetooth LE全系SoC |
-| OTA SDK | Mobile Firmware | 提供Android & iOS DFU/OTA SDK，方便客户App开发 | https://developers.goodix.com/zh/bbs/detail/32869e79a7c84917b32ecb4ab10acac8 | Bluetooth LE全系SoC |
+| GProgrammer | Program Resource Burning and Configuration Tool | chip firmware burning tool for development , supporting firmware download, Flash read/write, eFuse burning, firmware encryption and signing and other functions. At the mass production stage, the PLT Lite and GRPLT Lite configuration tools can be used for batch burn-in testing of Bluetooth LE series chips. | https://www.goodix.com/zh/software_tool/gprogrammer_ble | All Bluetooth SoC |
+| GRToolbox | Mobile Development and Verification App | A mobile tool designed specifically for Goodix BLE products, providing Android & iOS versions, which can scan, configure connection parameters, demonstrate standard profiles, and debug Profiles/Services of Goodix BLE platform. | https://www.goodix.com/zh/software_tool/grtoolbox | All Bluetooth SoC |
+| GRDirect Test Mode Tool| DTM Test Tool | Used for Goodix BLE DTM (Direct Test Mode) | https://www.goodix.com/zh/download?objectId=107&objectType=software | All Bluetooth SoC |
+| GRPLT Lite | Product Line Tool | As a supporting tool for PLT Lite, customers can use this software to package the developed application firmware, resource files, mass production configuration, etc., and download them to PLT Lite through the serial port. | https://www.goodix.com/zh/software_tool/grplt_lite | All Bluetooth SoC |
+| GRUart | Serial port debugging assistant | PC serial port debugging assistant for serial port log and protocol stack log printing | https://www.goodix.com/zh/download?objectId=64&objectType=software | All Bluetooth SoC |
+| NemaPixpresso | Image Resource Generator Tool | Used for conversion of pictures and various image formats, also for FrameBuffer analysis | Packaged in  LouisUI | GR5526 |
+| gdx_font_conv | Font Resource Generator Tool | For generating LVGL font files that support GPU rendering | https://developers.goodix.com/zh/bbs/blog_detail/6b29cdf5923247029f4357a65de1b065 | GR5526 |
+| LouisUI | Image Resource Generator Tool | Used to batch generate LVGL-compliant and GPU-renderable .bin format for image resources and generate resource descriptor files. | https://developers.goodix.com/zh/bbs/blog_detail/2996e8f9f352491eb0ccca468f28f2ce | GR5526 |
+| GRPPK | Power Consumption Test Tool | Evaluation of power consumption of products with PPK boards | Consulting Agents | All Bluetooth SoC |
+| OTA SDK | Mobile Firmware | Android & iOS DFU/OTA SDK | https://developers.goodix.com/zh/bbs/detail/32869e79a7c84917b32ecb4ab10acac8 | All Bluetooth SoC |
 
 
 ## 6. Obtaining Chip Development Documentation
@@ -108,186 +108,171 @@ Some of the commonly used standard software is listed below:
 
 ### 6.1 GR551x Documents
 
-https://www.goodix.com/zh/product/connectivity/ble/gr551x
+https://www.goodix.com/en/product/connectivity/ble/gr551x
 
 | Document | Privileges |
-| ------------------------------------------------------------ | ---------- |
-| [低功耗蓝牙产品开发快速入门](https://docs.goodix.com/zh/online/bluetooth_le_getting_started) | PUBLIC |
-| [GR551x Datasheet](https://docs.goodix.com/zh/online/gr551x_datasheet) | PUBLIC       |
-| [GR551x勘误手册](https://docs.goodix.com/zh/online/gr551x_errata) | PUBLIC       |
-| [GR551x开发者指南](https://docs.goodix.com/zh/online/gr551x_develop_guide) | PUBLIC       |
-| [GR5xx IAR用户手册](https://docs.goodix.com/zh/online/gr55xx_iar_user_guide) | PUBLIC       |
-| [GR5xx GCC用户手册](https://docs.goodix.com/zh/online/gr55xx_gcc_user_guide) | PUBLIC       |
-| [GR551x API Reference](https://docs.goodix.com/zh/online/gr551x_api_reference) | PUBLIC       |
-| [GR5xx APP驱动用户手册](https://docs.goodix.com/zh/online/app_driver_bl) | PUBLIC       |
-| [GProgrammer用户手册](https://docs.goodix.com/zh/online/gprogrammer_user_guide) | PUBLIC       |
-| [GR551x FCC RSE认证说明](https://docs.goodix.com/zh/online/fcc_rse_certificate_bl_a) | PUBLIC       |
-| [GR5515I0NDA外部Flash选型指导手册](https://docs.goodix.com/zh/online/gr5515_flash_selection_guide) | PUBLIC       |
-| [GR551x硬件设计指南](https://docs.goodix.com/zh/online/gr551x_hardware_design_guide) | PUBLIC       |
-| [GR551x Reference Design](https://www.goodix.com/zh/docview/GR551x Reference Design_V1.5?objectId=316&objectType=document&version=494) | Only For Registered Users |
-| [GR5515 Starter Kit用户指南](https://docs.goodix.com/zh/online/gr5515_starter_kit_user_guide) | PUBLIC       |
-| [GR5515-SK-BASIC-RevE](https://www.goodix.com/zh/docview/GR5515-SK-BASIC-RevE_Rev.1.6?objectId=259&objectType=document&version=500) | PUBLIC       |
-| [GR5515-SK-BASIC-RevC](https://www.goodix.com/zh/docview/GR5515-SK-BASIC-RevC_Rev.1.5?objectId=100&objectType=document&version=133) | PUBLIC       |
-| [GR551x功耗模式及功耗测量说明](https://docs.goodix.com/zh/online/gr551x_sleep_mode_power_measure_note) | PUBLIC       |
-| [GR551x可靠性测试报告](https://docs.goodix.com/zh/online/reliablity_report_bl_a) | PUBLIC       |
-| [GR551x MCD](https://www.goodix.com/zh/docview/GR551x MCD_V1.0?objectId=314&objectType=document&version=490) | PUBLIC       |
-| [GR5xx鼠标示例手册](https://docs.goodix.com/zh/online/hid_mouse_bl) | PUBLIC |
-| [GR5xx应用及自定义Sample Service](https://docs.goodix.com/zh/online/custom_sample_service_bl) | PUBLIC |
-| [GR5xx Serial Port Profile示例手册](https://docs.goodix.com/zh/online/serial_port_bl) | PUBLIC |
-| [GR5xx HRS RSCS Relay示例手册](https://docs.goodix.com/zh/online/hrs_rscs_relay_bl) | PUBLIC |
-| [GR5xx FreeRTOS示例手册](https://docs.goodix.com/zh/online/freertos_bl) | PUBLIC |
-| [GR5xx Throughput示例手册](https://docs.goodix.com/zh/online/throughput_bl) | PUBLIC |
-| [GR5xx AT Command示例手册](https://docs.goodix.com/zh/online/at_command_bl) | PUBLIC |
-| [GR5xx ANCS Profile示例手册](https://docs.goodix.com/zh/online/ancs_profile_bl) | PUBLIC |
-| [GR5xx AMS Profile示例手册](https://docs.goodix.com/zh/online/ams_profile_bl) | PUBLIC |
-| [GR5xx Power Consumption Profile示例手册](https://docs.goodix.com/zh/online/power_consumption_bl) | PUBLIC |
-| [GR5xx APP Log应用说明](https://docs.goodix.com/zh/online/app_log_bl) | PUBLIC |
-| [GR5xx固件升级开发指南](https://docs.goodix.com/zh/online/firmware_upgrade_bl) | PUBLIC |
-| [GR5xx固件加密及应用介绍](https://docs.goodix.com/zh/online/firmware_encryption_bl) | PUBLIC |
-| [GR5xx Fault Trace Module应用说明](https://docs.goodix.com/zh/online/fault_trace_bl) | PUBLIC |
-| [GR5xx DTM测试指南](https://docs.goodix.com/zh/online/dtm_test_bl) | PUBLIC |
-| [GRPLT Lite配置工具用户手册](https://docs.goodix.com/zh/online/grplt_lite_configuration_tool_user_guide) | PUBLIC       |
-| [GRPLT Lite配置工具自定义固件加密及应用介绍](https://docs.goodix.com/zh/online/grplt_lite_configuration_tool_firmware_introduction) | PUBLIC       |
-| [PLT Lite用户手册](https://docs.goodix.com/zh/online/plt_lite_guide_bl) | PUBLIC    |
-| [PLT Lite量产烧录指南](https://docs.goodix.com/zh/online/plt_lite_programming_guide_bl) | PUBLIC    |
+| ------------------------------------ | ---------- |
+| [Getting Started with Bluetooth LE Device](https://docs.goodix.com/en/online/bluetooth_le_getting_started/Rev.2.6) | For Public          |
+| [GR551x Datasheet](https://docs.goodix.com/en/online/gr551x_datasheet/Rev.2.9) | For Public          |
+| [GR551x Errata Note](https://docs.goodix.com/en/online/gr551x_errata/Rev.1.2) | For Public          |
+| [GR5515 Starter Kit User Guide](https://docs.goodix.com/en/online/gr5515_starter_kit_user_guide/Rev.2.0) | For Public          |
+| [GProgrammer User Manual](https://docs.goodix.com/en/online/gprogrammer_user_guide/Rev.3.2) | For Public          |
+| [GR5xx IAR User Manual](https://docs.goodix.com/en/online/gr5xx_iar_guide/Rev.1.1) | For Public          |
+| [GRPLT Lite Config Tool User Manual](https://docs.goodix.com/en/online/grplt_lite_configuration_tool_user_guide/Rev.1.7) | For Public          |
+| [GR5xx GCC User Manual](https://docs.goodix.com/en/online/gr5xx_gcc_guide/Rev.1.0) | For Public          |
+| [GR551x FCC RSE Certification Note](https://docs.goodix.com/en/online/fcc_rse_certificate_bl_a/Rev.1.1) | For Public          |
+| [GR551x Developer Guide](https://docs.goodix.com/en/online/gr551x_develop_guide/Rev.2.7) | For Public          |
+| [GR5515I0NDA Flash Selection Guide](https://docs.goodix.com/en/online/gr5515_flash_selection_guide/Rev.1.4) | For Public          |
+| [GR551x Hardware Design Guidelines](https://docs.goodix.com/en/online/gr551x_hardware_design_guide/Rev.2.6) | For Public          |
+| [GR551x Reference Design](https://www.goodix.com/en/docview/GR551x Reference Design_Rev.1.5?objectId=190&objectType=document&version=352) | Register Users Only |
+| [GR5515-SK-BASIC-RevE](https://www.goodix.com/en/docview/GR5515-SK-BASIC-RevE_Rev.1.6?objectId=135&objectType=document&version=354) | For Public          |
+| [GR5515-SK-BASIC-RevC](https://www.goodix.com/en/docview/GR5515-SK-BASIC-RevC _Rev.1.5?objectId=56&objectType=document&version=79) | For Public          |
+| [GR551x API Reference](https://docs.goodix.com/en/online/api/gr551x_api_reference/Rev.2.0.2) | For Public          |
+| [GR5xx Sample Service Application and Customization](https://docs.goodix.com/en/online/custom_sample_service_bl/Rev.3.1) | For Public          |
+| [GR5xx HID Mouse Example Application](https://docs.goodix.com/en/online/hid_mouse_bl/Rev.3.2) | For Public          |
+| [GR5xx Serial Port Profile Example Application](https://docs.goodix.com/en/online/serial_port_bl/Rev.3.1) | For Public          |
+| [GR5xx Power Consumption Profile Example Application](https://docs.goodix.com/en/online/power_consumption_bl/Rev.3.1) | For Public          |
+| [GR5xx HRS RSCS Relay Example Application](https://docs.goodix.com/en/online/hrs_rscs_relay_bl/Rev.3.1) | For Public          |
+| [GR5xx FreeRTOS Example Application](https://docs.goodix.com/en/online/freertos_bl/Rev.3.1) | For Public          |
+| [GR5xx Throughput Example Application](https://docs.goodix.com/en/online/throughput_bl/Rev.3.1) | For Public          |
+| [GR5xx AT Command Example Application](https://docs.goodix.com/en/online/at_command_bl/Rev.3.1) | For Public          |
+| [GR5xx ANCS Profile Example Application](https://docs.goodix.com/en/online/ancs_profile_bl/Rev.3.1) | For Public          |
+| [GR5xx AMS Profile Example Application](https://docs.goodix.com/en/online/ams_profile_bl/Rev.3.1) | For Public          |
+| [GR5xx DTM Test Application Note](https://docs.goodix.com/en/online/dtm_test_bl/Rev.3.5) | For Public          |
+| [GR5xx APP Log Application Note](https://docs.goodix.com/en/online/app_log_bl/Rev.3.2) | For Public          |
+| [GR5xx Fault Trace Module Application Note](https://docs.goodix.com/en/online/fault_trace_bl/Rev.3.2) | For Public          |
+| [GR5xx Firmware Encryption Application Note](https://docs.goodix.com/en/online/firmware_encryption_bl/Rev.3.0) | For Public          |
+| [GRPLT Lite Config Tool Customized Firmware   Encryption Application Note](https://docs.goodix.com/en/online/grplt_lite_config_tool_customized_firmware_encryption/Rev.1.5) | For Public          |
+| [GR551x Power Mode and Power Consumption Measurement   Application Note](https://docs.goodix.com/en/online/gr551x_sleep_mode_power_measure_note/Rev.2.1) | For Public          |
+| [GR551x Reliability Test Report](https://docs.goodix.com/en/online/reliablity_report_bl_a/Rev.1.3) | For Public          |
+| [GR551x MCD](https://www.goodix.com/en/docview/GR551x MCD_Rev.1.0?objectId=188&objectType=document&version=348) | For Public          |
 
 
 
 ### 6.2 GR5525 Documents
-https://www.goodix.com/zh/product/connectivity/ble/gr5525
+
+https://www.goodix.com/en/product/connectivity/ble/gr5525
 
 | Document | Privileges |
-| ------------------------------------------------------------ | ---------- |
-| [低功耗蓝牙产品开发快速入门](https://docs.goodix.com/zh/online/bluetooth_le_getting_started) | PUBLIC       |
-| [GR5525 Product Brief](https://www.goodix.com/zh/docview/GR5525 Product Brief_V1.0?objectId=348&objectType=document&version=538) | PUBLIC       |
-| [GR5525 Datasheet](https://docs.goodix.com/zh/online/datasheet_bl_c) | PUBLIC       |
-| [GR5525开发者指南](https://docs.goodix.com/zh/online/developer_guide_bl_c) | PUBLIC       |
-| [GR5525刷屏指南](https://docs.goodix.com/zh/online/display_guide_bl_c) | PUBLIC       |
-| [GR5xx IAR用户手册](https://docs.goodix.com/zh/online/gr55xx_iar_user_guide) | PUBLIC       |
-| [GR5xx GCC用户手册](https://docs.goodix.com/zh/online/gr55xx_gcc_user_guide) | PUBLIC       |
-| [GR5525 API Reference](https://docs.goodix.com/zh/online/api_reference_bl_c) | PUBLIC       |
-| [GR5xx APP驱动用户手册](https://docs.goodix.com/zh/online/app_driver_bl) | PUBLIC       |
-| [GProgrammer用户手册](https://docs.goodix.com/zh/online/gprogrammer_user_guide) | PUBLIC       |
-| [GR5525 Starter Kit用户指南](https://docs.goodix.com/zh/online/starter_kit_manual_bl_c) | PUBLIC       |
-| [GR5525硬件设计指南](https://docs.goodix.com/zh/online/hardware_design_guide_c) | PUBLIC       |
-| [GR5525 Reference Design](https://www.goodix.com/zh/docview/GR5525%20Reference%20Design_V1.1?objectId=357&objectType=document&version=555) | Only For Registered Users |
-| [GR5525-SK-BASIC-RevB](https://www.goodix.com/zh/docview/GR5525-SK-BASIC-RevB_V1.0?objectId=351&objectType=document&version=541) | PUBLIC       |
-| [GR5525功耗模式及功耗测量说明](https://docs.goodix.com/zh/online/power_measure_bl_c) | PUBLIC       |
-| [GR5525 Reliability Test Report](https://docs.goodix.com/zh/online/reliablity_report_bl_c) | PUBLIC       |
-| [GR5525 MCD](https://www.goodix.com/zh/docview/GR5525%20MCD_V1.0?objectId=349&objectType=document&version=539) | PUBLIC       |
-| [GR5xx鼠标示例手册](https://docs.goodix.com/zh/online/hid_mouse_bl) | PUBLIC       |
-| [GR5xx应用及自定义Sample Service](https://docs.goodix.com/zh/online/custom_sample_service_bl) | PUBLIC       |
-| [GR5xx Serial Port Profile示例手册](https://docs.goodix.com/zh/online/serial_port_bl) | PUBLIC       |
-| [GR5xx HRS RSCS Relay示例手册](https://docs.goodix.com/zh/online/hrs_rscs_relay_bl) | PUBLIC       |
-| [GR5xx FreeRTOS示例手册](https://docs.goodix.com/zh/online/freertos_bl) | PUBLIC       |
-| [GR5xx Throughput示例手册](https://docs.goodix.com/zh/online/throughput_bl) | PUBLIC       |
-| [GR5xx AT Command示例手册](https://docs.goodix.com/zh/online/at_command_bl) | PUBLIC       |
-| [GR5xx ANCS Profile示例手册](https://docs.goodix.com/zh/online/ancs_profile_bl) | PUBLIC       |
-| [GR5xx AMS Profile示例手册](https://docs.goodix.com/zh/online/ams_profile_bl) | PUBLIC       |
-| [GR5xx Power Consumption Profile示例手册](https://docs.goodix.com/zh/online/power_consumption_bl) | PUBLIC       |
-| [GR5xx APP Log应用说明](https://docs.goodix.com/zh/online/app_log_bl) | PUBLIC       |
-| [GR5xx固件升级开发指南](https://docs.goodix.com/zh/online/firmware_upgrade_bl) | PUBLIC       |
-| [GR5xx固件加密及应用介绍](https://docs.goodix.com/zh/online/firmware_encryption_bl) | PUBLIC       |
-| [GR5xx Fault Trace Module应用说明](https://docs.goodix.com/zh/online/fault_trace_bl) | PUBLIC       |
-| [GR5xx DTM测试指南](https://docs.goodix.com/zh/online/dtm_test_bl) | PUBLIC       |
-| [GRPLT Lite配置工具用户手册](https://docs.goodix.com/zh/online/grplt_lite_configuration_tool_user_guide) | PUBLIC       |
-| [GRPLT Lite配置工具自定义固件加密及应用介绍](https://docs.goodix.com/zh/online/grplt_lite_configuration_tool_firmware_introduction) | PUBLIC       |
-| [PLT Lite用户手册](https://docs.goodix.com/zh/online/plt_lite_guide_bl) | PUBLIC       |
-| [PLT Lite量产烧录指南](https://docs.goodix.com/zh/online/plt_lite_programming_guide_bl) | PUBLIC       |
-
+| ---------------------------- | ---------- |
+| [GR5525 Product Brief](https://www.goodix.com/en/docview/GR5525 Product Brief_Rev.1.1?objectId=213&objectType=document&version=511) | For Public          |
+| [GR5525 Datasheet](https://docs.goodix.com/en/online/datasheet_bl_c/Rev.1.2) | For Public          |
+| [GR5525 Starter Kit User Guide](https://docs.goodix.com/en/online/starter_kit_manual_bl_c/Rev.1.2) | For Public          |
+| [GR5525 Display Refresh Module Guide](https://docs.goodix.com/en/online/display_guide_bl_c/Rev.1.2) | For Public          |
+| [GR5525 Developer Guide](https://docs.goodix.com/en/online/developer_guide_bl_c/Rev.1.2) | For Public          |
+| [GProgrammer User Manual](https://docs.goodix.com/en/online/gprogrammer_user_guide/Rev.3.2) | For Public          |
+| [GR5xx IAR User Manual](https://docs.goodix.com/en/online/gr5xx_iar_guide/Rev.1.1) | For Public          |
+| [GRPLT Lite Config Tool User Manual](https://docs.goodix.com/en/online/grplt_lite_configuration_tool_user_guide/Rev.1.7) | For Public          |
+| [GR5xx GCC User Manual](https://docs.goodix.com/en/online/gr5xx_gcc_guide/Rev.1.0) | For Public          |
+| [GR5525 Reference Design](https://www.goodix.com/en/docview/GR5525 Reference Design_Rev.1.3?objectId=216&objectType=document&version=514) | Register Users Only |
+| [GR5525 Hardware Design Guidelines](https://docs.goodix.com/en/online/hardware_design_guide_bl_c/Rev.1.3) | For Public          |
+| [GR5525-SK-BASIC-RevB](https://www.goodix.com/en/docview/GR5525-SK-BASIC-RevB_Rev.1.1?objectId=218&objectType=document&version=513) | For Public          |
+| [GR5525 API Reference](https://docs.goodix.com/en/online/api/api_reference_bl_c/Rev.1.0.2) | For Public          |
+| [GR5xx Sample Service Application and Customization](https://docs.goodix.com/en/online/custom_sample_service_bl/Rev.3.1) | For Public          |
+| [GR5xx HID Mouse Example Application](https://docs.goodix.com/en/online/hid_mouse_bl/Rev.3.2) | For Public          |
+| [GR5xx Serial Port Profile Example Application](https://docs.goodix.com/en/online/serial_port_bl/Rev.3.1) | For Public          |
+| [GR5xx Power Consumption Profile Example Application](https://docs.goodix.com/en/online/power_consumption_bl/Rev.3.1) | For Public          |
+| [GR5xx HRS RSCS Relay Example Application](https://docs.goodix.com/en/online/hrs_rscs_relay_bl/Rev.3.1) | For Public          |
+| [GR5xx FreeRTOS Example Application](https://docs.goodix.com/en/online/freertos_bl/Rev.3.1) | For Public          |
+| [GR5xx Throughput Example Application](https://docs.goodix.com/en/online/throughput_bl/Rev.3.1) | For Public          |
+| [GR5xx AT Command Example Application](https://docs.goodix.com/en/online/at_command_bl/Rev.3.1) | For Public          |
+| [GR5xx ANCS Profile Example Application](https://docs.goodix.com/en/online/ancs_profile_bl/Rev.3.1) | For Public          |
+| [GR5xx AMS Profile Example Application](https://docs.goodix.com/en/online/ams_profile_bl/Rev.3.1) | For Public          |
+| [GR5xx DFU Development Application Note](https://docs.goodix.com/en/online/firmware_upgrade_bl/Rev.1.6) | For Public          |
+| [GR5xx DTM Test Application Note](https://docs.goodix.com/en/online/dtm_test_bl/Rev.3.5) | For Public          |
+| [GR5xx APP Log Application Note](https://docs.goodix.com/en/online/app_log_bl/Rev.3.2) | For Public          |
+| [GR5xx Fault Trace Module Application Note](https://docs.goodix.com/en/online/fault_trace_bl/Rev.3.2) | For Public          |
+| [GR5xx Firmware Encryption Application Note](https://docs.goodix.com/en/online/firmware_encryption_bl/Rev.3.0) | For Public          |
+| [GRPLT Lite Config Tool Customized Firmware   Encryption Application Note](https://docs.goodix.com/en/online/grplt_lite_config_tool_customized_firmware_encryption/Rev.1.5) | For Public          |
+| [GR5525 MCD](https://www.goodix.com/en/docview/GR5525 MCD_Rev.1.1?objectId=214&objectType=document&version=515) | For Public          |
+| [GR5525 Reliability Test Report](https://docs.goodix.com/en/online/reliablity_report_bl_c/Rev.1.0) | For Public          |
 
 
 
 ### 6.3 GR5526 Documents
-https://www.goodix.com/zh/product/connectivity/ble/gr5526
+https://www.goodix.com/en/product/connectivity/ble/gr5526
 
 | Document | Privileges |
-| ------------------------------------------------------------ | ---------- |
-| [低功耗蓝牙产品开发快速入门](https://docs.goodix.com/zh/online/bluetooth_le_getting_started) | PUBLIC |
-| [GR5526 Product Brief](https://www.goodix.com/zh/docview/GR5526%20Product%20Brief_Rev.1.2?objectId=166&objectType=document&version=446) | PUBLIC       |
-| [GR5526 Datasheet](https://docs.goodix.com/zh/online/datasheet_bl_b) | PUBLIC       |
-| [GR5526 Datasheet Brief](https://docs.goodix.com/zh/online/datasheet_brief_bl_b/Rev.1.1) | PUBLIC |
-| [GR5526开发者指南](https://docs.goodix.com/zh/online/developer_guide_bl_b) | PUBLIC |
-| [GR5526刷屏指南](https://docs.goodix.com/zh/online/display_refresh_guide_bl_b) | PUBLIC |
-| [GR5526 GPU开发者指南](https://docs.goodix.com/zh/online/gpu_guide_bl_b) | PUBLIC |
-| [GR5xx IAR用户手册](https://docs.goodix.com/zh/online/gr55xx_iar_user_guide) | PUBLIC       |
-| [GR5xx GCC用户手册](https://docs.goodix.com/zh/online/gr55xx_gcc_user_guide) | PUBLIC       |
-| [GR5526 API Reference](https://docs.goodix.com/zh/online/api_reference_bl_b) | PUBLIC |
-| [GR5xx APP驱动用户手册](https://docs.goodix.com/zh/online/app_driver_bl) | PUBLIC |
-| [GProgrammer用户手册](https://docs.goodix.com/zh/online/gprogrammer_user_guide) | PUBLIC |
-| [GR5526 硬件设计指南](https://docs.goodix.com/zh/online/hardware_design_guidelines_bl_b) | PUBLIC       |
-| [GR5526 Reference Design](https://www.goodix.com/zh/docview/GR5526%20Reference%20Design_V1.0?objectId=280&objectType=document&version=443) | Only For Registered Users       |
-| [GR5526 Starter Kit用户指南](https://docs.goodix.com/zh/online/starter_kit_manual_bl_b) | PUBLIC      |
-| [GR5526-SK-BASIC-RevC](https://www.goodix.com/zh/docview/GR5526-SK-BASIC-RevC_V1.0?objectId=278&objectType=document&version=449) | PUBLIC       |
-| [GR5526功耗模式及功耗测量说明](https://docs.goodix.com/zh/online/power_application_bl_b) | PUBLIC |
-| [GR5526 Reliability Test Report](https://docs.goodix.com/zh/online/reliablity_report_bl_b) | PUBLIC      |
-| [GR5526 MCD](https://www.goodix.com/zh/docview/GR5526%20MCD_V1.1?objectId=276&objectType=document&version=447) | PUBLIC      |
-| [GR5xx鼠标示例手册](https://docs.goodix.com/zh/online/hid_mouse_bl) | PUBLIC |
-| [GR5xx应用及自定义Sample Service](https://docs.goodix.com/zh/online/custom_sample_service_bl) | PUBLIC |
-| [GR5xx Serial Port Profile示例手册](https://docs.goodix.com/zh/online/serial_port_bl) | PUBLIC |
-| [GR5xx HRS RSCS Relay示例手册](https://docs.goodix.com/zh/online/hrs_rscs_relay_bl) | PUBLIC |
-| [GR5xx FreeRTOS示例手册](https://docs.goodix.com/zh/online/freertos_bl) | PUBLIC |
-| [GR5xx Throughput示例手册](https://docs.goodix.com/zh/online/throughput_bl) | PUBLIC |
-| [GR5xx AT Command示例手册](https://docs.goodix.com/zh/online/at_command_bl) | PUBLIC |
-| [GR5xx ANCS Profile示例手册](https://docs.goodix.com/zh/online/ancs_profile_bl) | PUBLIC |
-| [GR5xx AMS Profile示例手册](https://docs.goodix.com/zh/online/ams_profile_bl) | PUBLIC |
-| [GR5xx Power Consumption Profile示例手册](https://docs.goodix.com/zh/online/power_consumption_bl) | PUBLIC |
-| [GR5xx APP Log应用说明](https://docs.goodix.com/zh/online/app_log_bl) | PUBLIC |
-| [GR5xx固件升级开发指南](https://docs.goodix.com/zh/online/firmware_upgrade_bl) | PUBLIC |
-| [GR5xx固件加密及应用介绍](https://docs.goodix.com/zh/online/firmware_encryption_bl) | PUBLIC |
-| [GR5xx Fault Trace Module应用说明](https://docs.goodix.com/zh/online/fault_trace_bl) | PUBLIC |
-| [GR5xx DTM测试指南](https://docs.goodix.com/zh/online/dtm_test_bl) | PUBLIC |
-| [GRPLT Lite配置工具用户手册](https://docs.goodix.com/zh/online/grplt_lite_configuration_tool_user_guide) | PUBLIC       |
-| [GRPLT Lite配置工具自定义固件加密及应用介绍](https://docs.goodix.com/zh/online/grplt_lite_configuration_tool_firmware_introduction) | PUBLIC       |
-| [PLT Lite用户手册](https://docs.goodix.com/zh/online/plt_lite_guide_bl) | PUBLIC    |
-| [PLT Lite量产烧录指南](https://docs.goodix.com/zh/online/plt_lite_programming_guide_bl) | PUBLIC    |
+| ------------------------------ | ---------- |
+| [Getting Started with Bluetooth LE Device](https://docs.goodix.com/en/online/bluetooth_le_getting_started/Rev.2.6) | For Public          |
+| [GR5526 Product Brief](https://www.goodix.com/en/docview/GR5526 Product Brief_Rev.1.2?objectId=100&objectType=document&version=309) | For Public          |
+| [GR5526 Datasheet](https://docs.goodix.com/en/online/datasheet_bl_b/Rev.1.2) | For Public          |
+| [GR5526 Starter Kit User Guide](https://docs.goodix.com/en/online/starter_kit_manual_bl_b/Rev.1.1) | For Public          |
+| [GProgrammer User Manual](https://docs.goodix.com/en/online/gprogrammer_user_guide/Rev.3.2) | For Public          |
+| [GR5xx IAR User Manual](https://docs.goodix.com/en/online/gr5xx_iar_guide/Rev.1.1) | For Public          |
+| [GR5526 Hardware Design Guidelines](https://docs.goodix.com/en/online/hardware_design_guidelines_bl_b/Rev.1.2) | For Public          |
+| [GRPLT Lite Config Tool User Manual](https://docs.goodix.com/en/online/grplt_lite_configuration_tool_user_guide/Rev.1.7) | For Public          |
+| [GR5xx GCC User Manual](https://docs.goodix.com/en/online/gr5xx_gcc_guide/Rev.1.0) | For Public          |
+| [GR5526 Display Refresh Module Guide](https://docs.goodix.com/en/online/display_refresh_guide_bl_b/Rev.1.0) | For Public          |
+| [GR5526 Developer Guide](https://docs.goodix.com/en/online/developer_guide_bl_b/Rev.1.0) | For Public          |
+| [GR5526 Reference Design](https://www.goodix.com/en/docview/GR5526 Reference Design_Rev.1.0?objectId=158&objectType=document&version=312) | Register Users Only |
+| [GR5526-SK-BASIC-RevC](https://www.goodix.com/en/docview/GR5526-SK-BASIC-RevC_Rev.1.0?objectId=159&objectType=document&version=313) | For Public          |
+| [GR5526 API Reference](https://docs.goodix.com/en/online/api/api_reference_bl_b/Rev.1.0.3) | For Public          |
+| [GR5xx Sample Service Application and Customization](https://docs.goodix.com/en/online/custom_sample_service_bl/Rev.3.1) | For Public          |
+| [GR5xx HID Mouse Example Application](https://docs.goodix.com/en/online/hid_mouse_bl/Rev.3.2) | For Public          |
+| [GR5xx Serial Port Profile Example Application](https://docs.goodix.com/en/online/serial_port_bl/Rev.3.1) | For Public          |
+| [GR5xx Power Consumption Profile Example Application](https://docs.goodix.com/en/online/power_consumption_bl/Rev.3.1) | For Public          |
+| [GR5xx HRS RSCS Relay Example Application](https://docs.goodix.com/en/online/hrs_rscs_relay_bl/Rev.3.1) | For Public          |
+| [GR5xx FreeRTOS Example Application](https://docs.goodix.com/en/online/freertos_bl/Rev.3.1) | For Public          |
+| [GR5xx Throughput Example Application](https://docs.goodix.com/en/online/throughput_bl/Rev.3.1) | For Public          |
+| [GR5xx AT Command Example Application](https://docs.goodix.com/en/online/at_command_bl/Rev.3.1) | For Public          |
+| [GR5xx ANCS Profile Example Application](https://docs.goodix.com/en/online/ancs_profile_bl/Rev.3.1) | For Public          |
+| [GR5xx AMS Profile Example Application](https://docs.goodix.com/en/online/ams_profile_bl/Rev.3.1) | For Public          |
+| [GR5xx DFU Development Application Note](https://docs.goodix.com/en/online/firmware_upgrade_bl/Rev.1.6) | For Public          |
+| [GR5xx DTM Test Application Note](https://docs.goodix.com/en/online/dtm_test_bl/Rev.3.5) | For Public          |
+| [GR5xx APP Log Application Note](https://docs.goodix.com/en/online/app_log_bl/Rev.3.2) | For Public          |
+| [GR5xx Fault Trace Module Application Note](https://docs.goodix.com/en/online/fault_trace_bl/Rev.3.2) | For Public          |
+| [GR5xx Firmware Encryption Application Note](https://docs.goodix.com/en/online/firmware_encryption_bl/Rev.3.0) | For Public          |
+| [GRPLT Lite Config Tool Customized Firmware   Encryption Application Note](https://docs.goodix.com/en/online/grplt_lite_config_tool_customized_firmware_encryption/Rev.1.5) | For Public          |
+| [GR5526 Reliability Test Report](https://docs.goodix.com/en/online/reliablity_report_bl_b/Rev.1.0) | For Public          |
+| [GR5526 MCD](https://www.goodix.com/en/docview/GR5526 MCD_Rev.1.1?objectId=156&objectType=document&version=310) | For Public          |
+
 
 
 ### 6.4 GR533x Documents
-https://www.goodix.com/zh/product/connectivity/ble/gr533x
+https://www.goodix.com/en/product/connectivity/ble/gr533x
 
 
 | Document | Privileges |
-| ------------------------------------------------------------ | ---------- |
-| [低功耗蓝牙产品开发快速入门](https://docs.goodix.com/zh/online/bluetooth_le_getting_started) | PUBLIC |
-| [GR533x Product Brief](https://www.goodix.com/zh/docview/GR533x%20Product%20Brief_V1.1?objectId=359&objectType=document&version=557) | PUBLIC       |
-| [GR533x Datasheet](https://docs.goodix.com/zh/online/datasheet_bl_d) | PUBLIC       |
-| [GR533x 开发者指南](https://docs.goodix.com/zh/online/developer_guide_bl_d) | PUBLIC       |
-| [GR533x API Reference](https://docs.goodix.com/zh/online/api_reference_bl_d) | PUBLIC       |
-| [GR5xx IAR用户手册](https://docs.goodix.com/zh/online/gr55xx_iar_user_guide) | PUBLIC       |
-| [GR5xx GCC用户手册](https://docs.goodix.com/zh/online/gr55xx_gcc_user_guide) | PUBLIC       |
-| [GR5xx APP驱动用户手册](https://docs.goodix.com/zh/online/app_driver_bl) | PUBLIC |
-| [GProgrammer用户手册](https://docs.goodix.com/zh/online/gprogrammer_user_guide) | PUBLIC |
-| [GR533x LCP开发者指南](https://docs.goodix.com/zh/online/lcp_bl_d) | PUBLIC       |
-| [GR533x 硬件设计指南](https://docs.goodix.com/zh/online/hardware_design_guide_d) | PUBLIC       |
-| [GR533x Reference Design](https://www.goodix.com/zh/docview/GR533x%20Reference%20Design_V1.2?objectId=362&objectType=document&version=609) | Only For Registered Users       |
-| [GR533x Module Reference Design](https://www.goodix.com/zh/docview/GR533x%20Module%20Reference%20Design_V1.1?objectId=363&objectType=document&version=611) | Only For Registered Users        |
-| [GR5331 Starter Kit用户指南](https://docs.goodix.com/zh/online/starter_kit_manual_bl_d) | PUBLIC      |
-| [GR5331-SK-BASIC-RevC](https://www.goodix.com/zh/docview/GR5331-SK-BASIC-RevC_RevC?objectId=366&objectType=document&version=564) | PUBLIC       |
-| [GR533x功耗测试用户手册](https://docs.goodix.com/zh/online/power_measure_bl_d) | PUBLIC      |
-| [GR533x RF PA应用指南](https://docs.goodix.com/zh/online/rf_pa_bl_d) | PUBLIC      |
-| [GR533x RF匹配调试指南](https://docs.goodix.com/zh/online/rf_matching_bl_d) | PUBLIC      |
-| [GR533x Reliability Test Report](https://docs.goodix.com/zh/online/reliablity_report_bl_d) | PUBLIC      |
-| [GR533x MCD](https://www.goodix.com/zh/docview/GR533x%20MCD_V1.0?objectId=360&objectType=document&version=558) | PUBLIC      |
-| [GR533x Mesh Simple On Off Models示例手册](https://docs.goodix.com/zh/online/mesh_sso_bl_d) | PUBLIC      |
-| [GR533x Mesh Light Lightness Models示例手册](https://docs.goodix.com/zh/online/mesh_lln_bl_d) | PUBLIC      |
-| [GR5xx鼠标示例手册](https://docs.goodix.com/zh/online/hid_mouse_bl) | PUBLIC |
-| [GR5xx应用及自定义Sample Service](https://docs.goodix.com/zh/online/custom_sample_service_bl) | PUBLIC |
-| [GR5xx Serial Port Profile示例手册](https://docs.goodix.com/zh/online/serial_port_bl) | PUBLIC |
-| [GR5xx HRS RSCS Relay示例手册](https://docs.goodix.com/zh/online/hrs_rscs_relay_bl) | PUBLIC |
-| [GR5xx FreeRTOS示例手册](https://docs.goodix.com/zh/online/freertos_bl) | PUBLIC |
-| [GR5xx Throughput示例手册](https://docs.goodix.com/zh/online/throughput_bl) | PUBLIC |
-| [GR5xx AT Command示例手册](https://docs.goodix.com/zh/online/at_command_bl) | PUBLIC |
-| [GR5xx ANCS Profile示例手册](https://docs.goodix.com/zh/online/ancs_profile_bl) | PUBLIC |
-| [GR5xx AMS Profile示例手册](https://docs.goodix.com/zh/online/ams_profile_bl) | PUBLIC |
-| [GR5xx Power Consumption Profile示例手册](https://docs.goodix.com/zh/online/power_consumption_bl) | PUBLIC |
-| [GR5xx APP Log应用说明](https://docs.goodix.com/zh/online/app_log_bl) | PUBLIC |
-| [GR5xx固件升级开发指南](https://docs.goodix.com/zh/online/firmware_upgrade_bl) | PUBLIC |
-| [GR5xx Fault Trace Module应用说明](https://docs.goodix.com/zh/online/fault_trace_bl) | PUBLIC |
-| [GR5xx DTM测试指南](https://docs.goodix.com/zh/online/dtm_test_bl) | PUBLIC |
-| [GRPLT Lite配置工具用户手册](https://docs.goodix.com/zh/online/grplt_lite_configuration_tool_user_guide) | PUBLIC       |
-| [PLT Lite用户手册](https://docs.goodix.com/zh/online/plt_lite_guide_bl) | PUBLIC    |
-| [PLT Lite量产烧录指南](https://docs.goodix.com/zh/online/plt_lite_programming_guide_bl) | PUBLIC    |
+| ------------------------------------- | ---------- |
+| [GR533x Product Brief](https://www.goodix.com/en/docview/GR533x Product Brief_Rev.1.3?objectId=222&objectType=document&version=498) | For Public          |
+| [GR533x Datasheet](https://docs.goodix.com/en/online/datasheet_bl_d/Rev.1.3) | For Public          |
+| [GR5331 Starter Kit User Guide](https://docs.goodix.com/en/online/starter_kit_manual_bl_d/Rev.1.1) | For Public          |
+| [GR533x Developer Guide](https://docs.goodix.com/en/online/developer_guide_bl_d/Rev.1.3) | For Public          |
+| [GProgrammer User Manual](https://docs.goodix.com/en/online/gprogrammer_user_guide/Rev.3.2) | For Public          |
+| [GR5xx IAR User Manual](https://docs.goodix.com/en/online/gr5xx_iar_guide/Rev.1.1) | For Public          |
+| [GRPLT Lite Config Tool User Manual](https://docs.goodix.com/en/online/grplt_lite_configuration_tool_user_guide/Rev.1.7) | For Public          |
+| [GR5xx GCC User Manual](https://docs.goodix.com/en/online/gr5xx_gcc_guide/Rev.1.0) | For Public          |
+| [PLT Lite User Manual](https://docs.goodix.com/en/online/plt_lite_guide_bl/Rev.1.0) | For Public          |
+| [PLT Lite Mass Production Programming Guide](https://docs.goodix.com/en/online/plt_lite_programming_guide_bl/Rev.1.0) | For Public          |
+| [GR533x LCP Developer Guide](https://docs.goodix.com/en/online/lcp_bl_d/Rev.1.0) | For Public          |
+| [GR533x Module Reference Design](https://www.goodix.com/en/docview/GR533x Module Reference Design_Rev.1.3?objectId=226&objectType=document&version=504) | Register Users Only |
+| [GR533x Reference Design](https://www.goodix.com/en/docview/GR533x Reference Design_Rev.1.4?objectId=225&objectType=document&version=503) | Register Users Only |
+| [GR533x Hardware Design Guidelines](https://docs.goodix.com/en/online/hardware_design_guide_bl_d/Rev.1.4) | For Public          |
+| [GR5331-SK-BASIC-RevC](https://www.goodix.com/en/docview/GR5331-SK-BASIC-RevC_Rev.1.0?objectId=229&objectType=document&version=411) | For Public          |
+| [GR533x API Reference](https://docs.goodix.com/en/online/api/api_reference_bl_d/Rev.1.0.6) | For Public          |
+| [GR5xx Sample Service Application and Customization](https://docs.goodix.com/en/online/custom_sample_service_bl/Rev.3.1) | For Public          |
+| [GR5xx HID Mouse Example Application](https://docs.goodix.com/en/online/hid_mouse_bl/Rev.3.2) | For Public          |
+| [GR5xx Serial Port Profile Example Application](https://docs.goodix.com/en/online/serial_port_bl/Rev.3.1) | For Public          |
+| [GR5xx Power Consumption Profile Example Application](https://docs.goodix.com/en/online/power_consumption_bl/Rev.3.1) | For Public          |
+| [GR5xx HRS RSCS Relay Example Application](https://docs.goodix.com/en/online/hrs_rscs_relay_bl/Rev.3.1) | For Public          |
+| [GR5xx FreeRTOS Example Application](https://docs.goodix.com/en/online/freertos_bl/Rev.3.1) | For Public          |
+| [GR5xx Throughput Example Application](https://docs.goodix.com/en/online/throughput_bl/Rev.3.1) | For Public          |
+| [GR5xx AT Command Example Application](https://docs.goodix.com/en/online/at_command_bl/Rev.3.1) | For Public          |
+| [GR5xx ANCS Profile Example Application](https://docs.goodix.com/en/online/ancs_profile_bl/Rev.3.1) | For Public          |
+| [GR5xx AMS Profile Example Application](https://docs.goodix.com/en/online/ams_profile_bl/Rev.3.1) | For Public          |
+| [GR533x Mesh Simple On Off Models Example Application](https://docs.goodix.com/en/online/mesh_sso_bl_d/Rev.1.1) | For Public          |
+| [GR533x Mesh Light Lightness Models Example   Application](https://docs.goodix.com/en/online/mesh_lln_bl_d/Rev.1.1) | For Public          |
+| [GR533x RF PA Application Note](https://docs.goodix.com/en/online/rf_pa_bl_d/Rev.1.4) | For Public          |
+| [GR533x Power Consumption Measurement User Guide](https://docs.goodix.com/en/online/power_measure_bl_d/Rev.1.4) | For Public          |
+| [GR5xx DFU Development Application Note](https://docs.goodix.com/en/online/firmware_upgrade_bl/Rev.1.6) | For Public          |
+| [GR5xx DTM Test Application Note](https://docs.goodix.com/en/online/dtm_test_bl/Rev.3.5) | For Public          |
+| [GR5xx APP Log Application Note](https://docs.goodix.com/en/online/app_log_bl/Rev.3.2) | For Public          |
+| [GR5xx Fault Trace Module Application Note](https://docs.goodix.com/en/online/fault_trace_bl/Rev.3.2) | For Public          |
+| [GR533x Reliability Test Report](https://docs.goodix.com/en/online/reliablity_report_bl_d/Rev.1.1) | For Public          |
+| [GR533x MCD](https://www.goodix.com/en/docview/GR533x MCD_Rev.1.0?objectId=223&objectType=document&version=405) | For Public          |
+| [GR533x RF Matching Guidelines](https://docs.goodix.com/en/online/rf_matching_bl_d/Rev.1.2) | For Public          |
+
 
 
 ## 7. Obtaining technical support
