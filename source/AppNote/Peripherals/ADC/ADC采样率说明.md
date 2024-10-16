@@ -1,34 +1,28 @@
-# ADC采样率测试说明
+# ADC Sampling Rate Test
 
-## 1. ADC采样时钟
 
-- GR551x和GR552x芯片ADC模块的理论采样精度是13位。
 
-- 理论上，每15个时钟信号产生一个采样值，其中前2个Clock是采样保持时间，后面13个clock进行13位的量化编码。采样率和ADC时钟的关系：
+## 1. ADC Sampling Clock
 
+- The theoretical sampling accuracy of the ADC module in GR551x and GR552x chips is 13 bits.
+- Theoretically, one sample value is generated every 15 clock signals, with the first 2 clocks being the hold time and the subsequent 13 clocks performing 13-bit quantization encoding. 
 ```
 1 sample = ADC Clock Rate/15
 ```
-
-- 此外，考虑到程序调用的额外时间占用，实际采样时钟和采样率的关系会大于15倍，一般约在15～16倍之间。
-
-
-
-## 2. 测试采样率
-
-### 2.1 测试条件设置
-
-- ADC采集时钟率设置为1M，理论采样率为1M/15。
-- 设置单端模式测试，输入PIN选择MSIO_2。
-- 采样输入信号使用信号发生器，产生1 kHz的方波信号，信号幅值为1 V。
-- 采用多通道采样，每次采集数据1024次，连续对输入信号进行5次采集，总采集次数5120次。
+- Additionally, considering the extra time occupied by program calls, the actual sampling clock to sampling rate ratio will be greater than 15, generally around 15 to 16.
 
 
 
-### 2.2 主要测试代码
+## 2. Testing Sampling Rate
 
-1. 初始化代码
+### 2.1 Required Settings
+- The ADC acquisition clock rate is set to 1 MHz, resulting in a theoretical sampling rate of 1 MHz/15.
+- Set the input to single-ended mode, selecting MSIO_2 as the input pin.
+- Use a signal generator to produce a 1 kHz square wave signal with an amplitude of 1 V for sampling.
+- Employ multi-channel sampling, collecting 1024 data points per acquisition, and sample the input signal continuously 5 times, totaling 5120 samples.
 
+### 2.2 Main Test Code
+1. Initialize the code.
    ```c
    void app_adc_sample_init(void)
    {
@@ -46,17 +40,14 @@
        adc_param.init.ref_source           = ADC_REF_SRC_BUF_INT;
        adc_param.init.ref_value            = ADC_REF_VALUE_1P6;
        adc_param.init.clock                = ADC_CLK_1M;
-       
        app_adc_deinit();
        app_adc_init(&adc_param, _app_adc_evt_handler);
        app_adc_dma_deinit();
        app_adc_dma_init(&adc_param);
    }
-   
    void app_sample_channel_init(void)
    {
        int i;
-       
        for(i=0;i<sizeof(adc)/sizeof(app_adc_sample_node_t);i++)
        {
            adc[i].channel =  ADC_INPUT_SRC_IO0; // ADC_INPUT_SRC_IO0+i;
@@ -67,42 +58,32 @@
            else
                adc[i].next = NULL;
        }
-       
        return ;
    }
    ```
-
-2. 多通道读取数据，连续采集5次。
-
+2. Read data from multiple channels and collect continuously five times.
    ```c
    int8_t app_adc_read(void)
    {
        uint8_t i=0,timeout = 50;
        adc_flag = 0;
-   
        // 多通道ADC读取
        for(i=0;i<sizeof(adc)/sizeof(app_adc_sample_node_t);i++)
            memset(adc[i].p_buf,0,CONV_LENGTH * sizeof(uint16_t));// 清缓冲区
        app_adc_multi_channel_conversion_async(&adc[0],sizeof(adc)/sizeof(app_adc_sample_node_t));
-       
        do
        {
            delay_ms(100);
        }while(adc_flag == 0 && timeout-- >0);
-       
        if(timeout ==0)
            return -1;
-       
        return 0;
    }
    ```
-
-3.  测试逻辑
-
+3. Test the logic.
    ```c
        app_adc_sample_init();
        app_sample_channel_init();
-       
        while(1)
        {
            delay_ms(1000);
@@ -110,45 +91,27 @@
            memset(out_fft,0,CONV_LENGTH);
            memset(_voltage,0,CONV_LENGTH);
            app_adc_read();
-       
            for(i = 0; i < 5; i++) {
-               
                app_adc_voltage_intern(adc[i].p_buf, _voltage, CONV_LENGTH);
-               
                for(j=0;j<CONV_LENGTH;j++){
                    APP_LOG_INFO("%0.4f",(float)_voltage[j]);
                }
-               
                APP_LOG_INFO("\r\n ++++++++++++++++++++++++++++++++++++++++ \r\n");
            }
        }
    ```
 
-   
-
-### 2.3 测试结果
-
-- 将测试获取的5120个数据导入Excel生成折线图：
-
+### 2.3 Testing Results
+- Import the 5120 data points obtained from the test into Excel to generate a line chart:
 ![1702536874744](../../../_images/adc_sample_test.png)
-
-
-
-- 1M时钟下5120次数据的理论采样时间范围一般为：
-
+- The theoretical sampling time range for 5120 data points at a 1 MHz clock is generally:
 ```
 Min :  5120/(1M/15) = 0.077 Sec = 77ms
 Max :  5120/(1M/16) = 0.082 Sec = 82ms
 ```
-
-​       可以采样到1 kHz的方波约小于82个。
-
-- 图中的方波周期个数约78个，符合采样预期。
-
-
-
-- 原始采样数据：
-
+It can sample up to 82 cycles of a 1 kHz square wave.
+- The number of square wave cycles in the chart is approximately 78, which meets the expected sampling results.
+- Raw sampling data:
   ```
   0.3917
   0.2854
@@ -5271,10 +5234,3 @@ Max :  5120/(1M/16) = 0.082 Sec = 82ms
   0.2465
   0.2415
   ```
-
-  
-
-
-
-
-

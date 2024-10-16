@@ -1,6 +1,6 @@
-## GR5xx各类定时器归纳
+## GR5xx Timers
 
-### 1. GR5xx各类定时器特征概览
+### 1. Overview of GR5xx Timers
 
 |             名字              |    模块属性     | AON域 |                 个数                 |           时钟源            | 计数模式和计时精度 | 驱动参考                                                     | 典型特点                                                     | 应用场景                                                     |
 | ----------------------------- | --------------- | ----- | ------------------------------------ | --------------------------- | ------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -16,51 +16,51 @@
 | BLE_Timer<br />ble comm timer |   SOC ble模块   |  YES  |                  1                   | 慢速时钟源，具体配置见项目2 |         /          | ble_time.c/h                                                 | ble core 里面的定时器                                        | 为协议栈提供广播间隔等时隙，系统也可以调它的接口获取睡眠时间 |
 
 
-### 2. GR5xx慢速时钟定时器的时钟配置
+### 2. Clock configuration of GR5xx slow clock timers
 
-GR5xx基于慢速时钟的定时器分别有BLE_Timer，aon_wdt, sleep timer, RTC.
+GR5xx slow clock based timers are BLE_Timer, aon_wdt, sleep timer, RTC respectively.
 
-慢速时钟源分别有外部的晶体时钟和内部的RC时钟。
+The slow clock sources are external crystal clock and internal RC clock respectively.
 
-外部晶体时钟是32K晶振，也叫LFXO-32K，特点是相比内部的RC时钟有更好的稳定性。
+The external crystal clock is a 32K crystal oscillator, also called LFXO-32K, characterized by better stability than the internal RC clock.
 
-内部的RC时钟分别有RNG_OSC和LFRC-32K（也叫RNG2）。RNG_OSC来源于时钟树上的2MHZ_RNG_OS，不太稳定；LFRC-32K相比RNG_OSC则有更好的PPM.但在GR551x和GR5526上，LFRC-32K用于计时模块时，会出现计时突变的问题，所以不能用。各个芯片的慢速时钟配置如下：
+The internal RC clocks are RNG_OSC and LFRC-32K (also called RNG2).The RNG_OSC comes from the 2MHZ_RNG_OS on the clock tree, which is less stable, while the LFRC-32K has a better PPM compared to the RNG_OSC.However, when the LFRC-32K is used for the timing module on the GR551x and the GR5526, there is a problems with abrupt timing changes, so it can't be used. The slow clock configuration for each chip is as follows:
 
-- 对于GR551x：
+- For GR551x:
 
-BLE TIMER:如果选择外部时钟源用LFXO_32K，如果选择内部时钟源用RNG2。
-AON WDT:固定到RNG(不支持RNG2，也不支持外部LFXO_32K) 
-Sleep TIMER:外部用LFXO_32K，内部用RNG2
-RTC:固定到外部LFXO_32K，不支持内部时钟(所以如果芯片没有外挂LFXO_32K，SDK基于ble timer实现了日历的计时功能，但日历没有tick和alarm功能)
+BLE TIMER: LFXO_32K if external clock source is selected, RNG2 if internal clock source is selected.
+AON WDT:fixed to RNG (RNG2 is not supported, nor is external LFXO_32K) 
+SLEEP TIMER:LFXO_32K for external, RNG2 for internal.
+RTC: fixed to external LFXO_32K, no support for internal clock (so if the chip does not have external LFXO_32K, the SDK implements calendar timing based on ble timer, but the calendar does not have tick and alarm functions)
 
-- 对于GR5526:
+- For GR5526.
 
-BLE Timer：如果选择外部时钟源用LFXO_32K，如果选择内部时钟源用LFRC_32K.
-AON WDT：如果选择外部时钟源用LFXO_32K，如果选择内部时钟源用RNG_OSC(由于LFRC_32K计时有突变，所以不能用）
-Sleep Timer：如果选择外部时钟源用LFXO_32K，如果选择内部时钟源用RNG_OSC(由于LFRC_32K计时有突变，所以不能用）
-RTC0:如果选择外部时钟源用LFXO_32K，如果选择内部时钟源时，app_rtc.c会基于ble_timer实现日历简单的时间计时功能，没有tick和alarm中断功能。
-RTC1:如果选择外部时钟源用LFXO_32K，如果选择内部时钟源用RNG_OSC(由于LFRC_32K计时有突变，所以不能用）.
+BLE Timer: use LFXO_32K if external clock source is selected, use LFRC_32K if internal clock source is selected.
+AON WDT: LFXO_32K if external clock source is selected, RNG_OSC if internal clock source is selected (LFRC_32K cannot be used due to mutation in timing).
+Sleep Timer: LFXO_32K if external clock source is selected, RNG_OSC if internal clock source is selected (cannot be used because LFRC_32K timing has mutation)
+RTC0:if choose external clock source with LFXO_32K, if choose internal clock source when app_rtc.c will implement calendar simple time timing function based on ble_timer, no tick and alarm interrupt function.
+RTC1: use LFXO_32K if external clock source is selected, use RNG_OSC if internal clock source is selected (can't use LFRC_32K timing since it has mutation).
 
-- 对于GR5525/GR533x：
+- For GR5525/GR533x:
 
-对所有BLE_Timer/aon_wdt/sleep timer/RTC来讲，
+For GR5525/GR533x: For all BLE_Timer/aon_wdt/sleep timer/RTC.
 
-如果选择外部时钟源用LFXO_32K；如果选择内部时钟源时用LFRC_32K（因为LFRC-32K相比RNG_OSC则有更好的PPM）。
+For all BLE_Timer/aon_wdt/sleep timer/RTC, use LFXO_32K if external clock source is selected, and use LFRC_32K if internal clock source is selected (because LFRC-32K has better PPM than RNG_OSC).
 
-### 3.各款芯片RTOS tick的实现方式
+### 3. RTOS tick implementation of each chip
 
-- GR551x：
+- GR551x:
 
-MCU ACTIVE模式下，是基于Systick实现 RTOS的tick；
+In MCU ACTIVE mode, the RTOS tick is realized based on Systick;
 
-在MCU Sleep 模式下，systick停住工作，依靠ble_timer的定时任务进行唤醒，唤醒后通过读取ble_timer时间对systick进行补偿。
+In MCU SLEEP mode, systick stops working and relies on the timing task of ble_timer to wake up, and compensates systick by reading the time of ble_timer after waking up.
 
 
 - GR5525/GR5526
 
-基于RTC1实现RTOS的tick。这两款芯片有两路RTC，所以RTC0用于正常的日历功能。
+RTOS tick implementation based on RTC1. these two chips have two RTCs, so RTC0 is used for normal calendar functions.
 
 
-- GR533x：
+- GR533x:
 
-基于RTC0实现 RTOS的tick。由于芯片只有一路RTC，所以在RTOS场景下，日历功能会受限。
+Implement RTOS tick based on RTC0. Since the chip has only one way RTC, the calendar function will be limited in RTOS scenario.

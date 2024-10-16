@@ -1,112 +1,67 @@
-## OSPI PSRAM应用笔记
+## OSPI PSRAM Application Notes
+- Note: The OSPI PSRAM is an extension of the GR5526 SoC series, available in the GR5526VGBIP and GR5526RGNIP packages. Other chip series do not include OSPI PSRAM.
 
 
 
--   说明：OSPI PSRAM是GR5526 SoC系列芯片（存在于GR5526VGBIP和GR5526RGNIP封装）扩展的外设，其他芯片系列没有OSPI PSRAM。
+### 1. PSRAM Address Space Layout and Management
+
+- In the GR5526 SoC, one bus address space mapping range of the 512 KB SRAM is [0x30000000, 0x3007FFFF], while the bus address space mapping range of the 64Mbit OSPI PSRAM is [0x30080000, 0x3087FFFF]. They can be addressed continuously on the bus.
+![](../../../_images/gpu/psram_1.png)
+- In practical application design, the SRAM area is primarily occupied by RAM Code, RW+ZI, system stack, application layer logic, and algorithms. Generally, the 512 KB SRAM will not be fully occupied, and the remaining SRAM and PSRAM together form a large heap area. Users can use it for display storage or data storage. The typical internal distribution structure is as follows:
+![](../../../_images/gpu/psram_2.png)
+- To facilitate the management of the above internal layout in application projects, use a dedicated scatter layout file in the application project of the PSRAM version SoC (Keil version: ${SDK}\platform\soc\linker\keil\flash_scatter_graphics.sct).
+- To facilitate the management of the large data space composed of the remaining SRAM and PSRAM, the SDK provides dedicated heap management drivers app_graphics_mem.c and app_graphics_mem.h.
+- The heap management files are located at ${SDK}\components\libraries\app_graphics_mem. After registering and initializing the base address and size of the data area, you can use app_graphics_mem_malloc and app_graphics_mem_free to allocate and free data blocks.
+- The heap nodes and data blocks of this heap management driver are implemented separately. The heap nodes are always stored in the SRAM area, enabling data retention during sleep.
 
 
 
-### 1. PSRAM的总线地址空间布局及管理
+### 2. Initialization and Usage of PSRAM
 
--   GR5526中，512 KB SRAM其中一组总线地址空间映射范围为【0x30000000, 0x3007FFFF】，而64Mbit OSPI PSRAM的总线地址空间范围映射为【0x30080000, 0x3087FFFF】，他们在总线上可被连续寻址。
-
-![](../../../_images/gpu/psram_1.png)  
-
- 
-
--   在实际的应用设计中，SRAM区域会被RAM Code、RW+ZI、系统堆栈、应用层逻辑及算法优先占用。一般情况下512 KB SRAM不会占用完，剩余的SRAM和PSRAM一并构成一个大块的Heap区域。用户可将其用于显示存储或数据存储等。典型的内部分布结构如下：
-
-![](../../../_images/gpu/psram_2.png) 
-
- 
-
--   为了方便应用工程管理上述内部布局，请在使用PSRAM版本SoC的应用工程中，采用专门的Scatter布局文件（Keil版本：${SDK}\platform\soc\linker\keil\flash_scatter_graphics.sct）。
--   为方便管理剩余SRAM及PSRAM组成的大块数据空间，SDK提供了专用的Heap管理驱动文件app_graphics_mem.c和app_graphics_mem.h。
-
--   堆管理文件位于${SDK}\components\libraries\app_graphics_mem，注册并初始化数据区域的基地址和数据块大小后，即可使用app_graphics_mem_malloc和app_graphics_mem_free进行数据块的申请和释放使用。
-
--   此堆管理驱动的堆节点和数据块实现了分离，堆节点始终存放在SRAM区域，可实现休眠下的Retention。
-
- 
-
-### 2. PSRAM的初始化和使用
-
--   PSRAM的初始化很简单，调用如下代码即可。接口会同时将OSPI模块和PSRAM设备初始化到工作状态。
-
+- The initialization of PSRAM is straightforward; simply call the following code. This interface will initialize both the OSPI module and the PSRAM device into operational status.
     ```
     app_graphics_ospi_params_t params = PSRAM_INIT_PARAMS_Default;
     app_graphics_ospi_init(&params);  
     ```
-
--   确保编译器引用的分散加载文件为：${SDK}\platform\soc\linker\keil\flash_scatter_graphics.sct。
-
--   调用如下代码，将剩余SRAM和PSRAM组成的区域注册到Heap管理器。
-
+- Ensure that the scatter loading file referenced by the compiler is: ${SDK}\\platform\\soc\\linker\\keil\\flash_scatter_graphics.sct.
+- Call the following code to register the remaining SRAM and PSRAM area with the Heap manager.
     ```c
     mem_pwr_mgmt_mode_set(MEM_POWER_FULL_MODE);
     app_graphics_mem_init((void*)GFX_MEM_BASE, GFX_MEM_SIZE);  
     ```
-
--   接下来即可通过app_graphics_mem_malloc和app_graphics_mem_free接口使用这片堆区域。
-
-
-
-### 3. PSRAM的工作模式
-
- 
-
-OSPI PSRAM设计了2种工作模式：Active和Deep-Sleep。
-
--   Active模式：PSRAM在Active模式随时可被访问，数据会一直保持住。当PSRAM正被访问时，根据访问强度，功耗约为2 mA ~ 5 mA级别；当PSRAM在Active下保持待机模式（Standby），功耗约为66 μA @ 20℃。
-
--   Deep-Sleep模式：当系统休眠且不需要保持数据时，可将PSRAM设备设置为Deep_Sleep模式。在Deep_Sleep模式下，PSRAM设备会被断电，工作电流接近 0 μA。
-
-PSRAM驱动提供了工作模式切换接口，允许用户根据应用需要，切换PSRAM的工作模式。目前支持的模式为Active和Deep-Sleep模式。
-
- 
-
-### 4. PSRAM的休眠策略
-
-由于系统休眠框架的设计，PSRAM设备在裸机环境下和OS环境下的休眠策略存在一些差异。
-
--   裸机模式下，系统休眠由用户负责管理。
-
--   OS模式下，以FreeRTOS为例，会在OS的移植层设计系统的休眠策略。
-
-上述差异导致两种环境下的PSRAM模式使用存在一些差异。
+- Subsequently, it is possible to use this heap area through the app_graphics_mem_malloc and app_graphics_mem_free interfaces.
 
 
 
-#### 4.1 裸机环境下的休眠策略
+### 3. PSRAM Working Mode
+
+The OSPI PSRAM is designed with two operating modes: Active and Deep-Sleep.
+-   Active mode: In Active mode, the PSRAM is always accessible, and data is retained. During access, power consumption ranges from approximately 2 mA to 5 mA, depending on access intensity. In standby mode under Active, power consumption is about 66 μA at 20℃.
+-   Deep-Sleep mode: When the system is in sleep mode and data retention is not required, the PSRAM can be set to Deep-Sleep mode. In Deep-Sleep mode, the PSRAM is powered down, with an operating current close to 0 μA.
+The PSRAM driver provides an interface for switching operating modes, allowing users to switch modes according to application needs. Currently, the supported modes are Active and Deep-Sleep.
 
 
 
-![](../../../_images/gpu/psram_3.png) 
+### 4. PSRAM Sleep Strategy
 
--   系统初始化时，将OSPI PSRAM初始化到工作状态。
+Due to the design of the system sleep framework, there are some differences in the sleep strategies of PSRAM devices in bare-metal environments and OS environments.
+- In bare-metal mode, system sleep is managed by the user.
+- In OS mode, exemplified by FreeRTOS, the system sleep strategy is designed within the OS porting layer.
+These differences result in variations in PSRAM usage between the two environments.
 
--   如果初始化完成后，短期不会使用PSRAM，可以调用接口将PSRAM设置为Deep-Sleep。
+#### 4.1 Hibernation Strategy in Bare Metal Environment
+![](../../../_images/gpu/psram_3.png)
+-   When the system initializes, it initializes the OSPI PSRAM.
+-   If the PSRAM will not be used shortly after initialization, you can call the interface to set the PSRAM to Deep-Sleep.
+-   Before the system goes to sleep, it will call the module's configuration save interface to save the module's register configuration to the Retention SRAM. However, the driver does not provide a register retention interface for the OSPI module.
+-   During system sleep, since there is no register retention interface provided for the OSPI module, the OSPI module configuration will be lost.
+-   When the system wakes up, it will call the module's configuration restore interface to restore the configuration saved to the Retention SRAM before sleep back to the registers. Since the driver lacks a register restore interface, the OSPI configuration interface is used to reconfigure the OSPI (the actual measured time is a few μs, which is acceptable).
+    From this, it can be seen that in a bare-metal environment, the system sleep strategy integrates the management of the OSPI module but does not integrate the management of the PSRAM state. This is because the PSRAM has high power consumption, and the sleep/wake time is relatively long, requiring a design closely related to the application layer's business logic.
+For the application layer:
+1.  Call the initialization interface during system initialization.
+2.  When the PSRAM can be powered down for sleep, call app_graphics_ospi_set_power_state(OSPI_STATE_DEEP_SLEEP) to put the PSRAM into sleep mode.
+3.  When the PSRAM needs to work again, call app_graphics_ospi_set_power_state(OSPI_STATE_ACTIVE) to restore the PSRAM state.
+4.  If the PSRAM needs to retain data at a certain stage, after setting it to Active, do not call the sleep interface. However, this will result in additional power consumption during this period.
 
--   系统休眠前，会调用模块的配置保存接口，将模块的寄存器配置保存到Retention SRAM区域；但驱动上没有提供OSPI模块的寄存器保持接口。
-
--   系统休眠，由于没有提供OSPI模块的寄存器保持接口，在休眠期间，OSPI模块配置会丢失。
-
--   系统唤醒时，会调用模块的配置恢复接口，将模块在休眠前保存到Retention SRAM区域的配置恢复到寄存器。驱动上没有设计寄存器恢复接口， 因此这里调用OSPI配置接口将OSPI重新配置一次（实测时间几 μs，可以接受）。
-
-    由此可以看出，在裸机环境下，系统休眠策略集成了对OSPI模块的管理，但没有集成对PSRAM状态的管理，因为PSRAM由于功耗很大，休眠/唤醒耗时也比较长，需要跟应用层的业务逻辑强相关设计。
-
- 
-
-对于应用层而言：
-
-1.  在系统初始化时，调用初始化接口。
-2.  在PSRAM可以掉电休眠时，调用app_graphics_ospi_set_power_state(OSPI_STATE_DEEP_SLEEP)使PSRAM休眠掉电。
-3.  在PSRAM需要重新工作时，调用app_graphics_ospi_set_power_state(OSPI_STATE_ACTIVE)恢复PSRAM状态。
-4.  如果某个阶段需要PSRAM保持数据，在设置Active后，不调用休眠接口即可，但此期间会产生额外的功耗。
-
-
-
-#### 4.2 RTOS环境下休眠策略
-
-可参考FreeRTOS工程，系统已集成OS环境下的PSRAM状态管理。
-
+#### 4.2 Sleep Strategy in RTOS Environment
+Refer to the FreeRTOS project for integrated PSRAM state management within the OS.

@@ -1,440 +1,235 @@
-## ADC应用笔记
+## ADC Application Notes
 
 
 
-### 1. ADC基本功能介绍
+### 1. Introduction to ADC Basic Functions
 
-本章主要介绍GR5xx ADC的总体框架和基本功能，用户通过本章的介绍可以快速掌握ADC的基本用法。
-
+This chapter mainly introduces the overall framework and basic functions of the GR5xx ADC, helping users quickly understand the basic usage of the ADC.
 ![](../../../_images/adc/1-1-1.png)
+The internal ADC of the GR5xx is an analog-to-digital converter based on the Successive Approximation Register (SAR) method. It features a multiplexer at its input end, providing multiple analog signal inputs. By selecting through the multiplexer, it can sample the selected signal at a given time. Among the supported multiple analog inputs, two channels are used for internal VBAT and temperature monitoring, which can be used for PMU adjustment and RF circuit configuration adjustment within the chip to achieve optimal performance. The ADC can be configured in single-ended input mode or differential input mode to perform single-ended or differential measurements. The reference voltage of the ADC supports both internal and external reference voltages. The internal reference voltage can be set to 0.8 V, 1.2 V, or 1.6 V; the external reference voltage can be input through MSIO0 to MSIO3. For any set reference voltage (Vref), the maximum analog input voltage for the ADC should be twice the reference voltage (2 x Vref).
 
-GR5xx内部的ADC是一种基于逐次逼近原理（SAR）的模数转换器。在它的输入端有一个多路选择器，提供多路模拟信号输入，通过多路选择器的选择实现在给定的时间内对选定的某路信号进行采样。支持的多路模拟输入中，其中两个通道用于内部VBAT和温度监测，可用于芯片内部进行PMU调整和射频电路配置调整，以获得最佳性能。ADC可以配置为单端输入模式或者差分输入模式，以执行单端测量或差分测量。ADC的参考电压支持内部参考电压和外部输入参考电压。内部参考电压可选择0P8V、1P2 V、1P6V三档；外部参考电压可以选择通过MSIO0～MSIO3进行输入。对于任何设定的参考电压（Vref），ADC最大的模拟电压输入应为（2 x Vref）。
-
-#### 1.1 ADC功能简介
-
-- **关于ADC输入源**
-
-  - 对应P端，支持MSIO0～MSIO7和Internal VRef输入。
-
-
-  - 对于N端，支持MSIO0～MSIO7、Temperature Sensor、VBAT Sensor和Internal VRef输入。
-
-
-  - 单端模式下，利用N端通道进行信号输入，采集结果是N端的信号。
-
-
-  - 差分模式下，利用P和N通道进行差分信号输入，采集结果是P-N的差分信号。
-
-- **关于ADC参考电压**
-
+#### 1.1 ADC Function Overview
+- **About ADC Input Sources**
+  - For the P channel, it supports MSIO0 to MSIO7 and Internal VRef input.
+  - For the N channel, it supports MSIO0 to MSIO7, Temperature Sensor, VBAT Sensor, and Internal VRef input.
+  - In single-ended mode, the N channel is used for signal input, and the output is the signal from the N channel.
+  - In differential mode, the P and N channels are used for differential signal input, and the output is the differential signal of P-N.
+- **About ADC Reference Voltage**
   ![](../../../_images/adc/1-1-2.png)
-
-  - 外部参考电压只能通过MSIO0～MSIO3输入。
-
-
-  - 内部参考电压是由恒流源经过不同阻值的电阻，得到不同档位的参考电压。
-
-
-  - 由于出厂只校准了0P8、1P2、1P6这三档，所以推荐只用这三档。
-
-
-  - 不同芯片之间的工艺差异，以及同一芯片在不同温度下，内部电阻R0会有差异，所以导致具体内部参考电压的值也会有差异，这就是出厂要校准的原因。
-
-- **关于ADC Clock**
-
-  - 每15个ADC Clock产生1个Code值，其中前面2个Clock是信号采样保持时间，后面13个Clock进行13位的量化编码。所以采样率与ADC时钟的关系： 1sps = ADC clock/15。
-
-
-  - 设定ADC时钟频率，就相当于设定了采样率。
-
-
-  - 一旦选定了Clock频率，就能确定2个Clock的信号采样保持时间。这就要求用户外部电路的阻抗R，与ADC内部电容C（2 pF；详见Datasheet）组成的RC充电电路上，充电时间不能超过信号采样保持时间。
-
-- **关于内部温度传感器**
-
+  - External reference voltage can only be input through MSIO0 to MSIO3.
+  - The internal reference voltage is obtained by a constant current source passing through resistors of different values, resulting in different reference voltage settings.
+  - Since only the 0P8, 1P2, and 1P6 settings are calibrated at the factory, it is recommended to use only these three settings.
+  - Due to process differences between different chips and variations in internal resistance R0 of the same chip at different temperatures, the specific value of the internal reference voltage may vary, which is why factory calibration is necessary.
+- **About ADC Clock**
+  - Every 15 ADC Clocks generate 1 Code value, with the first 2 Clocks being the signal sampling hold time and the remaining 13 Clocks performing 13-bit quantization encoding. Therefore, the relationship between the sampling rate and the ADC clock is: 1sps = ADC clock/15.
+  - Setting the ADC clock frequency is equivalent to setting the sampling rate.
+  - Once the clock frequency is selected, the signal sampling hold time of 2 Clocks is determined. This requires that the charging time of the RC charging circuit, composed of the external circuit impedance R and the ADC internal capacitor C (2 pF; see Datasheet), does not exceed the signal sampling hold time.
+- **About Internal Temperature Sensor**
   ![](../../../_images/adc/1-1-3.png)
-
-  - 温度传感器把温度信号转换为模拟电压信号，信号一般是mV级。
-
-
-  - 温度传感器的可测量范围是–40℃～80℃。
-
-
-  - GR55xx内部利用测温功能对RF参数进行调整及DC供电策略的实施。
-
-- **关于Vbat Sensor**
-
+  - The temperature sensor converts the temperature signal into an analog voltage signal, which is generally in the mV range.
+  - The measurable range of the temperature sensor is –40℃ to 80℃.
+  - The GR55xx internally uses the temperature measurement function to adjust RF parameters and implement DC power supply strategies.
+- **About Vbat Sensor**
   ![](../../../_images/adc/1-1-4.png)
+  - The Vbat Sensor is essentially a voltage divider circuit that divides the chip's supply voltage Vbat.
+  - At room temperature, the typical voltage division ratio is 3.854, so Vsensor = VBAT/3.854.
+  - Note that this voltage division ratio is a typical value, and there may be individual differences between different chips; factors affecting the voltage division ratio include device process and ambient temperature.
+- **About the Conversion Formula Between ADC Code and Actual Voltage**
+  - code — V conversion formula: ***V = (code + offset) / slope***
+  The slope and offset are calibration parameters, and different reference voltages correspond to different parameters.
+- code — Temperature conversion formula: ***Temp = ((code – temp_offset) / adc_slope) / (0.00175) + temp_vref***
+    The code here is the code measured for the TempSensor based on the internal 0P8 reference voltage; temp_vref is the ambient temperature during calibration; temp_offset is the code value output by the ADC at the calibration temperature; slope is the slope corresponding to the 0P8 reference voltage.
+  - code — V conversion formula: ***VBat = (code + offset) / slope x 3.854***
+  The offset and slope correspond to the internal 0P8 reference voltage; 3.854 is an empirical value, and this ratio coefficient can be recalibrated if higher accuracy is required. Additionally, it can be seen that the measurement error for VBAT is magnified by 3.854 times compared to the error for the 0P8 reference voltage.
 
-  - Vbat Sensor其实就是对芯片供电电压Vbat进行分压的分压电路。
+#### 1.2 Single-Ended Mode Measurement
+Steps for single-ended mode measurement using ADC:
+1) Configure ADC parameters.
+- pin_cfg should specify the type and number of the input signal pin.
+- The channel_n in the init structure should specify the channel number of the input signal.
+- Configure input_mode for single-ended operation.
+- Set the appropriate reference voltage type, reference voltage value, and ADC clock frequency.
+- If data transfer using DMA is required, specify the DMA handle and channel through dma_cfg.
+2) Call app_adc_init to complete the initialization. In asynchronous mode, a callback function needs to be specified.
+3) If DMA mode is required, call app_adc_dma_init to complete the initialization.
+4) Invoke the conversion interface to initiate ADC sampling.
+5) For the synchronous interface, the function returns after collecting the number of codes specified by the input parameter; for the asynchronous interface, a callback is triggered after collecting the number of codes specified by the input parameter.
+6) Call the voltage convert interface to convert each code value to the corresponding voltage value. The interface utilizes the slope and offset parameters calibrated during production, and then calculates based on the single-ended mode formula if the ADC handle is in single-ended mode.
+Refer to the SDK's ADC example project in the void adc_single(void) function for key code.
 
-
-  - 在常温下，分压比例典型值是3.854，所以Vsensor = VBAT/3.854。
-
-
-  - 注意这里的分压比例是典型值，不同芯片会有个体差异；影响分压比例的因素：器件工艺、环境温度。
-
-- **关于ADC Code值与实际电压值的转换公式**
-
-  - code — V转换公式：***V = (code + offset) / slope***
-  其中的slope和offset就是校准的参数，不同参考电压对应的参数不一样。
-  
-- code — 温度转换公式：***Temp = ((code – temp_offset) / adc_slope) / (0.00175) + temp_vref**
-    其中的code是基于内部0P8档参考电压测量TempSensor的code；temp_vref是校准时的环境温度； temp_offset是校准时基于校准时的环境温度下ADC输出的code值；slope是0P8档对应的slope。
-  - code — V转换公式：***VBat = (code + offset) / slope x 3.854***
-  其中的offset和slope分别为内部0P8档对应的offset和slope；3.854为经验值，有精度要求可以重新校准这个比例系数。另外，由此可以看出，与0P8档测量误差比，测VBAT的误差也被放大了3.854倍。
-
-#### 1.2 如何进行单端模式测量
-
-利用ADC进行单端模式测量的步骤：
-
-1）配置ADC参数。 
-
-- pin_cfg需要指定输入信号的引脚类型、引脚号。
-
-
-- init结构体的channel_n需要指定输入信号的通道号。
-
-
-- input_mode配置为单端模式。
-
-
-- 配置合适的参考电压类型、参考电压大小和ADC时钟频率。
-
-
-- 如果需要用DMA搬运数据，需要通过dma_cfg指定DMA的句柄和通道。
-
-
-2）调用app_adc_init完成初始化，异步模式需要指定回调函数。
-
-3）如果需要用DMA模式，调用app_adc_dma_init完成初始化。
-
-4）调用conversion接口启动ADC采集。
-
-5）如果是同步接口，采集完接口入参指定的code个数就返回；如果是异步接口，采集完接口入参指定的code个数就会产生回调。
-
-6）调用voltage convert接口把每一个code值转换为对应电压值。接口里面会利用产线校准的slope和offset参数，然后根据ADC句柄是单端模式，基于单端模式的公式进行计算。
-
-关键代码可参考SDK中ADC示例工程的void adc_single(void)函数。
-
-#### 1.3 如何进行差分模式测量
-
-利用ADC进行差分模式测量的步骤：
-
-1）首先配置ADC参数。
-
-- pin_cfg需要指定差分信号P和N的引脚类型、引脚号。
-
-
-- init结构体的channel_p和channel_n需要指定输入差分信号P和N对应的通道号。
-
-
-- input_mode配置为差分模式。
-
-
-- 配置合适的参考电压类型、参考电压大小和ADC时钟频率。
-
-
-- 如果需要用DMA来搬运数据，需要通过dma_cfg指定DMA的句柄和通道。
-
-
-2）调用app_adc_init完成初始化，异步模式需要指定回调函数。
-
-3）如果需要用DMA模式，调用app_adc_dma_init完成初始化。
-
-4）调用conversion接口启动ADC采集。
-
-5）如果是同步接口，采集完接口入参指定的code个数就返回；如果是异步接口，采集完接口入参指定的code个数就会产生回调。
-
-6）调用voltage covert接口把每一个code值转换为对应电压值。接口里面会利用产线校准的slope和offset参数，然后根据ADC句柄是差分模式，基于差分模式的公式进行计算。
-
-7）注意差分测量的结果是P-N的结果。
-
-关键代码中，除了配置部分，其他与单端测量模式类似。配置部分可参考以下代码：
-
+#### 1.3 Differential Mode Measurement
+Steps for differential mode measurement using ADC:
+1) First, configure the ADC parameters.
+- `pin_cfg` needs to specify the pin type and pin number for the differential signals P and N.
+- The `init` structure's `channel_p` and `channel_n` need to specify the channel numbers corresponding to the input differential signals P and N.
+- Set `input_mode` to differential mode.
+- Configure the appropriate reference voltage type, reference voltage value, and ADC clock frequency.
+- If DMA is needed to transfer data, specify the DMA handle and channel through `dma_cfg`.
+2) Call `app_adc_init` to complete the initialization. For asynchronous mode, a callback function needs to be specified.
+3) If DMA mode is required, call `app_adc_dma_init` to complete the initialization.
+4) Call the conversion function to start ADC sampling.
+5) For the synchronous interface, the function returns after collecting the number of codes specified by the input parameter; for the asynchronous interface, a callback is triggered after collecting the number of codes specified by the input parameter.
+6) Call the voltage conversion interface to convert each code value to the corresponding voltage value. The interface will use the slope and offset parameters calibrated during production, and then calculate based on the differential mode formula if the ADC handle is in differential mode.
+7) Note that the result of the differential measurement is the difference between P and N.
+In the key code, apart from the configuration part, other parts are similar to the single-ended measurement mode. The configuration part can refer to the following code:
 ![](../../../_images/adc/1-3-1.png)
 
-
-
-#### 1.4 如何选择外部参考电压进行测量
-
-利用ADC选择外部参考电压进行测量的步骤：
-
-1）配置ADC参数。
-
-- pin_cfg除了指定输入信号，还需指定参考电压输入extern_ref的引脚类型、引脚号。
-
-
-- init结构体的channel_p和channel_n指定输入信号的通道号。
-
-
--  input_mode配置为需要的采样模式。
-
-
-- 注意参考电压源ref_source要选择外部输入的通道号，参考电压大小在初始化参数里无意义，配置合适的采样时钟频率。
-
-
-- 如果需要用DMA来搬运数据，需要通过dma_cfg指定DMA的句柄和通道。
-
-
-2）调用app_adc_init完成初始化，异步模式需要指定回调函数。
-
-3）如果需要用DMA模式，调用app_adc_dma_init完成初始化。
-
-4）调用conversion接口启动ADC采集。
-
-5）如果是同步接口，采集完接口入参指定的code个数返回；如果是异步接口，采集完接口入参指定的code个数会产生回调。
-
-6）调用voltage covert接口把每一个code值转换为对应电压值，注意要调用app_adc_voltage_extern接口，入参要指定参考电压的大小。
-
-关键代码中，除了配置部分，其他与单端测量模式类似。配置部分可参考以下代码：
-
+#### 1.4 How to Select External Reference Voltage for Measurement
+Steps to measure using ADC with an external reference voltage:
+1) Configure ADC parameters.
+- In pin_cfg, specify the input signal, and also the pin type and pin number for the reference voltage input (extern_ref).
+- The init structure's channel_p and channel_n specify the channel numbers for the input signal.
+- Set the input mode to the required sampling mode.
+- Note that the reference voltage source (ref_source) should be set to the external input channel number. The reference voltage value in the initialization parameters is not relevant, so configure the appropriate sampling clock frequency.
+- If using DMA for data transfer, specify the DMA handle and channel through dma_cfg.
+2) Call app_adc_init to complete the initialization. For asynchronous mode, specify a callback function.
+3) If using DMA mode, call app_adc_dma_init to complete the initialization.
+4) Call the conversion function to start ADC sampling.
+5) For the synchronous interface, the function returns after collecting the number of codes specified in the input parameters; for the asynchronous interface, a callback is generated after collecting the number of codes specified in the input parameters.
+6) Call the voltage conversion function to convert each code value to the corresponding voltage value. Note that you need to call the app_adc_voltage_extern function and specify the reference voltage value in the input parameters.
+In the key code, apart from the configuration part, other parts are similar to the single-ended measurement mode. Refer to the following code for the configuration part:
 ![](../../../_images/adc/1-4-1.png)
 
-#### 1.5 如何测量芯片供电电压
+#### 1.5 How to Measure Chip Supply Voltage
+Steps for measuring chip supply voltage using ADC:
+1) Configure ADC parameters.
+- pin_cfg is not relevant at this stage.
+- The channel_n in the init structure needs to specify the VBAT channel as ADC_INPUT_SRC_BAT.
+- Set input_mode to single-ended mode.
+- Set the reference voltage to internal 0.8V.
+- If DMA is required for data transfer, specify the DMA handle and channel through dma_cfg.
+2) Call app_adc_init to complete initialization. In asynchronous mode, a callback function needs to be specified.
+3) If DMA mode is required, call app_adc_dma_init to complete initialization.
+4) Call the conversion interface to start ADC sampling.
+5) For synchronous interfaces, the specified number of codes will be returned after sampling; for asynchronous interfaces, a callback will be triggered after sampling the specified number of codes.
+6) Call the app_adc_vbat_conv interface to convert each code value to the corresponding chip supply voltage value. The interface will use the voltage division relationship between the sampled voltage and the chip supply voltage to convert it to the chip's supply voltage.
+Key code can be found in the SDK's ADC example project in the void battery_measure (void) function.
 
-利用ADC进行芯片供电电压测量的步骤：
+#### 1.6 How to Measure Internal Chip Temperature
+Steps for measuring the internal temperature of the chip using ADC:
+1) Configure ADC parameters.
+- pin_cfg is not relevant at this stage.
+- The channel_n in the init structure needs to specify the channel ADC_INPUT_SRC_TMP for the temperature signal.
+- Set input_mode to single-ended mode.
+- Set the reference voltage to the internal 0.8V range.
+- If DMA is needed to transfer data, specify the DMA handle and channel through dma_cfg.
+2) Call app_adc_init to complete the initialization. In asynchronous mode, a callback function needs to be specified.
+3) If DMA mode is needed, call app_adc_dma_init to complete the initialization.
+4) Call the conversion interface to start ADC sampling.
+5) If using a synchronous interface, the interface will return after collecting the number of codes specified in the input parameter; if using an asynchronous interface, a callback will be triggered after collecting the specified number of codes.
+6) Call the app_adc_temperature_conv interface to convert each code value to the corresponding temperature value. The interface will use the relationship between the sampled voltage and the actual temperature to convert it to a temperature value.
+Key code can be referenced in the SDK's ADC example project in the void temperater_measure (void) function.
 
-1）配置ADC参数。
-
-- pin_cfg此时无意义。
-
-- init结构体的channel_n需要指定VBAT的通道ADC_INPUT_SRC_BAT。
-
-- input_mode配置为单端模式。
-
-- 参考电压需要选择内部0P8档。
-
-- 如果需要用DMA来搬运数据，需要通过dma_cfg指定DMA的句柄和通道。
-
-2）调用app_adc_init完成初始化，异步模式需要指定回调函数。
-
-3）如果需要用DMA模式，调用app_adc_dma_init完成初始化。
-
-4）调用conversion接口启动ADC采集。
-
-5）如果是同步接口，采集完接口入参指定的code个数返回；如果是异步接口，采集完接口入参指定的code个数会产生回调。
-
-6）调用app_adc_vbat_conv接口把每一个code值转换为对应的芯片供电电压值。接口里面会利用采样电压与芯片供电电压的分压关系，转换为芯片的供电电压。
-
-关键代码可参考SDK中ADC示例工程的void battery_measure (void)函数。
-
-#### 1.6 如何测量芯片内部温度
-
-利用ADC进行芯片内部温度测量的步骤：
-
-1）配置ADC参数。
-
-- pin_cfg此时无意义。
-
-- init结构体的channel_n需要指定温度信号的通道ADC_INPUT_SRC_TMP。
-
-- input_mode配置为单端模式。
-
-- 参考电压需要选择内部0P8档。
-
-- 如果需要用DMA来搬运数据，需要通过dma_cfg指定DMA的句柄和通道。
-
-2）调用app_adc_init完成初始化，异步模式需要指定回调函数。
-
-3）如果需要用DMA模式，调用app_adc_dma_init完成初始化。
-
-4）调用conversion接口启动ADC采集。
-
-5）如果是同步接口，采集完接口入参指定的code个数返回；如果是异步接口，采集完接口入参指定的code个数会产生回调。
-
-6）调用app_adc_temperature_conv接口把每一个code值转换为对应的温度值。接口里面会利用采样电压与实际温度的关系，转换为温度值。
-
-关键代码可参考SDK中ADC示例工程的void temperater_measure (void)函数。
-
-#### 1.7 如何进行多通道测量
-
-GR5xx的ADC只有一个实体，而且对应的FIFO也只有一个，所以无法同时对多个通道进行采集，但可以轮流对多个通道进行采集。调用SDK的多通道采集接口，不需要在采集完一个通道后进行重新初始化再去采集另一个通道，通道的切换在中断里面由SDK进行管理。
-
-> 注意：目前SDK封装的多通道采集接口，使用的前提是这些通道都是基于相同的采集模式、相同的参考电压和相同的采样时钟频率。
-
-利用ADC进行多通道测量的步骤：
-
-1）先按照第一个通道的参数，对ADC进行参数配置和初始化。
-
-2）把每个通道当做节点，进行节点参数的初始化。节点参数主要包括采集数据Buffer地址、采集数据长度和通道号。
-
-3）把每个通道的节点串联起来，形成链表。
-
-4）调用app_adc_multi_channel_conversion_async()接口启动多通道采集，入参是链表的首地址和节点数。
-
-5）当所有通道指定的采集数据都采集完毕，会调用初始化设置的回调函数。
-
-6）调用voltage接口对每个通道Buffer里面的code值转换为电压值。
-
-关键的参考代码如下：
-
+#### 1.7 How to Perform Multi-Channel Measurement
+The GR5xx ADC has only one physical entity and a single corresponding FIFO, so it cannot simultaneously acquire data from multiple channels. However, it can acquire data from multiple channels sequentially. Using the SDK's multi-channel acquisition interface, there is no need to reinitialize the ADC after acquiring data from one channel before moving to another. Channel switching is managed by the SDK within interrupts.
+> Note: The current multi-channel acquisition interface provided by the SDK requires that all channels use the same acquisition mode, reference voltage, and sampling clock frequency.
+Steps to perform multi-channel measurement using the ADC:
+1) Configure and initialize the ADC according to the first channel's parameters.
+2) Initialize the node parameters for each channel. The node parameters mainly include the buffer address for the acquired data, the length of the acquired data, and the channel number.
+3) Link each channel's node to form a linked list.
+4) Call the `app_adc_multi_channel_conversion_async()` interface to start multi-channel acquisition. The input parameters are the head address of the linked list and the number of nodes.
+5) When the data acquisition for all specified channels is complete, the callback function set during initialization will be called.
+6) Use the voltage interface to convert the code values in each channel's buffer to voltage values.
+Key reference code is as follows:
 ![](../../../_images/adc/1-7-1.png)
-
-使用多通道采集接口的好处：
-
-1）无需通过反复的反初始化和初始化ADC来进行通道的切换。
-
-2）通道切换交给SDK底层管理，速度更快。
-
-3）活用多通道采集接口、把所有节点都指向同一个通道，可以实现调用一次接口采集大量数据，避免了异步采集接口一次性采集数据长度的限制。
+Benefits of using the multi-channel acquisition interface:
+1) No need to repeatedly deinitialize and initialize the ADC to switch channels.
+2) Channel switching is managed by the SDK Low Layer, resulting in faster speed.
+3) By utilizing the multi-channel acquisition interface and pointing all nodes to the same channel, a large amount of data can be acquired with a single interface call, avoiding the limitation of the asynchronous acquisition interface's one-time data acquisition length.
 
 
 
-### 2. ADC应用笔记
+### 2. Typical ADC Applications
 
-本章结合实际项目的场景，对ADC的指标和应用进行讨论。
+This chapter discusses the metrics and applications of ADC through real project scenarios.
 
-#### 2.1 如何评估测量范围是否满足要求
 
-在实际的项目评估中，我们经常会遇到客户提出一个被测量的信号的最大/最小值，然后需要评估ADC的测量范围是否满足要求。这里需要分单端模式和差分模式去考量。
 
-1）单端模式的测量范围
+#### 2.1 How to Evaluate Whether the Measurement Range Meets the Requirements
 
-影响ADC单端模式的测量范围，首先就是参考电压。ADC内部的结构决定了单端模式最大测量电压是参考电压VREF的2倍。比如选择的参考电压是0P8，那么最大的测量范围大概可以达到1.6 V。由于不同芯片的工艺差异，标称0P8对应的实际参考电压会略有差异，所以具体的最大测量范围也略有差异。以下是各档参考电压的典型值，以及对应的最大测量范围2VREF。
+In actual project evaluations, we often encounter customers who provide the maximum or minimum value of a measured signal and then need to assess whether the ADC's measurement range meets the requirements. Here, it is necessary to consider both single-ended mode and differential mode.
+1) Measurement Range in Single-Ended Mode
+The reference voltage primarily affects the ADC's measurement range in single-ended mode. The internal structure of the ADC determines that the maximum measurement voltage in single-ended mode is twice the reference voltage (VREF). For example, if the chosen reference voltage is 0P8, the maximum measurement range can reach approximately 1.6 V. Due to variations in chip manufacturing processes, the actual reference voltage corresponding to the nominal 0P8 may vary slightly, so the specific maximum measurement range may also vary. Below are the typical values for each reference voltage level and the corresponding maximum measurement range of 2VREF.
 
-| 典型值 | 参考电压 | 最大范围2VREF |
-| ------ | -------- | ------------- |
-| 0.85 V | 0P8      | 1.7 V         |
-| 1.28 V | 1P2      | 2.56 V        |
-| 1.6 V  | 1P6      | 3.2 V         |
+| Typical Value | Reference Voltage | Max Range 2VREF |
+| ------------- | ----------------- | --------------- |
+| 0.85 V        | 0P8               | 1.7 V           |
+| 1.28 V        | 1P2               | 2.56 V          |
+| 1.6 V         | 1P6               | 3.2 V           |
+In single-ended mode, another factor that limits the measurement range is the ADC's upper and lower saturation voltages. Within the lower saturation voltage range, the ADC code value does not start to change with the increase in signal; within the upper saturation voltage range, the ADC code value cannot continue to change with the increase in signal. The typical values for the upper and lower saturation voltages for each reference voltage level are as follows:
 
-单端模式下，还有一个因素会制约测量范围的上下限值，即ADC的上下限饱和电压。处于下限饱和电压范围内，ADC的code值还没开始随着信号的增大而变化；处于上限饱和电压范围内，ADC的code值没法继续随着信号的增大而变化。内部各档参考电压的上下限饱和电压典型值如下：
+| Reference Voltage | Lower Saturation Voltage | Upper Saturation Voltage |
+| ----------------- | ------------------------ | ------------------------ |
+| 0P8               | 0.033 V                  | 1.567 V                  |
+| 1P2               | 0.052 V                  | 2.348 V                  |
+| 1P6               | 0.072 V                  | 3.128 V                  |
+**Therefore, the upper and lower saturation voltages for each reference voltage level are the true measurement range of the ADC in single-ended mode.**
+When evaluating a customer's project, it is first necessary to ensure that the settings fall within the upper and lower saturation voltage range of the reference voltage. Additionally, to achieve better linearity in measurements, it is best to choose an appropriate reference voltage so that the measured signal falls near VREF.
+2) Measurement Range in Differential Mode
+The reference voltage primarily affects the measurement range in differential mode. The internal structure of the ADC determines that the differential result needs to fall within the range of ±2VREF, i.e., (-2VREF) < (P-N) < (+2VREF). Similarly, due to variations in chip manufacturing processes, the actual value corresponding to the reference voltage may vary, and the typical values for each reference voltage level are the same as in single-ended mode.
+Secondly, differential mode has a common-mode limitation, i.e., the common-mode voltage limit. Assuming the common-mode voltage limit is Vmode, each end of the differential input (P or N) must be above the common-mode voltage Vmode and below (2VREF - Vmode); otherwise, the ADC code value will not change with the input signal. The common-mode voltage limits corresponding to different reference voltages are also different. Below are the typical values for the common-mode voltage limit Vmode for each reference voltage level.
 
-| 参考电压 | 下限饱和电压 | 上限饱和电压 |
-| -------- | ------------ | ------------ |
-| 0P8      | 0.033 V      | 1.567 V      |
-| 1P2      | 0.052 V      | 2.348 V      |
-| 1P6      | 0.072 V      | 3.128 V      |
-
-**所以，各档参考电压上下限饱和电压，才是ADC单端模式的真正测量范围。**
-
-评估客户项目的时候，首先要满足设定在参考电压的上下限饱和范围内。同时为了让测量得到更好的线性度，最好选择合适的参考电压，让被测量信号落在VREF附近。
-
-2）差分模式的测量范围
-
-首先影响差分模式测量范围的也是参考电压。ADC内部的结构决定了差分的结果需要落在+-2VREF范围内，即(-2VREF) < (P-N) <  (+2VREF)。同样的，由于不同芯片的工艺差异，参考电压对应的实际值也会有所差异，各档参考电压的典型值跟单端模式相同。
-
-其次，差分模式还有一个共模限制，即共模电压的限制值。假设共模限制电压是Vmode，差分的每一端输入（P或N的输入），都要达到共模电压Vmode以上、（2VREF-Vmode）以下，否则code值不会随着输入信号的变化而变化。不同参考电压对应的共模电压限制也不一样，下面是各档参考电压的共模限制典型值Vmode。
-
-| 参考电压 | 共模限制Vmode典型值 |
-| -------- | ------------------- |
-| 0P8      | 0.4 V               |
-| 1P2      | 0.55 V              |
-| 1P6      | 0.7 V               |
-
-所以，对于差分模式，评估ADC是否能够覆盖被测量信号范围，需要同时满足：
-
+| Reference Voltage | Common Mode Limit Vmode Typical Value |
+| ----------------- | ------------------------------------- |
+| 0P8               | 0.4 V                                 |
+| 1P2               | 0.55 V                                |
+| 1P6               | 0.7 V                                 |
+Therefore, for differential mode, to evaluate whether the ADC can cover the range of the measured signal, the following conditions must be met:
 **1)  (-2VREF) < (P-N) < (+2VREF)**
+**2)  Vmode < P or N input < (2VREF - Vmode)**
 
-**2)  Vmode < P或N的输入 < (2VREF-Vmode)**
+#### 2.2 How to Evaluate Whether the Resolution Meets the Requirements
+Many developers prefer to use ENOB to evaluate the resolution of an ADC, which is reasonable if the measured signal is an AC signal. ENOB, or Effective Number of Bits, is derived from the ADC's Signal-to-Noise and Distortion Ratio (SNDR) and is related to the noise of the signal. With the ENOB known, we can determine the ADC's actual resolution based on the precision of the effective bits.
+*Example:*
+*ENOB = 10 bits, if the maximum measurement range of the signal is Vfull, then the actual resolution is Vfull/(2^10).*
+However, for DC measurement signals, it is more appropriate to use INL to evaluate the ADC's resolution, as DC signals are primarily affected by quantization error. INL, or Integral Non-Linearity, is the main indicator for measuring quantization error. Based on INL, we can determine the maximum linear error of the signal, which is the maximum measurement error. Since INL is often measured in LSB, we need to convert 1 LSB to its corresponding voltage to determine the resolution. According to the definition of LSB, assuming the maximum measurement range of the signal is Vfull and the physical quantization bits are 13 bits, then 1 LSB = Vfull/(2^13) V. Finally, based on INL and LSB, we can determine the actual resolution of the ADC.
+*Example:*
+*INL = 4 LSB, if the maximum measurement range of the signal is Vfull and the physical quantization bits are 13 bits, then the actual resolution of the ADC is 4 x Vfull / (2^13), unit: V.*
+It should be noted that the maximum measurement range Vfull differs between differential mode and single-ended mode, as discussed in section 2.1 above. The INL indicator marked in our Datasheet is measured in differential mode, so the maximum measurement range in differential mode should be used for calculation.
 
- 
-
-#### 2.2 如何评估分辨率是否满足要求
-
-很多开发者喜欢用ENOB来评估ADC的分辨率，如果被测量信号是交流信号，这是合理的。ENOB，即ADC的有效位，根据ADC的信纳比SNDR得到，与信号的噪声有关。知道了ENOB，我们可以根据有效位对应的精度确定ADC的实际分辨率。
-
-*举例：*
-
-*ENOB = 10 bits，信号的最大测量范围是Vfull，那么实际分辨率为Vfull/(2^10)。*
-
-但是对于直流的测量信号，用INL来评估ADC的分辨率会更合适，因为直流信号主要就是量化误差。所谓INL，即积分线性偏离度，是衡量量化误差的最主要指标。根据INL，我们可以求出信号的最大线性误差，也就是最大的测量误差。但是INL的单位往往是LSB，需要求出1 LSB对应多少电压，结合起来才得到我们需要的分辨率。根据LSB的定义，假设信号的最大测量范围是Vfull，量化的物理位是13bit，那么1 LSB = Vfull/(2^13) V。最后根据INL和LSB可以求出ADC的实际分辨率。
-
-*举例：*
-
-*INL = 4 LSB，信号的最大测量范围是Vfull，量化的物理位是13bit，那么ADC实际分辨率为4 x Vfull / (2^13)，单位：V。*
-
-需要注意的是，最大测量范围Vfull在差分模式和单端模式下，是有差异的，具体如上文2.1节的讨论。而我们Datasheet标注的INL指标，是在差分模式下测量出来的，所以需要用差分模式下的最大测量范围来计算。
-
-#### 2.3 如何提高测量的精度
-
-为了提高ADC的实际测量精度，以下方法可供参考，分别是过采样后均值滤波法、过采样后抖动抑制法和分段插值拟合法。其中过采样后均值滤波，主要是通过消减噪声来提高精度；过采样后抖动抑制法主要是通过剔除异常波动的数据点来提高精度，这两种方法可以结合使用。分段插值拟合法，主要是分区间进行slope和offset的重新校准，以获得更好的线性度来提高精度。用户可以根据项目的具体情况采取对应的措施以提高测量精度。
-
-1）过采样后均值滤波法
-
-提高采样率以在同样的时间内获得更多的点数。比如之前是1M的采样时钟，如果把采样时钟提高到16M，那么同样的时间内，采集到的点数是之前的16倍。然后对采集到的这些code值，每16个点进行平均取值。由此得到的code值，由于平均滤波后消减了一些噪声，所以可以获得更好的测量精度，具体体现在ENOB有了提升。
-
-不同参考电压下，过采样的点数不一样，对ENOB的提升空间也不一样。以下是我们内部实验测试的结果（基于GR533x测试得到）：
-
+#### 2.3 How to Improve Measurement Accuracy
+To improve the actual measurement accuracy of the ADC, the following methods can be referenced: oversampling followed by mean filtering, oversampling followed by jitter suppression, and piecewise interpolation fitting. Among these, oversampling followed by mean filtering mainly improves accuracy by reducing noise; oversampling followed by jitter suppression mainly improves accuracy by eliminating outlier data points. These two methods can be used in combination. Piecewise interpolation fitting mainly involves recalibrating the slope and offset in segments to achieve better linearity and thus improve accuracy. Users can take corresponding measures based on the specific conditions of their projects to improve measurement accuracy.
+1) **Oversampling Followed by Mean Filtering**
+Increase the sampling rate to obtain more data points within the same time frame. For example, if the previous sampling clock was 1M, increasing the sampling clock to 16M will result in 16 times more data points within the same time frame. Then, average every 16 code values collected. The resulting code values, having reduced some noise through averaging, can achieve better measurement accuracy, specifically reflected in an improvement in Effective Number of Bits (ENOB).
+The number of oversampling points varies under different reference voltages, and the potential for ENOB improvement also varies. Below are the results from our internal experiments (based on GR533x testing):
 ![](../../../_images/adc/2-3-1.png)
-
-值得注意的是，由于过采样需要采集更多的点数，虽然采集时间是一样的，但由于配置了更高的采样时钟，所以功耗会略有升高。但这是在MCU 工作模式下的功耗，不影响睡眠模式的电流。
-
-2）过采样后dynamic programming抖动抑制法
-
-如果连续采集的点数比较多（128 codes或以上），由于线路信号干扰等原因，可能有个别采集出来的code值会出现比较大的跳变。对于这些跳变点，用均值滤波法无法取得较好的效果。这里介绍的dynamic programming抖动抑制就是针对这种场景的一种比较好的滤波方法。
-
-采用动态规划（dynamic programming，以下简称dp算法）算法来抑制抖动，首先需要定义抖动因子，比如我们设为6，即满足：
-
+It is worth noting that although oversampling requires collecting more data points, and the collection time remains the same, the higher sampling clock configuration will slightly increase power consumption. However, this is the power consumption in MCU working mode and does not affect the current in sleep mode.
+2) **Oversampling Followed by Dynamic Programming Jitter Suppression**
+If a large number of data points are collected continuously (128 codes or more), some code values may exhibit significant jumps due to signal interference. For these jump points, mean filtering cannot achieve good results. The dynamic programming (DP) jitter suppression method introduced here is a better filtering method for such scenarios.
+To suppress jitter using the dynamic programming (DP) algorithm, first define a jitter factor, for example, set it to 6, which satisfies:
 ![](../../../_images/adc/clip_image002.gif)
-
-我们认为当前点![](../../../_images/adc/clip_image003.gif)为抖动点。dp算法首先需要寻找起始条件。根据样本观察，通常最多不会有超过三个数同时发生抖动。可首先遍历数据样本，寻找三个不为抖动的数，作为起始点，后续根据dp算法，每次与前两位数据进行对比，判断当前数是否不为抖动点。定义合法函数![](../../../_images/adc/clip_image004.gif)，如果满足
-
+We consider the current point ![](../../../_images/adc/clip_image003.gif) as a jitter point. The DP algorithm first needs to find the initial conditions. Based on sample observations, usually, no more than three numbers will jitter simultaneously. First, traverse the data sample to find three non-jitter numbers as the starting point. Subsequently, according to the DP algorithm, compare each number with the previous two to determine if the current number is not a jitter point. Define a valid function ![](../../../_images/adc/clip_image004.gif), if it satisfies:
 ![](../../../_images/adc/clip_image005.gif)
-
-则![](../../../_images/adc/clip_image006.gif)为True，否则为False。则dp算法可写为
-
+then ![](../../../_images/adc/clip_image006.gif) is True, otherwise False. The DP algorithm can be written as:
 ![](../../../_images/adc/clip_image007.gif)
-
-其中 i 为![](../../../_images/adc/clip_image008.gif)中第一位满足![](../../../_images/adc/clip_image009.gif)的指针。考虑到采样率较低或者数据变化较大时，即数据第一次遍历指针时，找不到连续三个不为抖动的情况或仅有一组不为抖动的数据时，可简认为当前采样率不足，退化为普通均值滤波，即：
-
+where i is the first pointer in ![](../../../_images/adc/clip_image008.gif) that satisfies ![](../../../_images/adc/clip_image009.gif). Considering low sampling rates or significant data changes, if no three consecutive non-jitter points are found during the first data traversal, or only one set of non-jitter data is found, it can be simplified as insufficient sampling rate, degrading to ordinary mean filtering:
 ![](../../../_images/adc/clip_image010.gif)
-
-否则，根据dp算法进行滤波处理，即：
-
+Otherwise, filter according to the DP algorithm:
 ![](../../../_images/adc/clip_image011.gif)
-
-该算法时间复杂度为O(n)，空间复杂度为O(n)，考虑到GR5xx芯片资源紧张，因此对算法进行优化。除了调试阶段需要打印dp原始数据外，实际使用时仅需要其均值，因此不需要保存dp数据。即判断![](../../../_images/adc/clip_image012.gif)时，只需要保存前两位有效值或指针，同时记录所有dp数累计和与总数，优化后空间复杂度可降为O(1)。
-
-拟合代码如下，首先进行dp头寻找，同时记录指针。
-
+The time complexity of this algorithm is O(n), and the space complexity is O(n). Considering the limited resources of the GR5xx chip, the algorithm is optimized. Except for the debugging stage where DP raw data needs to be printed, only the mean value is needed in actual use, so DP data does not need to be saved. When determining ![](../../../_images/adc/clip_image012.gif), only the previous two valid values or pointers need to be saved, while recording the cumulative sum and total number of all DP numbers. After optimization, the space complexity can be reduced to O(1).
+The fitting code is as follows, first find the DP head and record the pointer.
 ![](../../../_images/adc/2-3-2.png)
-
-判断当前指针是否满足要求，如果未找到指针，或指针直接指向最后的节点，则认为当前采样率不足，直接退化为均值滤波。
-
+Determine whether the current pointer meets the requirements. If no pointer is found, or the pointer directly points to the last node, it is considered that the current sampling rate is insufficient, and it degrades to mean filtering.
 ![](../../../_images/adc/2-3-3.png)
-
-如果满足要求，则首先记录当前三个数据的和以及总数，再进行后续遍历。
-
+If the requirements are met, first record the sum of the current three data and the total number, then proceed with subsequent traversal.
 ![](../../../_images/adc/2-3-4.png)
-
-最终吐出code_aver作为dp算法输出。
-
-3）分段插值拟合法
-
-BLE产线的校准方法，是在测量范围的20%取一个点，80%取另一个点，然后把这两点连线，这条线的slope和offset为校准用的slope和offset。如果用户对某一段信号的测量精度要求非常高，直接用产线校准的slope和offset可能不满足要求。这时用户可以针对某一段信号范围基于分段插值拟合法进行重新校准。
-
-举个例子，某用户对小于80 mV的测量精度要求达到1.5 mV。这时，用户可以将小于80 mV信号分为8段，每段都进行校准。然后保存每段的slope和offset以及该段的code范围到芯片内。ADC采集后，先根据采到的code值判断信号范围，然后从对应的范围取相应的slope和offset进行计算。这样就可以取得更好的精度。
-
-以下是基于GR533x的SK板，针对小于80 mV和大于80 mV，重新拟合后的测量精度与产线校准的测量精度的对比：
-
+Finally, output code_aver as the DP algorithm output.
+3) **Piecewise Interpolation Fitting**
+The calibration method for the BLE production line is to take one point at 20% of the measurement range and another at 80%, then connect these two points. The slope and offset of this line are used for calibration. If a user requires very high measurement accuracy for a certain signal segment, the slope and offset calibrated by the production line may not meet the requirements. In this case, the user can recalibrate based on the piecewise interpolation fitting method for a specific signal range.
+For example, if a user requires a measurement accuracy of 1.5 mV for signals less than 80 mV, the user can divide the signal below 80 mV into 8 segments, calibrate each segment, and save the slope and offset of each segment and the code range of that segment into the chip. After ADC collection, determine the signal range based on the collected code values, then use the corresponding slope and offset from the corresponding range for calculation. This way, better accuracy can be achieved.
+Below is a comparison of the measurement accuracy after re-fitting for signals less than 80 mV and greater than 80 mV based on the GR533x SK board, compared to the measurement accuracy calibrated by the production line:
 ![](../../../_images/adc/2-3-5.png)
 
- 
-
-#### 2.4 选择特殊的外部参考电压如何进行校准
-
-BLE产线校准主要是基于内部参考电压进行的。虽然也提供了1 V的外部参考电压校准参数，但这些参数是基于产线的环境产生的1 V基准电压，与用户实际使用的参考电压可能不一样。所以，如果用户选择了自己特殊的外部参考电压，为了获得更高的测量精度，建议重新进行校准。具体的校准方法介绍如下：
-
-1）参考源选择外部参考电压，配置单端模式来初始化ADC。
-
-2）把干净的外部参考源输入到参考源输入脚（注意，只能选MSIO0～MSIO3），同时把参考电压值记为z。
-
-3）把另外一路干净的输入源接到ADC的N端输入，调整输入电压大致在2Vref的20%附近，同时记录输入电压大小为y0。
-
-4）启动ADC采集1024个点，然后对这些点取平均，平均值记录为x0。
-
-5）改变输入电压在2Vref的80%附近，大小记为y1。
-
-6）利用上面的方法，得到1024个点的均值，记为x1。
-
-7）基于公式![](../../../_images/adc/clip_image013.gif)将上面的(x0,y0) 和(x1,y1)代入，可以求出slope和offset。
-
-这里得到的slope和offset，就是用户选择的外部参考电压对应的slope和offset，保存到芯片内。
-
-后面基于这档已校准的外部参考电压进行测量时，根据得到的code值，可以利用以下公式来转换为实际的电压：
-
+#### 2.4 Calibration Method for Selecting Special External Reference Voltage
+The BLE production line calibration is mainly based on the internal reference voltage. Although 1 V external reference voltage calibration parameters are also provided, these parameters are based on the 1 V reference voltage generated in the production line environment, which may differ from the reference voltage actually used by the user. Therefore, if the user chooses a special external reference voltage, it is recommended to recalibrate to achieve higher measurement accuracy. The specific calibration method is as follows:
+1) Select the external reference voltage as the reference source and configure the single-ended mode to initialize the ADC.
+2) Input a clean external reference voltage to the reference source input pin (note that only MSIO0 to MSIO3 can be selected), and record the reference voltage value as z.
+3) Connect another clean input source to the N-end input of the ADC, adjust the input voltage to be approximately 20% of 2Vref, and record the input voltage value as y0.
+4) Start the ADC to collect 1024 points, then average these points, and record the average value as x0.
+5) Change the input voltage to be around 80% of 2Vref, and record the value as y1.
+6) Using the above method, obtain the average of 1024 points, and record it as x1.
+7) Based on the formula ![](../../../_images/adc/clip_image013.gif), substitute the above (x0, y0) and (x1, y1) to calculate the slope and offset.
+The slope and offset obtained here correspond to the slope and offset of the external reference voltage selected by the user, and are saved in the chip.
+Later, when measuring based on this calibrated external reference voltage, the actual voltage can be converted from the obtained code value using the following formula:
 ![](../../../_images/adc/clip_image014.gif)
-
-其中的slope和offset就是上面校准出来的slope和offset，z是选择的外部参考电压具体值。
+The slope and offset in the formula are the slope and offset calibrated above, and z is the specific value of the selected external reference voltage.

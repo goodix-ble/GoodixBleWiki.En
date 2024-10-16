@@ -1,52 +1,43 @@
-# SPI应用笔记
+# SPI Application Notes
 
+## 1. Introduction to Basic Functions
+- The number and main parameters of SPI modules for each chip.
 
+| SoC    | SPI Instance | Key Parameters                             |
+| ------ | ------------ | ------------------------------------------ |
+| GR551x | SPIM, SPIS   | SPIM max frequency 32 MHz; FIFO depth 8x4 bytes  |
+| GR5525 | SPIM, SPIS   | SPIM max frequency 48 MHz; FIFO depth 16x4 bytes |
+| GR5526 | SPIM, SPIS   | SPIM max frequency 48 MHz; FIFO depth 16x4 bytes |
+| GR533x | SPIM, SPIS   | SPIM max frequency 32 MHz; FIFO depth 8x4 bytes  |
 
-## 1. 基本功能介绍
-
--   各芯片的SPI模块数量及主要参数：
-
-| SoC    | SPI实例    | 主要参数                             |
-| ------ | ---------- | ------------------------------------ |
-| GR551x | SPIM、SPIS | SPIM最高主频32 MHz；FIFO深度8x4字节  |
-| GR5525 | SPIM、SPIS | SPIM最高主频48 MHz；FIFO深度16x4字节 |
-| GR5526 | SPIM、SPIS | SPIM最高主频48 MHz；FIFO深度16x4字节 |
-| GR533x | SPIM、SPIS | SPIM最高主频32 MHz；FIFO深度8x4字节  |
-
-
-
-## 2. 应用笔记
-
--   使用SPI Master模块建议均采用软件片选模式。
--   当应用场景只需要SPI提供MOSI信号时，也可以考虑使用QSPI模块的SPI模式代替。
--   SPI Master使用注意事项：
-    -   接收数据时，如果数据量较大或SPI工作频率较高，CPU或DMA取数据速度跟不上SPI FIFO读入速度，会发生接收溢出现象，导致数据丢失。优化方法：
-        -   优先采用DMA进行传输，DMA的传输带宽远大于CPU，可以有效降低接收溢出现象。
-        -   当采用DMA接收数据时，如果还有溢出现象，在应用场景下运行时，可以配置4字节传输宽度，进一步提高SPI FIFO的利用率，改善传输带宽。
-        -   在对宽度要求不高的场景下，还可以减少单次数据接收量来降低接收溢出概率。
-        -   如果进行上述优化后依然存在接收溢出现象，请在软件层设计重读逻辑，当数据溢出发生时，丢弃上次读取数据，重新读取一次。
-    -   若使用硬件控制CS片选信号，当发送数据时，如果数据量较大或SPI工作频率较高，CPU或DMA发送速度跟不上SPI FIFO的发送速度，会出现CS信号自动拉起的行为，导致后面的时序数据紊乱。
-        -   优化方法为使用软件方法控制片选信号的拉低和拉高。
-
--   SPI是强时序协议，当SPI通讯存在异常时，可尝试使用逻辑分析器抓取SPI信号，分析问题的可能性。
--   SPI驱动提供了三种模式的访问接口：轮询模式、中断模式、DMA模式。各模式的经验性建议如下，按照建议，可有效降低接收溢出发生的概率，但概率依然存在。
-    -   GR551x和GR533x：
-        -   轮询模式和中断模式使用条件：
-            -   建议单次传输数据量小于4拍。
-            -   建议在SPI工作频率不大于1 MHz的情况下使用。
-            -   使用场景适用于低频率和小数据量。
-        -   DMA模式使用条件：
-            -   单次传输小于4095拍的任意数据量。
-            -   SPI工作频率不大于32 MHz的情况下使用。
-            -   如果发生接收溢出，减少单次数据传输量和应用层增加重读机制。
-    -   GR5525和GR5526：
-        -   轮询模式和中断模式使用条件：
-            -   建议单次传输数据量小于8拍。
-            -   建议在SPI工作频率不大于8 MHz的情况下使用。
-            -   使用场景适用于低频率和小数据量。
-        -   DMA模式使用条件：
-            -   单次传输小于4095拍的任意数据量，但可通过LLP扩展传输数据上限。
-            -   SPI工作频率不大于48 MHz的情况下使用。
-            -   如果发生接收溢出，减少单次数据传输量和应用层增加重读机制。
-
-
+## 2. Application Notes
+- It is recommended to use software-controlled chip select mode for the SPI Master module.
+- When the application scenario only requires the SPI to provide the MOSI signal, consider using the SPI mode of the QSPI module instead.
+- Precautions for using SPI Master:
+    - When receiving data, if the data volume is large or the SPI operating frequency is high, the CPU or DMA may not keep up with the SPI FIFO read speed, causing a receive overflow and data loss. Optimization methods:
+        - It is preferable to use DMA for transmission, as the transmission bandwidth of DMA is much larger than that of the CPU, effectively reducing the occurrence of receive overflows.
+        - When using DMA to receive data, if overflow still occurs, configure a 4-byte transfer width at runtime to further improve the utilization of the SPI FIFO and enhance transmission bandwidth.
+        - In scenarios where width requirements are not high, reduce the amount of data received in a single transfer to lower the probability of receive overflow.
+        - If receive overflow still occurs after the above optimizations, implement a re-read logic at the software layer. When an overflow occurs, discard the previously read data and re-read it.
+    - If using hardware-controlled CS chip select signal, when sending data, if the data volume is large or the SPI operating frequency is high, the CPU or DMA may not keep up with the SPI FIFO send speed, causing the CS signal to rise automatically, leading to subsequent timing data issues.
+        - The optimization method is to use software to control the lowering and raising of the chip select signal.
+- SPI is a strict timing protocol. When there are anomalies in SPI communication, use a logic analyzer to capture SPI signals and analyze potential issues.
+- The SPI driver provides access interfaces in three modes: polling mode, interrupt mode, and DMA mode. The empirical recommendations for each mode are as follows. Following these recommendations can effectively reduce the probability of receive overflow, but the probability still exists.
+    - GR551x and GR533x:
+        - Conditions for using polling mode and interrupt mode:
+            - It is recommended that the data volume for a single transmission be less than 4 bytes.
+            - It is recommended to use it when the SPI operating frequency does not exceed 1 MHz.
+            - Suitable for low-frequency and small data volume scenarios.
+        - DMA mode usage conditions:
+            - Any data amount less than 4095 bytes per single transmission.
+            - Use when the SPI operating frequency is not greater than 32 MHz.
+            - If receive overflow occurs, reduce the amount of data per single transmission and add a re-read mechanism at the Application Layer.
+    -   GR5525 and GR5526:
+        - Polling mode and interrupt mode usage conditions:
+            - It is recommended that the data amount per single transmission be less than 8 bytes.
+            - It is recommended to use when the SPI operating frequency is not greater than 8 MHz.
+            - Suitable for low-frequency and small data amount scenarios.
+        - DMA mode usage conditions:
+            - Any data amount less than 4095 bytes per single transmission, but the data transmission limit can be extended through LLP.
+            - Use when the SPI operating frequency is not greater than 48 MHz.
+            - If receive overflow occurs, reduce the amount of data per single transmission and add a re-read mechanism at the Application Layer.

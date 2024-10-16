@@ -1,60 +1,47 @@
-# 02. SPI-QSPI协议专题(2) - 构建GR55xx (Q)SPI高速传输接口的基础
+# 02. SPI-QSPI Protocol Special Topic (2) - Fundamentals of Building GR55xx (Q)SPI High-Speed Transmission Interface
+> Preface
+- The SPI/QSPI protocol interface serves as a data communication interface for display, storage, and certain sensor devices.
+- This technical guide provides a detailed explanation of the SPI/QSPI protocol for the GR55xx series chips, the design features of the chip modules, the usage of software interfaces, and how to build high-efficiency application interfaces. It helps users quickly understand and utilize the high throughput performance of SPI/QSPI.
+- The series of articles generally applies to GR551x, GR5525, and GR5526. Specific applicability will be noted where relevant.
 
+## 1. Basic Application Background Supplement
 
+### 1.1 System Master and Slave
+- Master: In simple terms, the role that can initiate access to various devices on the system bus. A typical Master in an SoC (System on Chip) is the CPU, which can initiate access operations to any peripheral. Another example of an atypical Master is the DMA.
+- Slave: In simple terms, in a bus system, it cannot initiate access to other devices and can only passively accept access from Master devices.
+- DMA: Direct Memory Access, where the CPU handles numerous complex transactions, including simple yet time-consuming data transfer tasks that can be offloaded to the DMA. Data storage access and display data transmission are typical scenarios involving large data block transfers, making them ideal for DMA to assist the CPU.
 
-> 前言
+### 1.2 Synchronous and Asynchronous Access
+- Synchronous Access: Generally, the Master initiates an access operation to the target Slave device. This operation can involve various scenarios such as read/write operations, command execution, communication, etc. After initiating the operation, the Master waits for the operation to complete. The Master proceeds with other transactions only when the operation status indicates completion.
+- Asynchronous Access: Generally, the Master initiates an access operation to the target Slave device but does not wait for the operation to complete. Instead, it immediately proceeds to execute other transactions. The Master is notified of the completion of the previous access operation through hardware or software mechanisms (or the Master periodically queries during the intervals of other transactions) to ensure the transaction is complete.
 
-- SPI/QSPI协议接口是显示类、存储类以及一些传感器设备的数据通信接口。
-- 本技术专题详细讲解GR55xx系列芯片SPI/QSPI协议、芯片模块的设计特点、软件接口的用法以及如何构建高效率的应用接口，帮助用户快速地理解和发挥SPI/QSPI的高吞吐性能。
-- 系列文章一般情况适用于GR551x、GR5525、GR5526；如果仅适用于特定芯片，会进行标注。
+| Operation | Advantages | Disadvantages |
+| --- | --- | --- |
+| Synchronous | Simple program logic, tasks executed serially | Master spends too much time waiting, leading to low utilization and insufficient performance exploitation of the chip |
+| Asynchronous | Allows all Masters to run simultaneously as much as possible, fully exploiting chip performance | Program logic is generally more complex than synchronous operations |
+In high-bandwidth product development, it is recommended to design the interface architecture in such a way that both the CPU and DMA can operate simultaneously. The CPU handles instruction-based transactions, while the DMA handles large data transfer transactions. For instance, in products such as watches, an A-B Buffer architecture is used. While the CPU executes rendering transactions, the DMA transfers data to the screen for display.
 
+## 2. Data Transmission Behavior
+The following example explains how to send 10 Kbytes of data from SRAM through the QSPI interface. The same principle applies to SPIM (SPI Master), and further details on SPIM behavior will not be provided.
 
-## 1. 基础的应用背景补充
+### 2.1 Writing Data from CPU to Screen via QSPI
+![Insert image description here](../../../../_images/e51e01eb0600423792082ced43228688.png)
+- Transmission starts, initiating the SPI transfer. The CPU moves the SRAM data to the QSPI FIFO sequentially.
+- The SPI controller begins operation, sending the data in the FIFO to the data line according to the configured operating frequency.
+- Assuming the FIFO depth is N, when the bus width used by the CPU for transmission is Byte, the FIFO can buffer up to N Bytes of data; similarly, for transmission widths of Halfword and Word, the FIFO can buffer up to 2N Bytes and 4N Bytes, respectively.
+- If the CPU's data pushing speed is slower than the QSPI's sending speed, it may cause some unpredictable behavior.
+- Throughout the process, the CPU is continuously involved in data transmission.
 
-### 1.1 系统Master和 Slave
+### 2.2 Writing Data via DMA Directly to Screen through QSPI
+![Insert image description here](../../../../_images/f3a9020216254f4c835efc39565b66ab.png)
+- Transmission starts as the CPU configures the DMA and QSPI, initiating data transfer.
+- The DMA reads data from SRAM into its FIFO and then forwards it to the QSPI FIFO.
+- The SPI controller synchronously begins operation, transmitting data from the FIFO to the protocol data line according to the configured frequency.
+- Assuming the FIFO depth is N, when the CPU uses a bus width of Byte for transmission, the FIFO can buffer up to N Bytes of data. Similarly, for Halfword and Word transmission widths, the FIFO can buffer up to 2N Bytes and 4N Bytes of data, respectively.
+- Throughout the entire transmission process, the CPU only needs to configure and activate the DMA and QSPI modules, then it can proceed with other tasks.
+- Upon completion of data transmission, the DMA/QSPI notifies the CPU via a hardware interrupt, allowing the CPU to handle subsequent tasks.
 
-- Master：简单而言，能对系统总线上挂载的各类设备发起主动访问的角色。SoC的典型Master是CPU，它可用于主动对任意外设发起访问操作；另一个非典型Master是DMA。
-- Slave：简单而言，在总线系统中不能主动访问其他设备，只能被动接受Master设备的访问操作。
-- DMA：直接存储访问，CPU负责的事务多而繁杂，其中行为简单而又耗时巨大的数据搬运任务，可以从CPU剥离出来，交由DMA帮助执行。数据存储访问和显示数据传输就属于典型的大数据块搬运场景，非常适合用DMA来协助CPU完成。
-
-### 1.2 同步访问和异步访问
-
-- 同步访问：一般而言，Master对目标Slave设备发起访问操作，操作可以涉及读写操作、指令执行、通信等各种场景。在发起操作后，Master一直原地等待操作结果的完成，直到操作的状态标识完成，才进一步执行其他事务。
-- 异步访问：一般而言，Master对目标Slave设备发起访问操作，但此时Master并不关心操作是否完成，转而立刻去执行别的事务；直到上次访问操作完成后通过硬件或软件方式（或Master在其他事务的间隙周期性查询），通知Master来结束访问逻辑达到访问事务的完备性。
-
-| 操作 | 优点                                               | 缺点                                                         |
-| ---- | -------------------------------------------------- | ------------------------------------------------------------ |
-| 同步 | 程序逻辑简单，任务串行执行                         | Master由于过多时间处于等待，导致使用率不高，不能充分挖掘芯片性能 |
-| 异步 | 让所有Master尽可能同时都运行起来，充分挖掘芯片性能 | 程序逻辑一般比同步操作更复杂                                 |
-
-在需要高带宽的产品开发中，进行接口架构时，尽可能让CPU和DMA都同时运转起来，CPU执行指令类事务，DMA执行大块数据的搬运事务。比如手表等产品，采用A-B Buffer架构，在CPU执行渲染事务的同时，DMA就可以向屏幕搬运数据进行显示。
-
-## 2. 数据传输行为
-
-下文以从SRAM通过QSPI接口发送10 Kbytes数据为例进行说明。SPIM（SPI Master，后同）原理相通，后不再补充SPIM行为。
-
-### 2.1 CPU将数据通过QSPI直接写入屏幕
-![在这里插入图片描述](../../../../_images/e51e01eb0600423792082ced43228688.png)
-
-
-- 传输开始，启动SPI传输。CPU将SRAM数据逐个搬运到QSPI的FIFO。
-- SPI控制器开始工作，根据配置的工作频率将FIFO中的数据逐个发送到协议数据线。
-- 假设FIFO深度为N，当CPU传输使用的总线宽度为Byte时，FIFO最多缓存N Bytes数据；同理，传输宽度Halfword和Word分别对应最多2N Bytes和4N Bytes的FIFO缓存。
-- 当CPU压入数据速度小于QSPI向外发送速度时，会引发一些不可控行为。
-- 整个过程中，CPU都在负载数据的传输工作。
-
-### 2.2 DMA将数据通过QSPI直接写入屏幕
-![在这里插入图片描述](../../../../_images/f3a9020216254f4c835efc39565b66ab.png)
-- 传输开始，CPU配置完成DMA、QSPI，开始数据传输工作。
-- DMA将数据从SRAM读入DMA FIFO再转发到QSPI FIFO。
-- SPI控制器同步开始工作，根据配置的工作频率将FIFO中的数据逐个发送到协议数据线。
-- 假设FIFO深度为N，当CPU传输使用的总线宽度为Byte时，FIFO最多缓存N Bytes数据；同理，传输宽度Halfword和Word分别对应最多2N Bytes和4N Bytes的FIFO缓存。
-- 整个传输过程中，CPU仅负载配置激活DMA和QSPI模块，然后进行其他事务。
-- 当数据传输完成，DMA/QSPI通过硬件中断通知CPU，然后进一步处理传输后的其他事务。
-
-### 2.3 传输中的蓄水池问题（生产者&消费者问题）
-- SPI FIFO就是传输过程的蓄水池，如果Master写入速度快于QSPI外发速度，就可能出现FIFO爆仓溢出，标记为TXO（Transmit Overflow）。
-- 如果Master写入速度慢于SPI外发速度，就可能出现FIFO变空无数据可发，标记为TXE（Transmit Empty）。
-
-上述现象跟计算机中熟悉的生产者&消费者行为一样，对于任意的芯片在应用场景中都可能存在，GR55xx系列芯片对上述行为有不同的解决方法。作为发送的镜像行为，接收数据时与上述行为原理类似，过程相反。
-
+### 2.3 Reservoir Problem in Transmission (Producer & Consumer Problem)
+- The SPI FIFO acts as a buffer during the transmission process. If the Master writes data faster than the QSPI can send it out, the FIFO might overflow, marked as TXO (Transmit Overflow).
+- Conversely, if the Master writes data slower than the SPI can send it out, the FIFO might become empty, leaving no data to send, marked as TXE (Transmit Empty).
+These phenomena are akin to the producer-consumer behavior familiar in computing and can occur in any chip under various application scenarios. The GR55xx series chips offer different solutions for these behaviors. For receiving data, the process is similar but operates in reverse.

@@ -1,64 +1,46 @@
 # DMA
 
+## 1. Introduction to Basic Functions
+- Different SoCs have different DMA function configurations, with varying numbers of DMA instances and different available transfer channels for each instance.
+- The table below describes the DMA channel configuration and capabilities for each chip.
 
+| SoC    | DMA Instance | Number of Channels and FIFO Depth                    | Basic Functionality      | Usage Restrictions                                           |
+| ------ | ------------ | ---------------------------------------------------- | ------------------------ | ------------------------------------------------------------ |
+| GR551x | DMA0         | Supports 8 channels, each channel FIFO 8x4 bytes     | Basic data transmission  | Single transmission does not exceed 4095 beats               |
+| GR5525 | DMA0         | Supports 6 channels, channel 0 FIFO 32x4 bytes, other channels FIFO 4x4 bytes | Basic data transmission, S&G, LLP | 1. Single transmission does not exceed 4095 beats;<br/>2. Use LLP function to extend the amount of data per single transmission |
+|        | DMA1         | Supports 6 channels, channel 0 FIFO 32x4 bytes, other channels FIFO 4x4 bytes | Basic data transmission, S&G, LLP | 1. Single transmission does not exceed 4095 beats;<br/>2. Use LLP function to extend the amount of data per single transmission |
+| GR5526 | DMA0         | Supports 6 channels, channel 0 FIFO 32x4 bytes, other channels FIFO 4x4 bytes | Basic data transmission, S&G, LLP | 1. Single transmission does not exceed 4095 beats;<br/>2. Use LLP function to extend the amount of data per single transmission |
+|        | DMA1         | Supports 6 channels, channel 0 FIFO 32x4 bytes, other channels FIFO 4x4 bytes | Basic data transmission, S&G, LLP | 1. Single transmission does not exceed 4095 beats;<br/>2. Use LLP function to extend the amount of data per single transmission |
+| GR533x | DMA0         | Supports 5 channels, channel 0 FIFO 8x4 bytes, other channels FIFO 4x4 bytes | Basic data transmission  | Single transmission does not exceed 4095 beats               |
+- DMA supports the following transfer modes:
+    - Memory to Memory
+    - Memory to Peripheral
+    - Peripheral to Memory
+    - Peripheral to Peripheral
+    > Note: When one end of the transfer is a peripheral, the DMA transfer signal relies on hardware handshake signals. For GR5525 and GR5526, which have multiple DMA instances, DMA and peripherals cannot be arbitrarily paired. Refer to the DMA hardware handshake signal allocation table in the Datasheet. For details, refer to the DMA and handshake signal sections in the Datasheet of each SoC.
+- In a basic DMA data transfer, up to 4095 beats of data can be transmitted at a time. "Beat" refers to the bit width of the data transmitted through DMA.
+    - If the data bit width is in bytes, up to 4095 bytes of data can be transmitted in a single DMA transmission.
+    - If the data bit width is in half-words, up to 4095 x 2 bytes of data can be transmitted in a single DMA transmission.
+    - If the data bit width is in words, up to 4095 x 4 bytes of data can be transmitted in a single DMA transmission.
+    - If more than 4095 beats of data are transmitted in a single basic DMA transfer, an error message will pop up, indicating that the DMA transmission is interrupted.
+    - To extend a single transfer beyond 4095 beats, use Linked List Pointer (LLP) chained transfer. Only GR5525 & GR5526 support this transfer mode; GR551x and GR553x do not support it.
+- Increasing the data transfer width of DMA can improve DMA transfer performance. Using a 32-bit transfer width provides better performance than 16-bit and 8-bit.
+- GR5525 and GR5526 extend the LLP and S&G capabilities of DMA, which, when used with peripherals like QSPI, can significantly improve the throughput of such peripherals. For more information on LLP and S&G, refer to the document "[GR5526 Display Refresh Guide](https://docs.goodix.com/zh/online/display_refresh_guide_bl_b)" or "[GR5525 Display Guide](https://docs.goodix.com/zh/online/display_guide_bl_c)".
 
-## 1. 基本功能介绍
+## 2. Application Notes
+- GR5525 & GR5526 provide two DMA instances for users: DMA0 and DMA1. There are six DMA channels in total. The FIFO depth is 32 (channel 0) or 4 (channels 1–5).
+    - Channel 0 features large FIFO depth, so it can cache more data in DMA transmission, improving DMA transmission throughput. Therefore, in wearable applications, it is recommended to allocate channel 0 of DMA0/DMA1 to peripherals with high throughput in such scenarios as Flash access, PSRAM access, bulk memory block transfer, and display.
+- Compared to the DMA of GR551x and GR553x, the DMA of GR5525 & GR5526 has the following extended features:
+    - DMA chained data transmission: Manage all to-be-transmitted data blocks using a pointer linked list. After a data block is sent, the next block is automatically loaded according to the Next pointer until the Next pointer becomes empty. Its advantages are:
+        - Transmit more than 4095 beats of data in a single transmission.
+        - Transmit data from a discontinuous address space in a single transmission cycle.
+        - Use different transmission configurations to transmit data in a single transmission cycle.
+    - DMA scatter transmission: In a DMA scatter transmission, data in a continuous address space is scattered to a discontinuous address space based on certain rules.
+    - DMA gather transmission: In a DMA gather transmission, data in a discontinuous address space is gathered in a continuous address space. DMA gather transmission can be regarded as a reverse process of DMA scatter transmission.
+- GR551x and GR553x each have only one DMA instance, and all peripheral modules can use DMA for transmission. GR5525 and GR5526 have two DMA instances, and the support for peripherals varies for each instance.
+The support status of GR5525 DMA with different peripherals is as follows:
 
--   不同的SoC，其DMA功能配置不尽相同，具备不同的DMA实例数量且每个DMA实例可用的传输通道不一样。
-
--   下表描述各芯片的DMA通道配置及能力。
-
-| SoC    | DMA实例 | 通道数及FIFO深度                                        | 基础功能                 | 使用限制                                                     |
-| ------ | ------- | ------------------------------------------------------- | ------------------------ | ------------------------------------------------------------ |
-| GR551x | DMA0    | 支持8个通道，每个通道FIFO 8x4字节                       | 基础的数据传输           | 单次传输不超过4095拍                                         |
-| GR5525 | DMA0    | 支持6个通道，通道0 FIFO 32x4字节，其他通道FIFO 4x4 字节 | 基础的数据传输、S&G、LLP | 1. 单次传输不超过4095拍； <br/>2.使用LLP功能扩展单次传输数据量 |
-|        | DMA1    | 支持6个通道，通道0 FIFO 32x4字节，其他通道FIFO 4x4 字节 | 基础的数据传输、S&G、LLP | 1. 单次传输不超过4095拍； <br/>2.使用LLP功能扩展单次传输数据量 |
-| GR5526 | DMA0    | 支持6个通道，通道0 FIFO 32x4字节，其他通道FIFO 4x4 字节 | 基础的数据传输、S&G、LLP | 1. 单次传输不超过4095拍；<br/>2.使用LLP功能扩展单次传输数据量 |
-|        | DMA1    | 支持6个通道，通道0 FIFO 32x4字节，其他通道FIFO 4x4 字节 | 基础的数据传输、S&G、LLP | 1. 单次传输不超过4095拍；<br/>2.使用LLP功能扩展单次传输数据量 |
-| GR533x | DMA0    | 支持5个通道，通道0 FIFO 8x4字节，其他通道FIFO 4x4 字节  | 基础的数据传输           | 单次传输不超过4095拍                                         |
-
--   DMA 支持的传输方式有：
-
-    -   Memory to Memory - 从内存到内存
-    -   Memory to Peripheral - 从内存到外设
-    -   Peripheral to Memory - 从外设到内存
-    -   Peripheral to Peripheral - 从外设到外设
-    
-    > 注意：当传输中某一端是外设时，DMA传输信号需要依赖硬件握手信号。对于存在多个DMA实例的GR5525和GR5526，DMA和外设不能任意搭配，需要从Datasheet参考DMA硬件握手信号分配表。详情请参考各SoC 的Datasheet关于DMA及握手信号章节。
-    
--   当DMA进行基础的数据传输时，一次性最大传输4095拍数据。“拍” 指DMA传输数据的位宽度。
-
-    -   如果使用的数据位宽是字节，DMA单次最多传输数据4095字节。
-    -   如果使用的数据位宽是半字，DMA单次最多传输数据4095x2字节。
-    -   如果使用的数据位宽是字，DMA单次最多传输数据4095x4字节。
-    -   如果DMA一次基础传输时，数据量超过了4095拍，则会给出错误的DMA传输中断提示。
-    -   扩展单次传输数据超过4095拍的方式是适用LLP链式传输。仅GR5525 & GR5526支持这种传输方式，GR551x和GR553x不支持。
-
--   提高DMA的数据传输宽度，可提高DMA的传输性能。使用32位传输宽度，其传输性能大于16位和8位。
-  
--   GR5525和GR5526拓展了DMA的LLP和S&G能力，配合QSPI等外设使用，可极大地提高QSPI等外设的吞吐率。关于LLP和S&G的介绍，请参考文档《[GR5526刷屏指南](https://docs.goodix.com/zh/online/display_refresh_guide_bl_b)》或《[GR5525刷屏指南](https://docs.goodix.com/zh/online/display_guide_bl_c)》。
-
-
-
-## 2. 应用笔记
-
--   GR5525 & GR5526提供DMA0和DMA1两个可供用户使用的DMA实例，共计6个DMA通道，其中通道0 FIFO深度为32，通道1～5的FIFO深度为4。
-    -   由于通道0具备很深的FIFO深度，在DMA传输时能提供极深的数据缓存，从而提高DMA传输吞吐，因此在穿戴类应用中，请优先将DMA0/DMA1的通道0分配给高吞吐外设使用，如用于Flash访问、PSRAM访问、大块Memory搬运、Display显示等。
-    
--   GR5525 & GR5526的DMA相对GR551x和GR553x的DMA，拓展了如下功能：
-    -   DMA链式数据传输：将需要传输的所有数据区块，通过指针链表方式进行管理。上一个区块发送完成后，根据Next链表指针自动对下一个区块进行加载，直到最后Next链表指针为空。其优点为：
-        -   突破单次传输4095拍的限制
-        -   支持单次传输周期中传输不连续地址空间的数据
-        -   支持单次传输周期使用不同的传输配置进行数据传输
-    -   DMA分散传输：DMA分散（Scatter）传输指将连续地址空间的数据通过一定的规则，分散到不连续的地址空间的传输。
-    -   DMA聚合传输2：DMA聚合（Gather）传输指将不连续地址空间的数据，聚合到连续的地址空间的传输，可视作Scatter的逆向传输过程。
-    
--   GR551x和GR553x均只有一个DMA实例，外设模块均可使用DMA进行传输。GR5525和GR5526有2个DMA实例，每个实例对外设的支持存在区别。
-
-GR5525 DMA搭配不同外设传输的支持状态如下：
-
-
-| 外设       | DMA0 | DMA1 |
+| Peripheral | DMA0 | DMA1 |
 | ---------- | ---- | ---- |
 | QSPI0      | YES  | NO   |
 | QSPI1      | YES  | YES  |
@@ -78,13 +60,9 @@ GR5525 DMA搭配不同外设传输的支持状态如下：
 | DSPI       | NO   | YES  |
 | PDM        | NO   | YES  |
 | ADC        | YES  | NO   |
+The support status of GR5526 DMA with different peripherals is as follows:
 
-
-
-GR5526 DMA搭配不同外设传输的支持状态如下：
-
-
-| 外设       | DMA0 | DMA1 |
+| Peripheral | DMA0 | DMA1 |
 | ---------- | ---- | ---- |
 | QSPI0      | YES  | NO   |
 | QSPI1      | YES  | YES  |
@@ -108,4 +86,3 @@ GR5526 DMA搭配不同外设传输的支持状态如下：
 | DSPI       | NO   | YES  |
 | PDM        | NO   | YES  |
 | ADC        | YES  | NO   |
-

@@ -1,53 +1,42 @@
-## DC应用笔记
+## DC Application Note
+> Description:
+- In graphical contexts, "DC" refers to the Display Controller module. Note that this is distinct from Direct Current (DC).
+- "DC" is an extended peripheral of the GR5526 SoC series chips (available in GR5526VGBIP and GR5526RGNIP packaging). Other chip series do not include DC.
 
 
 
-> 说明：
-> -   “DC” 在图形化场景下，是指Display Controller（显示控制器）模块，注意跟Direct Current（直流电）概念区分。
-> -   “DC” 是GR5526 SoC系列芯片（存在于GR5526VGBIP和GR5526RGNIP封装）扩展的外设，其他芯片系列没有DC。
+### 1. Introduction to Basic Functions
 
-
-
-### 1. 基本功能介绍
-
-显示控制器（Display Controller）主要用于配合GPU使用，将渲染完成的帧缓冲区（FrameBuffer），送至Display进行图形显示，帧缓冲区典型格式包括RGBA8888、RGB565、TSCx等。支持的屏幕接口规范主要为MIPI DBI（Display Bus Interface）Type-C，涵盖的时序协议主要有：
-
+The Display Controller is mainly used in conjunction with the GPU to send the rendered frame buffer to the display for graphical output. Typical frame buffer formats include RGBA8888, RGB565, TSCx, etc. The main supported screen interface specification is MIPI DBI (Display Bus Interface) Type-C, covering the following timing protocols:
 1.  3-Wire SPI
-
-    包含SPI_CS（片选信号）、SPI_SCLK（时钟信号）、SPI_SD（数据输出）三根信号线，其中命令字（Command Word）由9-bit构成，包含1-bit的数据/命令指示位和8-bit的命令字（Command Word）；而数据字（Data Command）由1-bit数据/命令指示位和若干位像素数据位构成。
-
-2.  4-Wire SPI（扩展DCX信号线）
-    包含SPI_CS（片选信号）、SPI_SCLK（时钟信号）、SPI_SD（数据输出）和SPI_DC（数据/命令指示信号）4根信号线，其中命令字（Command Word）由8-bit构成，而数据字（Data Command）由若干位像素数据位构成。
-
+    Includes three signal lines: SPI_CS (chip select signal), SPI_SCLK (clock signal), and SPI_SD (data output). The command word consists of 9 bits, including a 1-bit data/command indicator and an 8-bit command word. The data word consists of a 1-bit data/command indicator and several bits of pixel data.
+2.  4-Wire SPI (extended DCX signal line)
+    Includes four signal lines: SPI_CS (chip select signal), SPI_SCLK (clock signal), SPI_SD (data output), and SPI_DC (data/command indicator signal). The command word consists of 8 bits, while the data word consists of several bits of pixel data.
 3.  Dual SPI
-    包含SPI_CS（片选信号）、SPI_SCLK（时钟信号）、SPI_SD（数据输出）和SPI_SD1（数据输出1）4根信号线，命令字（Command Word）一般由SPI_SD线发送而数据由SPI_SD和SPI_SD1共同发送；其中命令字（Command Word）由9-bit构成，包含1-bit的数据/命令指示位和8-bit的命令字（Command Word）；而数据字（Data Command）由1-bit数据/命令指示位和若干位像素数据位构成。
-
+    Includes four signal lines: SPI_CS (chip select signal), SPI_SCLK (clock signal), SPI_SD (data output), and SPI_SD1 (data output 1). The command word is generally sent via the SPI_SD line, while data is sent via both SPI_SD and SPI_SD1. The command word consists of 9 bits, including a 1-bit data/command indicator and an 8-bit command word. The data word consists of a 1-bit data/command indicator and several bits of pixel data.
 4.  Quad SPI
-    包含SPI_CS（片选信号）、SPI_SCLK（时钟信号）、SPI_SD（数据输出）、SPI_SD19（数据输出1）、SPI_SD2（数据输出2）、SPI_SD3（数据输出3）6根信号线，命令类型可以被SPI_SD或所有SPI_SDx传输。时序一般由8-bit命令头、24-bit命令字和若干像素数据组成。
-
-
-
-> -   显示控制器内置DMA，用于加速帧数据对送显，同时具备一次性送显一个完整帧数据对能力。
-> -   显示控制器（Display Controller）时常缩写为DC，请注意和DC（Direct Current）区分。
+    Includes six signal lines: SPI_CS (chip select signal), SPI_SCLK (clock signal), SPI_SD (data output), SPI_SD19 (data output 1), SPI_SD2 (data output 2), and SPI_SD3 (data output 3). The command type can be transmitted by SPI_SD or all SPI_SDx. The timing generally consists of an 8-bit command header, a 24-bit command word, and several bits of pixel data.
+> - The display controller has a built-in DMA to accelerate frame data transfer and is capable of transferring a complete frame of data at once.
+> - The display controller (DC) is often abbreviated as DC, please distinguish it from DC (Direct Current).
 >
 
 
 
-### 2. 应用笔记
+### 2. Application Notes
 
--   DC模块和QSPI2模块复用了主要的IO引脚（CSn、CLK、D0～D3），当屏幕的QSPI信号线挂载在这些I/O下时：
-    -   如果Frame Buffer是RGB565非压缩格式，用户可以选择使用QSPI2或者DC模块驱动屏幕。
-    -   如果Frame Buffer是TSCx压缩格式，用户只能使用DC模块驱动屏幕。
-    -   在使用了GPU的产品工程中，建议用户优先选择DC模块驱动外设屏幕，以便具有更好的兼容性和更好的刷屏带宽。
--   DC的刷屏接口app_graphics_dc_send_single_frame支持同步和异步调用两种模式：
-    -   同步调用模式下，CPU会一直等待Frame Buffer刷屏逻辑结束，才会继续执行后续的逻辑。
-    -   异步调用模式下，CPU启动Frame Buffer刷屏传输后就会退出接口。因此，需要用户通过回调事件关心接口的调用生命期，防止重入调用和接口刷屏未执行完毕就进行了休眠等其他操作。
-    -   同步调用模式一般由用户调试，最终建议使用异步调用模式，可以将任务并行执行，最大化芯片的计算能力并提高刷新帧率。
--   对于DC模块的休眠管理建议：
-    -   系统允许休眠时，检查app_graphics_dc_send_single_frame调用完成后，主动调用app_graphics_dc_set_power_state(GDC_POWER_STATE_SLEEP)，允许系统将DC休眠。
-    -   系统唤醒后准备刷屏前，可主动调用app_graphics_dc_set_power_state(GDC_POWER_STATE_ACTIVE)，将DC模块唤醒准备工作。
--   对DC模块提供的主要时序接口，在《[GR5526刷屏指南](https://docs.goodix.com/zh/online/display_refresh_guide_bl_b)》中使用图片描述其发送时序特征。使用接口存在疑惑时，可以参阅该文档。
--   DC模块提供了CS Setup Delay（Tcsu，片选建立时延）电气参数的调整，如果外设屏幕要求较大的Tcsu，可以通过初始化结构体app_graphics_dc_params_t的参数tcsu_cycle进行调整。 
--   DC模块刷屏时的Frame Buffer要和GPU使用的Frame Buffer相对应，DC模块具备空中帧格式转换功能，可以将GPU Frame Buffer的帧格式转换为另一个格式发送给屏幕，比如：
-    -   GPU采用RGBA8888格式进行Frame渲染，DC可以将目标帧格式设置为RGB565发送给屏幕显示。
-    -   GPU采用TSCx格式进行Frame渲染，DC可以将目标帧格式设置为RGB565发送给屏幕显示。
+- The DC module and QSPI2 module share the main IO pins (CSn, CLK, D0 to D3). When the QSPI signal lines of the screen are connected to these I/O pins:
+    - If the Frame Buffer is in RGB565 uncompressed format, users can choose either the QSPI2 or DC module to drive the screen.
+    - If the Frame Buffer is in TSCx compressed format, users can only use the DC module to drive the screen.
+    - In product engineering that utilizes a GPU, it is recommended that users prioritize the DC module to drive the peripheral screen for better compatibility and refresh rate bandwidth.
+- The DC screen refresh interface app_graphics_dc_send_single_frame supports both synchronous and asynchronous call modes:
+    - In synchronous call mode, the CPU waits for the Frame Buffer screen refresh logic to complete before continuing with subsequent operations.
+    - In asynchronous call mode, the CPU exits the interface after initiating the Frame Buffer screen refresh transmission. Users must manage the interface call lifecycle through callback events to prevent reentrant calls and avoid operations such as entering sleep mode before the screen refresh is completed.
+    - Synchronous call mode is generally used for debugging. Ultimately, it is recommended to use asynchronous call mode to allow parallel task execution, maximizing the chip's computational capabilities and improving the refresh frame rate.
+- For sleep management of the DC module:
+    - When the system allows sleep, ensure that the app_graphics_dc_send_single_frame call is complete, then call app_graphics_dc_set_power_state(GDC_POWER_STATE_SLEEP) to allow the system to put the DC module to sleep.
+    - Before the system wakes up and prepares to refresh the screen, call app_graphics_dc_set_power_state(GDC_POWER_STATE_ACTIVE) to wake up the DC module and prepare it for operation.
+- The main timing interfaces provided by the DC module are described with images in the "[GR5526 Display Refresh Guide](https://docs.goodix.com/zh/online/display_refresh_guide_bl_b)". Refer to this document if there are any doubts about using the interface.
+- The DC module provides an adjustment for the CS Setup Delay (Tcsu, Chip Select Setup Time) electrical parameter. If the peripheral screen requires a larger Tcsu, it can be adjusted through the tcsu_cycle parameter in the initialization structure app_graphics_dc_params_t.
+- The Frame Buffer used by the DC module during screen refresh should correspond to the Frame Buffer used by the GPU. The DC module has an in-flight frame format conversion function, which can convert the frame format of the GPU Frame Buffer to another format for sending to the screen. For example:
+    - If the GPU uses the RGBA8888 format for frame rendering, the DC can set the target frame format to RGB565 for screen display.
+    - If the GPU uses the TSCx format for frame rendering, the DC can set the target frame format to RGB565 for screen display.
